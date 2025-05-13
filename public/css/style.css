@@ -1,0 +1,468 @@
+html, body {
+    font-family: 'Poppins';
+    font-size: 22px;
+    height: 100%;
+    margin: 0;
+}
+
+.sidebar {
+    position:fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 80px;
+    align-items: center;
+    background-color: white;
+    box-shadow: 10px 0px 200px rgba(0, 0, 0, 0.112);
+    z-index: 100 !important;
+}
+
+.top_sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.top_menu {
+    margin-top: 20px;
+}
+
+.bottom_sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+a {
+    display: flex;
+    align-items: center;
+    padding: 15px 0px 0px 0px;
+    margin: 0;
+}
+
+.box_icon {
+    position: relative;
+    margin-right: 0;
+    padding: 3px 12px 8px 12px;
+    border-radius: 10px;
+    transition: background-color 0.5s, fill 0.5s, transform 0.5s, box-shadow 0.5s;
+}
+
+.box_icon_logout {
+    position: relative;
+    margin-right: 0;
+    padding: 3px 12px 8px 12px;
+    border-radius: 10px;
+    transition: background-color 0.5s, fill 0.5s, transform 0.5s, box-shadow 0.5s;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #3E3E3E;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    left: calc(100% + 1.3rem);
+    top: 0;
+    transform-origin: center left;
+    transform: scale(0);
+    opacity: 0;
+    transition: 0.15s ease;
+    color: #ffffff;
+}
+
+.tooltip:before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    background-color: #3E3E3E;
+    left: -5px;
+    top: 50%;
+    transform: translatey(-50%) rotate(45deg);
+    border-radius: 3px;
+}
+
+.box_icon:hover .tooltip {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.box_icon svg {
+    fill: rgb(163, 163, 163);
+}
+
+.box_icon:hover {
+    background-color: #DFBA86;
+    transform: translateY(-3px);
+}
+
+.box_icon:hover svg {
+    fill: #ffffff;
+}
+
+.box_icon.active {
+    background-color: #DFBA86;
+}
+
+.box_icon.active svg {
+    fill: #ffffff;
+}
+
+.box_icon_logout:hover .tooltip {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.box_icon_logout svg {
+    fill: rgb(163, 163, 163);
+}
+
+.box_icon_logout:hover {
+    background-color: #ffedd1;
+    transform: translateY(-3px);
+}
+
+.box_icon_logout:hover svg {
+    fill: #ffffff;
+}
+
+.box_icon_logout.active {
+    background-color: #ffedd1;
+}
+
+.box_icon_logout.active svg {
+    fill: #ffffff;
+}
+
+
+.logo_dgm {
+    width: 38px;
+    margin-left: 4px;
+}
+
+.body_content {
+    margin-left: 80px;
+}
+
+.bg_blur {
+    /* width: 400px; */
+    width: 85%;
+    height: 75%;
+    border-radius: 10px;
+    background-color: rgba(60, 60, 60, 0.351);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    color: white;
+}
+
+.title {
+    font-size: 30px;
+}
+
+.writer {
+    font-size: 20px;
+}
+
+.container_application {
+    width: 50px;
+    height: 55px;
+    border-radius: 10px;
+    background-color: #DFBA86;
+    color: white;
+    font-size: 13px;
+    padding: 10px;
+    font-size: 24px;
+    margin-top: -10px;
+}
+
+.button_menu_bookmark {
+    background-color: #dfba8600;
+    color: #3E3E3E;
+    border: 0px;
+    border-radius: 7px;
+    padding: 6px 11px 6px 11px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.dropdown_menu_bookmark:active {
+    background-color: #585858 !important;
+    color: white;
+}
+
+.custom-center {
+    position: absolute;
+    top: 15%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-open .modal-backdrop {
+    backdrop-filter: blur(10px);
+    background-color: rgba(183, 183, 183, 0.191);
+    opacity: 1 !important;
+}
+
+.input_modal {
+    padding: 0px 0px;
+    margin: 5px 0px 5px 0px;
+    font-size: 16px;
+}
+
+.input_modal input {
+    padding: 8px 15px;
+    font-size: 15px;
+}
+
+.input_modal input::placeholder {
+    color: rgb(173, 173, 173);
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.button_clear_modal {
+    background-color: #888888;
+    border: 0px;
+    border-radius: 5px;
+    padding: 8px 20px 8px 20px;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.button_submit_modal {
+    background-color: #DFBA86;
+    border: 0px;
+    border-radius: 5px;
+    padding: 8px 20px 8px 20px;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.text_application {
+    font-size: 14px;
+    margin-top: 5px
+}
+
+.button_see_more {
+    border: 0px;
+    border-radius: 5px;
+    background-color: #DFBA86;
+    width: 100%;
+    padding: 5px 0px;
+    font-weight: 500;
+}
+
+.custom-text-swal {
+    font-size: 16px;
+}
+
+.custom-confirm-button-swal {
+    width: 150px;  /* Atur lebar tombol sesuai kebutuhan */
+}
+
+.custom-popup-swal {
+    animation: customSlideInDown 0.5s ease-out forwards;
+    width: 500px;
+}
+
+.user_guide {
+    position: relative;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding-top: 2px;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    transition: background-color 0.5s, fill 0.5s, transform 0.5s, box-shadow 0.5s;
+    color: rgb(110, 110, 110);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.user_guide .text_tooltip {
+    margin-top: 16px !important;
+}
+
+.user_guide_tooltip {
+    position: absolute;
+    background-color: rgb(110, 110, 110);
+    white-space: nowrap;
+    padding: 0.3rem 1rem;
+    border-radius: 5px;
+    left: calc(100% + 1rem);
+    top: -15% !important;
+    transform-origin: center left;
+    transform: scale(0);
+    opacity: 0;
+    transition: 0.15s ease;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+}
+
+.user_guide_tooltip:before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    background-color: rgb(110, 110, 110);
+    left: -5px;
+    top: 48%;
+    transform: translatey(-50%) rotate(45deg);
+    border-radius: 3px;
+}
+
+.user_guide:hover .user_guide_tooltip {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.user_guide svg {
+    fill: rgb(163, 163, 163);
+}
+
+.user_guide:hover {
+    background-color: #d1d1d1;
+}
+
+.user_guide:hover svg {
+    fill: #ffffff;
+}
+
+.user_guide.active {
+    background-color: #d1d1d1;
+}
+
+.user_guide.active svg {
+    fill: #ffffff;
+}
+
+.tableData {
+    text-align: left;
+    width: 100%;
+    font-size: 16px !important;
+}
+
+.tableData .top_left_tableData {
+    background-color: #f8f9fa;
+    border-top-left-radius: 8px;
+}
+
+.tableData .top_right_tableData {
+    background-color: #f8f9fa;
+    border-top-right-radius: 8px;
+}
+
+.tableData .bottom_left_tableData {
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 8px;
+    background-color: white;
+}
+
+.tableData .bottom_right_tableData {
+    background-color: #f8f9fa;
+    border-bottom-right-radius: 8px;
+    background-color: white;
+}
+
+.tableData tbody th {
+    border-radius: 0px;
+}
+
+.tableData tfoot tr th {
+    border-bottom: 1px solid #cdcdcd;
+}
+
+.input_filter_tableData {
+    margin-bottom: 4px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 5px !important;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar {
+    display: none;
+}
+
+.tableData thead tr th {
+    font-weight: 500;
+    background-color: #3F3F3F !important;
+    color: white !important;
+}
+
+.tableData tbody tr td {
+    vertical-align: middle;
+}
+
+/* CUSTOM CSS PAGINATION DATATABLE */
+.dataTables_paginate{
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.dataTables_paginate a:hover {
+    border-radius: 10px !important;
+}
+
+/* .dataTables_paginate {
+    padding: 6px 9px !important;
+    background: #ddd !important;
+    border-color: #ddd !important;
+    border-radius: 20px !important;
+} */
+
+.dataTables_paginate .current {
+    /* background: red !important; */
+    border-radius: 10px !important;
+}
+
+/* CUSTOM CSS SHOW ENTRIES DATATABLE */
+.dataTables_length {
+    margin: 0px 0px 10px 0px;
+    font-size: 14px !important;
+}
+
+.dataTables_info {
+    font-size: 14px;
+    color: #3F3F3F;
+}
+
+.button_edit {
+    background-color: #DFBA86;
+    border: 0px;
+    border-radius: 5px;
+    padding: 6px 10px 6px 10px;
+    color: white;
+    font-weight: 500;
+}
+
+.button_delete {
+    background-color: #3F3F3F;
+    border: 0px;
+    border-radius: 5px;
+    padding: 6px 10px 6px 10px;
+    color: white;
+    font-weight: 500;
+}
+
+@media only screen and (max-width: 1426px) {
+
+    .bg_blur{
+        font-size: 20px;
+    }
+
+    .title {
+        font-size: 25px;
+    }
+
+    .writer {
+        font-size: 20px;
+    }
+
+}

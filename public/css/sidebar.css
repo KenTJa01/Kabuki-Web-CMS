@@ -1,0 +1,73 @@
+html, body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    height: 100%;
+    margin: 0;
+}
+
+.sidebar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 230px;
+    background-color: #3E3E3E;
+    box-shadow: 10px 0px 200px rgba(0, 0, 0, 0.063);
+    z-index: 100 !important;
+    color: white;
+}
+
+.top_sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px 0;
+}
+
+.top_menu {
+    margin-top: 20px;
+}
+
+a {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    text-decoration: none;
+    color: white; /* Pastikan warna teks terlihat */
+}
+
+a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.box_icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Sesuaikan lebar untuk responsif */
+}
+
+.box_icon svg {
+    margin-right: 10px;
+}
+
+.logo_dgm {
+    width: 38px;
+}
+
+.body_content {
+    margin-left: 80px;
+}
+
+ul.list-unstyled {
+    padding-left: 20px; /* Indent submenu */
+}
+
+ul.list-unstyled li a {
+    padding: 10px 0; /* Padding untuk submenu */
+}
+
+ul.list-unstyled li a:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hover effect untuk submenu */
+}

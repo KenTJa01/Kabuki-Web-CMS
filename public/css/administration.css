@@ -1,0 +1,551 @@
+/* ==================== SIDEBAR ====================  */
+.sidebar{
+    position: fixed;
+    z-index: 2;
+    background-color: #3F3F3F;
+    color: white;
+    width: 220px;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 99;
+
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.container_logo{
+    width: 90%;
+    height: 76px;
+    text-align: center;
+    margin: 15px 10px 0px 10px;
+    border-radius: 15px;
+    z-index: 99;
+}
+
+.button_dgm_core {
+    margin: 7% !important;
+}
+
+.button_dgm_core:active {
+    outline: none !important;
+    border: 1px solid rgba(0, 0, 0, 0) !important;
+}
+
+.menu_sidebar {
+    color: #fff;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    margin: 30px 20px;
+}
+
+.menu_sidebar ul li {
+    font-size: 16px;
+
+}
+
+.menu_sidebar ul li > ul{
+    margin-left: 15px;
+}
+
+.menu_sidebar ul li > ul li {
+    font-size: 14px;
+}
+
+.menu_sidebar ul li > ul li svg {
+    margin-top: -3px;
+    margin-right: 5px;
+}
+
+.menu_sidebar ul li a {
+    padding: 10px 0;
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+}
+
+.menu_sidebar ul li a:hover {
+    color: #f4c17a;
+}
+
+.menu_sidebar ul li.active > a {
+    background: transparent;
+    color: #f4c17a;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-sidebar::after {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.copyright{
+    position: fixed;
+    bottom: 0;
+    background-color: #3F3F3F;
+    font-size: 11px;
+    text-align: center;
+    width: 220px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    user-select: none;
+}
+
+/* ==================== NAVBAR ==================== */
+.cover_navbar{
+    height: 76px;
+    width: 100%;
+    padding: 15px 15px 0px 235px !important;
+    position: fixed;
+    z-index: 98;
+}
+
+.navbar {
+    height: 76px;
+    width: 100%;
+    display: flex;
+    padding-top: 15px;
+    padding-right: 30px !important;
+    color: #A3A3A3;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    box-shadow: 0 0 100px 3px rgba(0, 0, 0, 0.053);
+}
+
+.navbar a {
+    color: rgb(191, 191, 191);
+    text-decoration: none;
+}
+
+.button_menu_burger {
+    margin-left: 15px;
+    padding: 5px;
+    background-color: #646464;
+    border-radius: 5px;
+}
+
+.button_menu {
+    margin-left: 15px;
+    padding: 12px 13px 12px 13px;
+    background-color: #646464;
+    border-radius: 10px;
+}
+
+.greeting{
+    margin-top: 0px;
+    margin-left: 25px;
+    color: #3F3F3F;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.body_content {
+    padding: 100px 15px 15px 15px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-left: 220px;
+}
+
+/* ====================   ==================== */
+.content {
+    /* height: 100%; */
+    color: #000000;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.bottom_space {
+    border: 1px solid #F7F7F9;
+    margin: 20px !important;
+}
+
+.title_n_button {
+    display: flex;
+}
+
+.button_new {
+    background-color: #DFBA86;
+    color: white;
+    border: 0px;
+    border-radius: 7px;
+    padding: 6px 15px 6px 15px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.title {
+    color: #3F3F3F;
+    margin: 6px 0px 0px 18px;
+    font-size: 22px;
+}
+
+.sub_title {
+    color: #3F3F3F;
+    margin: 6px 0px 0px 18px;
+    font-size: 22px;
+}
+
+hr {
+    width: 100%;
+}
+
+.tableData {
+    text-align: left;
+    width: 100%;
+    font-size: 1rem !important;
+}
+
+.tableData .top_left_tableData {
+    background-color: #f8f9fa;
+    border-top-left-radius: 8px;
+}
+
+.tableData .top_right_tableData {
+    background-color: #f8f9fa;
+    border-top-right-radius: 8px;
+}
+
+.tableData .bottom_left_tableData {
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 8px;
+    background-color: white;
+}
+
+.tableData .bottom_right_tableData {
+    background-color: #f8f9fa;
+    border-bottom-right-radius: 8px;
+    background-color: white;
+}
+
+.tableData tbody th {
+    border-radius: 0px;
+}
+
+.tableData tfoot tr th {
+    border-bottom: 1px solid #cdcdcd;
+}
+
+.input_filter_tableData {
+    margin-bottom: 4px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 5px !important;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar {
+    display: none;
+}
+
+.tableData thead tr th {
+    font-weight: 500;
+    background-color: #3F3F3F !important;
+    color: white !important;
+}
+
+.tableData tbody tr td {
+    vertical-align: middle;
+}
+
+
+/* CUSTOM CSS PAGINATION DATATABLE */
+.dataTables_paginate{
+    margin-top: 10px;
+}
+
+.dataTables_paginate a:hover {
+    border-radius: 10px !important;
+}
+
+/* .dataTables_paginate {
+    padding: 6px 9px !important;
+    background: #ddd !important;
+    border-color: #ddd !important;
+    border-radius: 20px !important;
+} */
+
+.dataTables_paginate .current {
+    /* background: red !important; */
+    border-radius: 10px !important;
+}
+
+/* CUSTOM CSS SHOW ENTRIES DATATABLE */
+.dataTables_length {
+    margin: 0px 0px 10px 0px;
+}
+
+
+.button_edit {
+    background-color: #DFBA86;
+    border: 0px;
+    border-radius: 5px;
+    padding: 6px 10px 6px 10px;
+    color: white;
+    font-weight: 500;
+}
+
+.button_delete {
+    background-color: #3F3F3F;
+    border: 0px;
+    border-radius: 5px;
+    padding: 6px 10px 6px 10px;
+    color: white;
+    font-weight: 500;
+}
+
+.button_export {
+    border: 0px solid #3F3F3F;
+    border-radius: 7px;
+    background-color: #3F3F3F;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 7px 20px 7px 20px;
+}
+
+.label_form {
+    font-weight: 400;
+    width: 13%;
+}
+
+.label_form_password {
+    font-weight: 400;
+    width: 10%;
+}
+
+.container_input_form {
+    width: 35%;
+    height: 10px !important;
+}
+
+.container_input_form_password {
+    width: 43%;
+    height: 10px !important;
+}
+
+.vertical_line {
+    border: none;
+    border-left: 1px solid rgb(79, 79, 79);
+    height: 80px;
+    margin: 0 20px;
+}
+
+.vertical_line_one_row {
+    border: none;
+    border-left: 1px solid rgb(79, 79, 79);
+    height: 40px;
+    margin: 0 30px;
+}
+
+.vertical_line_two_row {
+    border: none;
+    border-left: 1px solid rgb(79, 79, 79);
+    height: 90px;
+    margin: 0 30px;
+}
+
+.vertical_line_three_row {
+    border: none;
+    border-left: 1px solid rgb(79, 79, 79);
+    height: 140px;
+    margin: 0 30px;
+}
+
+.input_form {
+    width: 100% !important;
+    height: 40px;
+    padding-left: 12px;
+    border-radius: 7px;
+    border: 1px solid #ced4da !important;
+}
+
+/* CSS SELECT 2 */
+.select2-container .select2-selection--single{
+    text-align: left;
+    border-radius: 7px !important;
+    font-size: 15px !important;
+    height: 40px !important;
+    border: 1px solid #ced4da !important;
+    padding-left: 5px !important;
+    width: 100% !important;
+}
+
+.select2-selection__rendered{
+    line-height: 40px !important;
+    font-size: 15px !important;
+}
+
+/* ==================== MODAL ==================== */
+.custom-center {
+    position: absolute;
+    top: 15%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-open .modal-backdrop {
+    backdrop-filter: blur(10px);
+    background-color: rgba(183, 183, 183, 0.191);
+    opacity: 1 !important;
+}
+
+.input_modal {
+    padding: 0px 0px;
+    margin: 5px 0px 5px 0px;
+}
+
+.input_modal input::placeholder {
+    color: rgb(173, 173, 173);
+    font-weight: 300;
+}
+
+.button_clear_modal {
+    background-color: #888888;
+    border: 0px;
+    border-radius: 5px;
+    padding: 8px 20px 8px 20px;
+    color: white;
+    font-weight: 500;
+}
+
+.button_submit_modal {
+    background-color: #DFBA86;
+    border: 0px;
+    border-radius: 5px;
+    padding: 8px 20px 8px 20px;
+    color: white;
+    font-weight: 500;
+}
+
+.container_toggle {
+    width: 51px;
+    height: 31px;
+    position: relative;
+}
+
+.checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.switch {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #e9e9eb;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+}
+
+.slider {
+    width: 27px;
+    height: 27px;
+    position: absolute;
+    left: calc(50% - 27px/2 - 10px);
+    top: calc(50% - 27px/2);
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15), 0px 3px 1px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease-out;
+    cursor: pointer;
+}
+
+.checkbox:checked + .switch {
+    background-color: #34C759;
+}
+
+.checkbox:checked + .switch .slider {
+    left: calc(50% - 27px/2 + 10px);
+    top: calc(50% - 27px/2);
+}
+
+/* ==================== CUSTOM CSS SWAL ==================== */
+.custom-popup-swal {
+    top: 30%;
+    left: 35%;
+    animation: customSlideInDown 0.5s ease-out forwards;
+}
+
+.custom-title-swal {
+    font-size: 10px !important;
+}
+
+.custom-content-swal {
+    font-size: 10px !important;
+}
+
+@keyframes customSlideInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.swal2-shown > [aria-hidden='true'] {
+  transition: 0.1s filter;
+  filter: blur(3px);
+
+}
+
+.custom-confirm-button-swal {
+    width: 150px;  /* Atur lebar tombol sesuai kebutuhan */
+}
+
+/* CSS RADIO BUTTON LOCATION */
+.radio_inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #EEE;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 100%;
+    font-size: 14px;
+}
+
+.radio_inputs .radio_inputs_label {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.radio_inputs .radio_inputs_label input {
+    display: none;
+}
+
+.radio_inputs .radio_inputs_label .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: .4rem 0;
+    color: rgba(51, 65, 85, 1);
+    transition: all .15s ease-in-out;
+}
+
+.radio_inputs .radio_inputs_label input:checked + .name {
+    background-color: #fff;
+    font-weight: 600;
+}
+

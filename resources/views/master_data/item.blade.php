@@ -68,8 +68,7 @@
                         <th style="width: 120px">Item Code</th>
                         <th>Item Name</th>
                         <th>Item Description</th>
-                        <th>Category</th>
-                        <th>Supplier</th>
+                        <th>Price</th>
                         <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
@@ -81,8 +80,7 @@
                         <th style="width: 120px">Item Code</th>
                         <th>Item Name</th>
                         <th>Item Description</th>
-                        <th>Category</th>
-                        <th>Supplier</th>
+                        <th>Price</th>
                         <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
@@ -207,6 +205,152 @@
         </div>
     </div>
 
+    <script>
 
+        // ========================= GLOBAL SETUP CSRF =========================
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $(document).ready(function(){
+
+            // $('#select_category').select2({
+            //     dropdownParent: $("#newCreationModal"),
+            //     placeholder: {
+            //         id: '-1',
+            //         text: 'Select an option'
+            //     },
+            //     multiple: false
+            // });
+
+            // $('#select_supplier').select2({
+            //     dropdownParent: $("#newCreationModal"),
+            //     placeholder: {
+            //         id: '-1',
+            //         text: 'Select an option'
+            //     },
+            //     multiple: true
+            // });
+
+            // $('#select_category_edit').select2({
+            //     dropdownParent: $("#editModal"),
+            //     placeholder: {
+            //         id: '-1',
+            //         text: 'Select an option'
+            //     },
+            //     multiple: false
+            // });
+
+            // $('#select_supplier_edit').select2({
+            //     dropdownParent: $("#editModal"),
+            //     placeholder: {
+            //         id: '-1',
+            //         text: 'Select an option'
+            //     },
+            //     multiple: true
+            // });
+
+            dataTable();
+
+
+        });
+
+        // ========================= DATATABLE =========================
+        function dataTable() {
+
+            $('#tableData tfoot th').each(function (i) {
+                var header_name = $('#tableData thead th').eq($(this).index()).text();
+                var title = header_name.toLowerCase().replace(/\s+/g, "_");
+                if ( i != 0 && i != 6 && i != 7) {
+                    $(this).html(
+                        '<input type="text" class="input_filter_tableData" id="' + title + '_filter" placeholder="' + header_name + '" data-index="' + i + '" style="width: 100%"/>'
+                    );
+                }
+
+            });
+
+            // ==================== DATATABLES ====================
+            var tableData = $("#tableData").DataTable({
+                serverSide: true,
+                processing: true,
+                paginate: true,
+                autoWidth: true,
+                searchable: false,
+                orderCellsTop: true,
+                // fixedHeader: true,
+                // columnDefs: [
+                //     { targets: 0, visible: true }
+                // ],
+                // dataSrc: 'list',
+                dom: 'lBrtip',
+                // deferLoading: 0,
+                bRetrieve: true,
+                scrollY: "535px",
+                scrollCollapse: true,
+                orderCellsTop: true,
+                ajax: {
+                    type: 'GET',
+                    url: `{{ route("get-item-list-datatable") }}`,
+                    data: {
+                    },
+                },
+                columns: [
+                    {
+                        data:'DT_RowIndex',
+                        name:'DT_RowIndex',
+                        orderable:false,
+                        searchable:false
+                    },
+                    {
+                        data: 'item_code',
+                        name: 'item_code',
+                    },
+                    {
+                        data: 'item_name',
+                        name: 'item_name',
+                    },
+                    {
+                        data: 'item_desc',
+                        name: 'item_desc',
+                    },
+                    {
+                        data: 'price',
+                        name: 'price',
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                    },
+                ],
+                order: [[0, 'asc']],
+                columnDefs: [
+                    { className: "dt-center", targets: [0,1,6] }
+                ],
+                language: {
+                    loadingRecords: '&nbsp;',
+                    processing: '<div class="spinner" style="z-index: 1;"></div>',
+                    zeroRecords: "No data found",
+                },
+            });
+
+            // Filter event handler
+            $(tableData.table().container()).on('keyup', 'tfoot input', function () {
+                console.log(tableData.table().container());
+
+                tableData.column($(this).data('index')).search(this.value).draw();
+            });
+
+            }
+
+    </script>
 
 @endsection

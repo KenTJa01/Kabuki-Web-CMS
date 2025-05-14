@@ -27,7 +27,7 @@
             <table style="width: 100%;">
                 <tr>
                     {{-- TRANSACTION DATE --}}
-                    <td class="label_form">Trans. Date</td>
+                    <td class="label_form">Transaction Date</td>
                     <td class="container_input_form">
                         <input type="text" class="form-control input_form" id="transaction_date" readonly disabled>
                     </td>
@@ -44,7 +44,7 @@
                     </td>
                 </tr>
                 <tr>
-                    {{-- SITE --}}
+                    {{-- WORK TYPE --}}
                     <td class="label_form">Work Type</td>
                     <td class="container_input_form">
                         <select name="select_work_type" id="select_work_type" class="input_form" style="width: 100%;">
@@ -53,7 +53,7 @@
                     </td>
                 </tr>
                 <tr>
-                    {{-- SITE --}}
+                    {{-- ORDER TYPE --}}
                     <td class="label_form">Order Type</td>
                     <td class="container_input_form">
                         <select name="select_order_type" id="select_order_type" class="input_form" style="width: 100%;">
@@ -71,16 +71,6 @@
         {{-- TITLE --}}
         <div class="title_n_button d-flex justify-content-between">
             <h4 class="title" style="margin-left: 0px">CUSTOMER'S DATA</h4>
-            <!-- <div class="radio_inputs" style="width: 24%;">
-                <label class="radio_inputs_label">
-                    <input type="radio" id="radio_customer_data" class="radio_customer_data" name="radio_customer_data" checked="" value="phone">
-                    <span class="name">Phone No.</span>
-                </label>
-                <label class="radio_inputs_label">
-                    <input type="radio" id="radio_customer_data" class="radio_customer_data" name="radio_customer_data" value="member">
-                    <span class="name">Member No.</span>
-                </label>
-            </div> -->
         </div>
 
         <hr>
@@ -102,7 +92,7 @@
                 {{-- CUSTOMER NAME --}}
                 <td class="label_form">Address</td>
                 <td class="container_input_form" rowspan=2>
-                    <textarea class="form-control" placeholder="Leave a comment here" rows="3" cols="50" style="resize: none;"></textarea>
+                    <textarea class="form-control" rows="3" cols="50" style="resize: none;"></textarea>
                     {{-- <input type="text" class="form-control input_form" id="customer_name" readonly disabled> --}}
                 </td>
 

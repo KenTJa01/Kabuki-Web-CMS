@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,8 @@ Route::get('/home', function () {
 Route::get('/master_data/item', function () {
     return view('master_data/item');
 })->name('/master_data/item');
+
+Route::get('/get-item-list-datatable', [ItemController::class, 'getItemListDatatable'])->name('get-item-list-datatable');
 
 Route::get('/transaction/form', function () {
     return view('transaction/form_transaction');

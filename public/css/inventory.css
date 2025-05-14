@@ -62,18 +62,18 @@
 .menu_sidebar ul li a {
     padding: 10px 0;
     display: block;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(179, 179, 179, 0.8);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     text-decoration: none;
 }
 
 .menu_sidebar ul li a:hover {
-    color: #f4c17a;
+    color: #ffffff;
 }
 
 .menu_sidebar ul li.active > a {
     background: transparent;
-    color: #f4c17a;
+    color: #ffffff;
 }
 
 a[data-toggle="collapse"] {
@@ -159,7 +159,7 @@ a[data-toggle="collapse"] {
 }
 
 .button_menu_bookmark {
-    background-color: #dfba8600;
+    background-color: #1f7ae800;
     color: #3E3E3E;
     border: 0px;
     border-radius: 7px;
@@ -188,7 +188,7 @@ a[data-toggle="collapse"] {
 }
 
 .notification {
-    border: 2px solid #DFBA86;
+    border: 2px solid #1f7ae8;
     border-radius: 8px;
     width: 100%;
     height: 60px;
@@ -232,7 +232,7 @@ a[data-toggle="collapse"] {
 }
 
 .button_new {
-    background-color: #DFBA86;
+    background-color: #1f7ae8;
     color: white;
     border: 0px;
     border-radius: 7px;
@@ -337,7 +337,7 @@ hr {
 
 
 .button_edit {
-    background-color: #DFBA86;
+    background-color: #ffc619;
     border: 0px;
     border-radius: 5px;
     padding: 6px 10px 6px 10px;
@@ -388,7 +388,7 @@ hr {
 }
 
 .button_submit_modal {
-    background-color: #DFBA86;
+    background-color: #1f7ae8;
     border: 0px;
     border-radius: 5px;
     padding: 8px 20px 8px 20px;
@@ -598,7 +598,7 @@ body.swal2-shown > [aria-hidden='true'] {
 }
 
 .button_submit_form {
-    background-color: #DFBA86;
+    background-color: #1f7ae8;
     color: white;
     font-size: 18px;
     font-weight: 500;
@@ -609,7 +609,7 @@ body.swal2-shown > [aria-hidden='true'] {
 }
 
 .button_submit_form_profile {
-    background-color: #DFBA86;
+    background-color: #1f7ae8;
     color: white;
     font-size: 16px;
     font-weight: 500;
@@ -702,7 +702,7 @@ body.swal2-shown > [aria-hidden='true'] {
         --active-inner: #fff;
         --focus: 2px rgba(39, 94, 254, .3);
         --border: #BBC1E1;
-        --border-hover: #DFBA86;
+        --border-hover: #1f7ae8;
         --background: #fff;
         --disabled: #F6F8FF;
         --disabled-inner: #E1E6F9;
@@ -864,7 +864,7 @@ body.swal2-shown > [aria-hidden='true'] {
 
 .button_edit_category {
     border: 0px;
-    background-color: #DFBA86;
+    background-color: #ffc619;
     width: 35px;
     height: 35px;
     border-radius: 5px;

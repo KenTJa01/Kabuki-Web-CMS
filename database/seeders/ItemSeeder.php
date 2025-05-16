@@ -15,7 +15,7 @@ class ItemSeeder extends Seeder
     {
 
         Item::create([
-            'item_code' => 'I001',
+            'item_code' => 'K00001',
             'item_name' => 'Kaca Film Depan',
             'item_desc' => 'Kaca Film untuk kaca depan mobil kecil',
             'price' => 500000,
@@ -25,7 +25,7 @@ class ItemSeeder extends Seeder
         ]);
 
         Item::create([
-            'item_code' => 'I002',
+            'item_code' => 'K00002',
             'item_name' => 'Kaca Film Kanan',
             'item_desc' => 'Kaca Film untuk kaca kanan mobil kecil',
             'price' => 300000,

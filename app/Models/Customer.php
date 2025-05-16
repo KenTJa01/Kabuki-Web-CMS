@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stock_movement extends Model
+class Customer extends Model
 {
 
     use HasFactory;
@@ -14,16 +14,15 @@ class Stock_movement extends Model
     public $increment = true;
 
     protected $fillable = [
-        'mov_date',
-        'item_id',
-        'item_code',
-        'quantity',
-        'mov_code',
-        'mov_code',
+        'customer_code',
+        'customer_name',
+        'no_telp',
+        'address',
+        'flag',
         'created_by',
         'updated_by',
     ];
 
-    protected $table = 'stock_movements';
+    protected $table = 'customers';
 
 }

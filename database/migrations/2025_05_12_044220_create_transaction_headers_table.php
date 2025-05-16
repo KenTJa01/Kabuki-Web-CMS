@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('transaction_headers', function (Blueprint $table) {
 
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('trs_no')->unique();
             $table->date('trs_date');
 
-            $table->string("customer_fullname", 50);
-            $table->string("phone_no");
+            $table->string("customer_fullname");
             $table->string("address");
+            $table->string("no_telp");
+            $table->string('vehicle_number');
+
+            $table->integer('total_price');
 
             $table->integer('flag');
             $table->timestamps();

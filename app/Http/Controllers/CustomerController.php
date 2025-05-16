@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CommonCustomException;
-use App\Models\Item;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +12,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class ItemController extends Controller
+class CustomerController extends Controller
 {
 
-    public function masterItemPage()
+    public function masterCustomerPage()
     {
 
         $user = Auth::user();
@@ -50,17 +48,17 @@ class ItemController extends Controller
             // 'permission_export' => DB::select($sqlPermissionExport),
         ];
 
-        return view('/master_data/item', $data);
+        return view('/master_data/customer', $data);
 
     }
 
-    public function getItemListDatatable()
+    public function getCustomerListDatatable()
     {
 
         $user = Auth::user();
-        $sql = ("SELECT i.id, i.item_code, item_name, i.item_desc, i.price, (CASE WHEN i.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
-                FROM items i
-                ORDER BY i.id ASC");
+        $sql = ("SELECT c.id, c.customer_code, c.customer_name, c.no_telp, c.address, (CASE WHEN c.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
+                FROM customers c
+                ORDER BY c.id ASC");
 
         // $sqlPermissionEdit = ("SELECT pp.id, perm.key, s.submenu_name, u.username
         //                         FROM profile_permissions pp, permissions perm, submenus s, profiles p, users u
@@ -96,16 +94,16 @@ class ItemController extends Controller
 
     }
 
-    public function postNewItem(Request $request)
+    public function postNewCustomer(Request $request)
     {
 
         $user = Auth::user();
 
         /** Validate Input */
         $validate = Validator::make($request->all(), [
-            'itemName' => ['required', 'string'],
-            'itemDesc' => ['required', 'string'],
-            'price' => ['required', 'integer'],
+            'customerName' => ['required', 'string'],
+            'noTelp' => ['required', 'string'],
+            'address' => ['required', 'string'],
             'status' => ['required'],
         ]);
 
@@ -116,48 +114,47 @@ class ItemController extends Controller
         (array) $validated = $validate->validated();
 
         // Ambil item terakhir yang ada
-        $lastItem = Item::whereNotNull('item_code')->latest('item_code')->first();
+        $lastCustomer = Customer::whereNotNull('customer_code')->latest('customer_code')->first();
 
         // Ambil angka dari kode item terakhir, contoh G001 -> 001
-        $lastCodeNumber = $lastItem ? (int) substr($lastItem->item_code, 1) : 0;
+        $lastCodeNumber = $lastCustomer ? (int) substr($lastCustomer->customer_code, 1) : 0;
 
         // Buat kode item berikutnya
         $nextCodeNumber = $lastCodeNumber + 1;
 
         // Format kode item dengan menambahkan angka 0 di depan jika perlu (5 digit)
-        $item_code = 'K' . str_pad($nextCodeNumber, 5, '0', STR_PAD_LEFT);
+        $customer_code = 'C' . str_pad($nextCodeNumber, 5, '0', STR_PAD_LEFT);
 
-        $item_name = $validated['itemName'];
-        $item_desc = $validated['itemDesc'];
-
-        $price = $validated['price'];
+        $customer_name = $validated['customerName'];
+        $no_telp = $validated['noTelp'];
+        $address = $validated['address'];
         $status = $validated['status'];
 
-        $itemCek = Item::where('item_name', $item_name)->first();
-        if ( !is_null($itemCek) ) {
-            throw ValidationException::withMessages(['detail' => 'Item already exist!']);
+        $customerCek = Customer::where('customer_name', $customer_name)->first();
+        if ( !is_null($customerCek) ) {
+            throw ValidationException::withMessages(['detail' => 'customer already exist!']);
         }
 
         DB::beginTransaction();
         try {
 
             /** Insert transfer header */
-            $itemData = Item::create([
-                'item_code' => $item_code,
-                'item_name' => $item_name,
-                'item_desc' => $item_desc,
-                'price' => $price,
+            $customerData = Customer::create([
+                'customer_code' => $customer_code,
+                'customer_name' => $customer_name,
+                'no_telp' => $no_telp,
+                'address' => $address,
                 'flag' => $status,
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
             ]);
 
             (string) $title = 'Success';
-            (string) $message = 'Item request successfully submitted with item name: '.$item_name;
+            (string) $message = 'Customer request successfully submitted with customer name: '.$customer_name;
             (array) $data = [
-                'trx_number' => $item_name,
+                'trx_number' => $customer_name,
             ];
-            (string) $route = route('/master_data/item');
+            (string) $route = route('/master_data/customer');
 
             DB::commit();
             return response()->json([
@@ -173,78 +170,6 @@ class ItemController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
             throw new CommonCustomException('Failed to submit category request', 422, $e);
-        }
-
-    }
-
-    public function getOldDataOfItem(Request $request)
-    {
-        $data = Item::where('id', $request->item_id)->first();
-        return response()->json($data);
-    }
-
-    public function postEditItem(Request $request)
-    {
-
-        $user = Auth::user();
-
-        /** Validate Input */
-        $validate = Validator::make($request->all(), [
-            'id_item' => ['required'],
-            'item_code' => ['required', 'string'],
-            'item_name' => ['required', 'string'],
-            'item_desc' => ['required', 'string'],
-            'price' => ['required'],
-            'status' => ['required'],
-        ]);
-
-
-        if ($validate->fails()) {
-            throw new ValidationException($validate);
-        }
-        (array) $validated = $validate->validated();
-
-        $item_name = $validated['item_name'];
-        $item_code = $validated['item_code'];
-        $item_desc = $validated['item_desc'];
-        $price = $validated['price'];
-        $status = $validated['status'];
-
-        DB::beginTransaction();
-        try {
-
-            $itemData = Item::where('id', $validated['id_item'])->first();
-
-            $itemData->item_code = $item_code;
-            $itemData->item_name = $item_name;
-            $itemData->item_desc = $item_desc;
-            $itemData->price = $price;
-            $itemData->flag = $status;
-            $itemData->updated_by = $user?->id;
-            $itemData->save();
-
-
-            (string) $title = 'Success';
-            (string) $message = "Item request successfully submitted with item's name: ".$item_name;
-            (array) $data = [
-                'trx_number' => $item_name,
-            ];
-            (string) $route = route('/master_data/item');
-
-            DB::commit();
-            return response()->json([
-                'title' => $title,
-                'message' => $message,
-                'route' => $route,
-                'data' => $data,
-            ]);
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            Log::warning('Validation error when submit item request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
-            throw $e;
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            throw new CommonCustomException('Failed to submit item request', 422, $e);
         }
 
     }

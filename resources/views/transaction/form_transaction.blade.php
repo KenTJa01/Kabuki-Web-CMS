@@ -142,8 +142,8 @@
                         <tr class="text-center" style="width: 100%;">
                             <th class="text-center">Items</th>
                             <th class="text-center" style="width:200px">Stock Quantity</th>
-                            <th class="text-center" style="width:200px">Redeem Quantity</th>
-                            <!-- <th class="text-center">Voucher Code</th> -->
+                            <th class="text-center" style="width:200px">Quantity</th>
+                            <th class="text-center" style="width:300px">Subtotal</th>
                             <th class="text-center" style="width:100px">Action</th>
                         </tr>
                     </thead>
@@ -567,7 +567,12 @@
                         <div name="err_qty_`+index+`" id="err_qty_`+index+`" style="text-align: left; display: none;">
                             <p name="err_qty_msg_`+index+`" id="err_qty_msg_`+index+`" style="margin-bottom: 0; color: red; font-size: 12px;"></p>
                         </div>
-
+                    </td>
+                    <td>
+                        <input type="number" min="1" class="form-control qty" name="price_`+index+`" id="price_`+index+`" style="width: 100%; text-align: right" disabled>
+                        <div name="err_price_`+index+`" id="err_price_`+index+`" style="text-align: left; display: none;">
+                            <p name="err_price_msg_`+index+`" id="err_price_msg_`+index+`" style="margin-bottom: 0; color: red; font-size: 12px;"></p>
+                        </div>
                     </td>
                     <td class="text-center"><buxtton type="button" name="remove" id="button_remove_`+index+`" class="btn btn-danger btn_remove">X</button></td>
                 </tr>`

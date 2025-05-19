@@ -15,7 +15,7 @@ class Profile_menu extends Model
 
     protected $fillable = [
         'profile_id',
-        'sub_menu_id',
+        'menu_id',
         'created_by',
         'updated_by',
     ];

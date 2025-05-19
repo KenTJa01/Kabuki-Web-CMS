@@ -15,8 +15,8 @@ return new class extends Migration
             $table->bigIncrements("id");
             $table->bigInteger("profile_id");
             $table->foreign("profile_id")->references("id")->on("profiles");
-            $table->bigInteger("sub_menu_id");
-            $table->foreign("sub_menu_id")->references("id")->on("submenus");
+            $table->bigInteger("menu_id");
+            $table->foreign("menu_id")->references("id")->on("menus");
             $table->timestamps();
             $table->bigInteger("created_by");
             $table->bigInteger("updated_by");

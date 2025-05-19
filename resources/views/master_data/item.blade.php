@@ -190,7 +190,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button_clear_modal" id="button_clear_modal_edit">Clear</button>
+                    {{-- <button type="button" class="button_clear_modal" id="button_clear_modal_edit">Clear</button> --}}
                     <button type="button" class="button_submit_modal" id="button_submit_modal_edit">Submit</button>
                 </div>
             </div>
@@ -475,7 +475,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit category request',
+                        text: error.responseJSON.message ?? 'Failed submit item request',
                         target: document.getElementById('editModal'),
                     });
                     $("#button_submit_modal_edit").prop('disabled', false);

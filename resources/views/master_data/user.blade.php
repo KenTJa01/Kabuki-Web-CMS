@@ -44,11 +44,11 @@
                     </button>
                 {{-- @endif --}}
 
-                <h4 class="title">LIST OF CUSTOMERS</h4>
+                <h4 class="title">LIST OF USERS</h4>
 
                 <div class="user_guide active text-center">
                     <font class="text_tooltip">i</font>
-                    <span class="user_guide_tooltip">You can manage the master data of Kabuki's customers here.</span>
+                    <span class="user_guide_tooltip">You can manage the master data of DGM's gift items here.</span>
                 </div>
             </div>
             <div>
@@ -65,10 +65,9 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 200px">Customer Code</th>
-                        <th>Customer Name</th>
-                        <th>Phone Number</th>
-                        <th>Address</th>
+                        <th style="width: 120px">Username</th>
+                        <th>Name</th>
+                        <th>Profile</th>
                         <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
@@ -77,10 +76,9 @@
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 200px">Customer Code</th>
-                        <th>Customer Name</th>
-                        <th>Phone Number</th>
-                        <th>Address</th>
+                        <th style="width: 120px">Username</th>
+                        <th>Name</th>
+                        <th>Profile</th>
                         <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
@@ -96,31 +94,39 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW CUSTOMER</h1>
+                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW USER</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row input_modal">
-                        <label for="customer_name" class="col-sm-4 col-form-label">Customer Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="customer_name" placeholder="Enter name">
+                        <label for="username" class="col-sm-3 col-form-label">Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" placeholder="Enter username">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="no_telp" class="col-sm-4 col-form-label">Phone Number</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="no_telp" placeholder="Enter phone number">
+                        <label for="name" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="address" class="col-sm-4 col-form-label">Address</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control" id="address" cols="30" rows="5" style="resize: none"></textarea>
+                        <label for="password" class="col-sm-3 col-form-label">Password</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" placeholder="Enter password">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="select_profile" class="col-sm-3 col-form-label">Profile</label>
+                        <div class="col-sm-9">
+                            <select name="select_profile" id="select_profile" class="form-select" style="width: 100%;">
+                                <option value="" disabled>Select profile</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="status" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status" value="1" checked>
@@ -145,32 +151,34 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT CUSTOMER</h1>
+                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT USER</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="customer_id_edit">
+                    <input type="hidden" name="id" id="user_id_edit">
                     <div class="row input_modal">
-                        <label for="customer_name_edit" class="col-sm-4 col-form-label">Customer Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="customer_name_edit" placeholder="Enter name">
+                        <label for="username_edit" class="col-sm-3 col-form-label">Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username_edit" placeholder="Enter username">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="no_telp_edit" class="col-sm-4 col-form-label">Phone Number</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="no_telp_edit" placeholder="Enter phone number">
+                        <label for="name_edit" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name_edit" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="address_edit" class="col-sm-4 col-form-label">Address</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control" id="address_edit" cols="30" rows="5" style="resize: none"></textarea>
+                        <label for="select_profile_edit" class="col-sm-3 col-form-label">Profile</label>
+                        <div class="col-sm-9">
+                            <select name="select_profile_edit" id="select_profile_edit" class="form-select" style="width: 100%;">
+                                <option value="" disabled>Select profile</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status_edit" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="status_edit" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status_edit" value="1" checked>
@@ -201,6 +209,15 @@
         });
 
         $(document).ready(function(){
+
+            $('#select_profile').select2({
+                dropdownParent: $("#newCreationModal"),
+                placeholder: {
+                    id: '-1',
+                    text: 'Select an option'
+                },
+                multiple: false
+            });
 
             dataTable();
 
@@ -235,7 +252,7 @@
                 orderCellsTop: true,
                 ajax: {
                     type: 'GET',
-                    url: `{{ route("get-customer-list-datatable") }}`,
+                    url: `{{ route("get-user-list-datatable") }}`,
                     data: {
                     },
                 },
@@ -247,20 +264,16 @@
                         searchable:false
                     },
                     {
-                        data: 'customer_code',
-                        name: 'customer_code',
+                        data: 'username',
+                        name: 'username',
                     },
                     {
-                        data: 'customer_name',
-                        name: 'customer_name',
+                        data: 'name',
+                        name: 'name',
                     },
                     {
-                        data: 'no_telp',
-                        name: 'no_telp',
-                    },
-                    {
-                        data: 'address',
-                        name: 'address',
+                        data: 'profile',
+                        name: 'profile',
                     },
                     {
                         data: 'status',
@@ -276,7 +289,7 @@
                 ],
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { className: "dt-center", targets: [0,1,6] }
+                    { className: "dt-center", targets: [0,1,5] }
                 ],
                 language: {
                     loadingRecords: '&nbsp;',
@@ -297,31 +310,63 @@
         // ========================= CLICK NEW =========================
         $(document).on('click', '#button_new', function(event) {
 
-            $("#customer_name").val("");
-            $("#no_telp").val("");
-            $("#address").val("");
-
+            $("#username").val("");
+            $("#name").val("");
+            $("#password").val("");
+            $("#select_profile").val("");
+            $('#select_profile').trigger("change");
             document.getElementById('status').checked = true;
+
+            getAllDataProfile();
 
         });
 
         // ========================= CLEAR INPUT MODAL =========================
         $(document).on('click', '#button_clear_modal', function(event) {
 
-            $("#customer_name").val("");
-            $("#no_telp").val("");
-            $("#address").val("");
+            $("#username").val("");
+            $("#name").val("");
+            $("#password").val("");
+            $("#select_profile").val("");
+            $('#select_profile').trigger("change");
 
             document.getElementById('status').checked = true;
 
         });
 
+        // ========================= GET ALL DATA PROFILE =========================
+        function getAllDataProfile() {
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-profile') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_profile").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of profile',
+                    });
+                },
+            });
+
+        }
+
         // ========================= SUBMIT NEW DATA =========================
         $(document).on('click', '#button_submit_modal', function(event) {
 
-            var customerName = $("#customer_name").val();
-            var noTelp = $("#no_telp").val();
-            var address = $("#address").val();
+            var username = $("#username").val();
+            var name = $("#name").val();
+            var password = $("#password").val();
+            var profile = $("#select_profile").val();
             var status = $("#status:checked").val();
 
             if ( status == 1 ) {
@@ -332,12 +377,13 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-new-customer') }}",
+                url: "{{ url('/post-new-user') }}",
                 dataType: 'json',
                 data: {
-                    customerName: customerName,
-                    noTelp: noTelp,
-                    address: address,
+                    username: username,
+                    name: name,
+                    password: password,
+                    profile: profile,
                     status: flag,
                 },
                 success: function(response) {
@@ -367,7 +413,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit customer request',
+                        text: error.responseJSON.message ?? 'Failed submit user request',
                         target: document.getElementById('newCreationModal'),
                     });
                     $("#button_submit").prop('disabled', false);
@@ -383,17 +429,16 @@
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-old-data-of-customer') }}",
+                url: "{{ url('/get-old-data-of-user') }}",
                 dataType: 'json',
                 data: {
-                    customer_id: data_id,
+                    user_id: data_id,
                 },
                 success: function(response) {
 
-                    $("#customer_id_edit").val(response.id);
-                    $("#customer_name_edit").val(response.customer_name);
-                    $("#no_telp_edit").val(response.no_telp);
-                    $("#address_edit").val(response.address);
+                    $("#user_id_edit").val(response.id);
+                    $("#username_edit").val(response.username);
+                    $("#name_edit").val(response.name);
 
                     if ( response.flag == 1 ) {
                         $("#status_edit").attr('checked', true);
@@ -401,26 +446,59 @@
                         $("#status_edit").attr('checked', false);
                     }
 
+                    getProfileById(response.profile_id);
+
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of customer',
+                        text: error.responseJSON.message ?? 'Failed get list of item',
                     });
                 },
             });
 
         });
 
+        function getProfileById(profile_id){
+
+            $("#select_profile_edit").html('<option value="">Select profile</option>');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-profile') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        if ( value.id == profile_id ) {
+                            $("#select_profile_edit").append('<option value="' + value.id + '" selected>' + value.profile_name + '</option>');
+                        } else {
+                            $("#select_profile_edit").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of profile',
+                    });
+                },
+            });
+
+        }
+
         // ========================= SUBMIT EDIT DATA =========================
         $(document).on('click', '#button_submit_modal_edit', function() {
 
-            var id = $("#customer_id_edit").val();
-            var customerName = $("#customer_name_edit").val();
-            var noTelp = $("#no_telp_edit").val();
-            var address = $("#address_edit").val();
+            var id = $("#user_id_edit").val();
+            var username = $("#username_edit").val();
+            var name = $("#name_edit").val();
+            var profile = $("#select_profile_edit").val();
             var status = document.getElementById('status_edit').checked;
 
             if ( status == 1 ) {
@@ -431,13 +509,13 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-edit-customer') }}",
+                url: "{{ url('/post-edit-user') }}",
                 dataType: 'json',
                 data: {
-                    id_customer: id,
-                    customer_name: customerName,
-                    no_telp: noTelp,
-                    address: address,
+                    id_user: id,
+                    username: username,
+                    name: name,
+                    profile: profile,
                     status: flag,
                 },
                 success: function(response) {
@@ -466,7 +544,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit customer request',
+                        text: error.responseJSON.message ?? 'Failed submit item request',
                         target: document.getElementById('editModal'),
                     });
                     $("#button_submit_modal_edit").prop('disabled', false);

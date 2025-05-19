@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CommonCustomException;
 use App\Models\Profile;
-use App\Models\Menu;
-use App\Models\Profile_menu;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +13,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class ProfileController extends Controller
+class UserController extends Controller
 {
 
-    public function masterProfilePage()
+    public function masterUserPage()
     {
 
         $user = Auth::user();
@@ -52,17 +49,19 @@ class ProfileController extends Controller
             // 'permission_export' => DB::select($sqlPermissionExport),
         ];
 
-        return view('/master_data/profile', $data);
+        return view('/master_data/user', $data);
 
     }
 
-    public function getProfileListDatatable()
+    public function getUserListDatatable()
     {
 
         $user = Auth::user();
-        $sql = ("SELECT p.id, p.profile_code, profile_name, (CASE WHEN p.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
-                FROM profiles p
-                ORDER BY p.id ASC");
+        $sql = ("SELECT DISTINCT u.id, u.username, u.name, p.profile_name AS profile, (CASE WHEN u.is_active=1 THEN 'Active' ELSE 'Non-active' END) AS status
+                    FROM users u, profiles p
+                    WHERE u.id is not null
+                        AND u.profile_id = p.id
+                    ORDER BY u.id ASC");
 
         // $sqlPermissionEdit = ("SELECT pp.id, perm.key, s.submenu_name, u.username
         //                         FROM profile_permissions pp, permissions perm, submenus s, profiles p, users u
@@ -98,14 +97,17 @@ class ProfileController extends Controller
 
     }
 
-    public function postNewProfile(Request $request)
+    public function postNewUser(Request $request)
     {
 
         $user = Auth::user();
 
         /** Validate Input */
         $validate = Validator::make($request->all(), [
-            'profileName' => ['required', 'string'],
+            'username' => ['required', 'string'],
+            'name' => ['required', 'string'],
+            'password' => ['required'],
+            'profile' => ['required'],
             'status' => ['required'],
         ]);
 
@@ -115,61 +117,41 @@ class ProfileController extends Controller
         }
         (array) $validated = $validate->validated();
 
-        // Ambil profile terakhir yang ada
-        $lastProfile = Profile::whereNotNull('profile_code')->latest('profile_code')->first();
+        $username = $validated['username'];
+        $name = $validated['name'];
 
-        // Ambil angka dari kode profile terakhir, contoh G001 -> 001
-        $lastCodeNumber = $lastProfile ? (int) substr($lastProfile->profile_code, 1) : 0;
-
-        // Buat kode profile berikutnya
-        $nextCodeNumber = $lastCodeNumber + 1;
-
-        // Format kode profile dengan menambahkan angka 0 di depan jika perlu (5 digit)
-        $profile_code = 'P' . str_pad($nextCodeNumber, 5, '0', STR_PAD_LEFT);
-
-        $profile_name = $validated['profileName'];
-        $menuData = $request->menu;
-        $status = $validated['status'];
-
-        $profileCek = Profile::where('profile_name', $profile_name)->first();
-        if ( !is_null($profileCek) ) {
-            throw ValidationException::withMessages(['detail' => 'Item already exist!']);
+        $userCek = User::where('username', $username)->first();
+        if ( !is_null($userCek) ) {
+            throw ValidationException::withMessages(['detail' => 'Username already exist!']);
         }
+
+        // ===== BCRYPT PASSWORD =====
+        $password = bcrypt($validated['password']);
+
+        // ===== GET PROFILE & SITE =====
+        $profile = Profile::where('id', $validated['profile'])->first();
+        $status = $validated['status'];
 
         DB::beginTransaction();
         try {
 
             /** Insert transfer header */
-            $profileData = Profile::create([
-                'profile_code' => $profile_code,
-                'profile_name' => $profile_name,
-                'flag' => $status,
+            $userData = User::create([
+                'username' => $username,
+                'name' => $name,
+                'password' => $password,
+                'profile_id' => $profile->id,
+                'is_active' => $status,
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
             ]);
 
-            if ( !empty($menuData) ) {
-
-                foreach ($menuData as $md) {
-                    $menu = Menu::where('id', $md)->first();
-
-                    Profile_menu::firstOrCreate([
-                        'profile_id' => $profileData->id,
-                        'menu_id' => $menu->id,
-                    ], [
-                        'created_by' => $user?->id,
-                        'updated_by' => $user?->id,
-                    ]);
-                }
-
-            }
-
             (string) $title = 'Success';
-            (string) $message = 'Profile request successfully submitted with profile name: '.$profile_name;
+            (string) $message = 'User request successfully submitted with username: '.$username;
             (array) $data = [
-                'trx_number' => $profile_name,
+                'trx_number' => $username,
             ];
-            (string) $route = route('/master_data/profile');
+            (string) $route = route('/master_data/user');
 
             DB::commit();
             return response()->json([
@@ -180,36 +162,32 @@ class ProfileController extends Controller
             ]);
         } catch (ValidationException $e) {
             DB::rollBack();
-            Log::warning('Validation error when submit profile request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
+            Log::warning('Validation error when submit user request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
             throw $e;
         } catch (\Throwable $e) {
             DB::rollBack();
-            throw new CommonCustomException('Failed to submit profile request', 422, $e);
+            throw new CommonCustomException('Failed to submit user request', 422, $e);
         }
 
     }
 
-    public function getOldDataProfile(Request $request)
+    public function getOldDataUser(Request $request)
     {
-        $data = Profile::where('id', $request->profile_id)->first();
+        $data = User::where('id', $request->user_id)->first();
         return response()->json($data);
     }
 
-    public function getProfileMenuById(Request $request)
-    {
-        $data = Profile_menu::where('profile_id', $request->profile_id)->get()->pluck('menu_id')->toArray();
-        return response()->json($data);
-    }
-
-    public function postEditProfile(Request $request)
+    public function postEditUser(Request $request)
     {
 
         $user = Auth::user();
 
         /** Validate Input */
         $validate = Validator::make($request->all(), [
-            'id_profile' => ['required'],
-            'profile_name' => ['required', 'string'],
+            'id_user' => ['required'],
+            'username' => ['required', 'string'],
+            'name' => ['required', 'string'],
+            'profile' => ['required'],
             'status' => ['required'],
         ]);
 
@@ -219,49 +197,30 @@ class ProfileController extends Controller
         }
         (array) $validated = $validate->validated();
 
-        $profile_name = $validated['profile_name'];
+        $username = $validated['username'];
+        $name = $validated['name'];
+        $profile = Profile::where('id', $validated['profile'])->first();
         $status = $validated['status'];
 
         DB::beginTransaction();
         try {
 
-            $profileMenuData = Profile_menu::where('profile_id', $request->id_profile)->get();
+            $userData = User::where('id', $validated['id_user'])->first();
 
-            $i=0;
-            foreach($profileMenuData as $pmd){
-                $profileMenuData[$i++]->delete();
-            }
-
-            $menuData = $request->menu;
-
-            foreach($menuData as $md){
-
-                $menu = Menu::where('id', $md)->first();
-
-                Profile_menu::firstOrCreate([
-                    'profile_id' => $request->id_profile,
-                    'menu_id' => $menu->id,
-                ], [
-                    'created_by' => $user?->id,
-                    'updated_by' => $user?->id,
-                ]);
-
-            }
-
-            $profileData = Profile::where('id', $validated['id_profile'])->first();
-
-            $profileData->profile_name = $profile_name;
-            $profileData->flag = $status;
-            $profileData->updated_by = $user?->id;
-            $profileData->save();
+            $userData->username = $username;
+            $userData->name = $name;
+            $userData->profile_id = $profile->id;
+            $userData->is_active = $status;
+            $userData->updated_by = $user?->id;
+            $userData->save();
 
 
             (string) $title = 'Success';
-            (string) $message = "Profile request successfully submitted with profile's name: ".$profile_name;
+            (string) $message = "User request successfully submitted with username: ".$username;
             (array) $data = [
-                'trx_number' => $profile_name,
+                'trx_number' => $username,
             ];
-            (string) $route = route('/master_data/profile');
+            (string) $route = route('/master_data/user');
 
             DB::commit();
             return response()->json([
@@ -272,11 +231,11 @@ class ProfileController extends Controller
             ]);
         } catch (ValidationException $e) {
             DB::rollBack();
-            Log::warning('Validation error when submit profile request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
+            Log::warning('Validation error when submit user request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
             throw $e;
         } catch (\Throwable $e) {
             DB::rollBack();
-            throw new CommonCustomException('Failed to submit profile request', 422, $e);
+            throw new CommonCustomException('Failed to submit user request', 422, $e);
         }
 
     }

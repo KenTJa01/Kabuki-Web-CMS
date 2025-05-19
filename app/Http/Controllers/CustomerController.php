@@ -174,4 +174,73 @@ class CustomerController extends Controller
 
     }
 
+    public function getOldDataOfCustomer(Request $request)
+    {
+        $data = Customer::where('id', $request->customer_id)->first();
+        return response()->json($data);
+    }
+
+    public function postEditCustomer(Request $request)
+    {
+
+        $user = Auth::user();
+
+        /** Validate Input */
+        $validate = Validator::make($request->all(), [
+            'id_customer' => ['required'],
+            'customer_name' => ['required', 'string'],
+            'no_telp' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'status' => ['required'],
+        ]);
+
+
+        if ($validate->fails()) {
+            throw new ValidationException($validate);
+        }
+        (array) $validated = $validate->validated();
+
+        $customer_name = $validated['customer_name'];
+        $no_telp = $validated['no_telp'];
+        $address = $validated['address'];
+        $status = $validated['status'];
+
+        DB::beginTransaction();
+        try {
+
+            $customerData = Customer::where('id', $validated['id_customer'])->first();
+
+            $customerData->customer_name = $customer_name;
+            $customerData->no_telp = $no_telp;
+            $customerData->address = $address;
+            $customerData->flag = $status;
+            $customerData->updated_by = $user?->id;
+            $customerData->save();
+
+
+            (string) $title = 'Success';
+            (string) $message = "Customer request successfully submitted with customer's name: ".$customer_name;
+            (array) $data = [
+                'trx_number' => $customer_name,
+            ];
+            (string) $route = route('/master_data/customer');
+
+            DB::commit();
+            return response()->json([
+                'title' => $title,
+                'message' => $message,
+                'route' => $route,
+                'data' => $data,
+            ]);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            Log::warning('Validation error when submit customer request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
+            throw $e;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw new CommonCustomException('Failed to submit customer request', 422, $e);
+        }
+
+    }
+
 }

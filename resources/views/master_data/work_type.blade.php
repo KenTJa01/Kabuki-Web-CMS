@@ -44,11 +44,11 @@
                     </button>
                 {{-- @endif --}}
 
-                <h4 class="title">LIST OF CUSTOMERS</h4>
+                <h4 class="title">LIST OF WORK TYPES</h4>
 
                 <div class="user_guide active text-center">
                     <font class="text_tooltip">i</font>
-                    <span class="user_guide_tooltip">You can manage the master data of Kabuki's customers here.</span>
+                    <span class="user_guide_tooltip">You can manage the master data of DGM's gift items here.</span>
                 </div>
             </div>
             <div>
@@ -65,10 +65,9 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 200px">Customer Code</th>
-                        <th>Customer Name</th>
-                        <th>Phone Number</th>
-                        <th>Address</th>
+                        <th style="width: 200px">Work Type Code</th>
+                        <th>Work Type Name</th>
+                        <th>Work Type Description</th>
                         <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
@@ -77,10 +76,9 @@
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 200px">Customer Code</th>
-                        <th>Customer Name</th>
-                        <th>Phone Number</th>
-                        <th>Address</th>
+                        <th style="width: 200px">Work Type Code</th>
+                        <th>Work Type Name</th>
+                        <th>Work Type Description</th>
                         <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
@@ -96,31 +94,25 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW CUSTOMER</h1>
+                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW WORK TYPER</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row input_modal">
-                        <label for="customer_name" class="col-sm-4 col-form-label">Customer Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="customer_name" placeholder="Enter name">
+                        <label for="work_type_name" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="work_type_name" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="no_telp" class="col-sm-4 col-form-label">Phone Number</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="no_telp" placeholder="Enter phone number">
+                        <label for="work_type_description" class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="work_type_description" placeholder="Enter description">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="address" class="col-sm-4 col-form-label">Address</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control" id="address" cols="30" rows="5" style="resize: none"></textarea>
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="status" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="status" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status" value="1" checked>
@@ -145,27 +137,27 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT CUSTOMER</h1>
+                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT WORK TYPE</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="customer_id_edit">
+                    <input type="hidden" name="id" id="work_type_id_edit">
                     <div class="row input_modal">
-                        <label for="customer_name_edit" class="col-sm-4 col-form-label">Customer Name</label>
+                        <label for="work_type_code_edit" class="col-sm-4 col-form-label">Code</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="customer_name_edit" placeholder="Enter name">
+                            <input type="text" class="form-control" id="work_type_code_edit" disabled placeholder="Enter code">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="no_telp_edit" class="col-sm-4 col-form-label">Phone Number</label>
+                        <label for="work_type_name_edit" class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="no_telp_edit" placeholder="Enter phone number">
+                            <input type="text" class="form-control" id="work_type_name_edit" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="address_edit" class="col-sm-4 col-form-label">Address</label>
+                        <label for="work_type_description_edit" class="col-sm-4 col-form-label">Description</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" id="address_edit" cols="30" rows="5" style="resize: none"></textarea>
+                            <input type="text" class="form-control" id="work_type_description_edit" placeholder="Enter description">
                         </div>
                     </div>
                     <div class="row input_modal">
@@ -235,7 +227,7 @@
                 orderCellsTop: true,
                 ajax: {
                     type: 'GET',
-                    url: `{{ route("get-customer-list-datatable") }}`,
+                    url: `{{ route("get-work-type-list-datatable") }}`,
                     data: {
                     },
                 },
@@ -247,20 +239,16 @@
                         searchable:false
                     },
                     {
-                        data: 'customer_code',
-                        name: 'customer_code',
+                        data: 'work_type_code',
+                        name: 'work_type_code',
                     },
                     {
-                        data: 'customer_name',
-                        name: 'customer_name',
+                        data: 'work_type_name',
+                        name: 'work_type_name',
                     },
                     {
-                        data: 'no_telp',
-                        name: 'no_telp',
-                    },
-                    {
-                        data: 'address',
-                        name: 'address',
+                        data: 'work_type_desc',
+                        name: 'work_type_desc',
                     },
                     {
                         data: 'status',
@@ -276,7 +264,7 @@
                 ],
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { className: "dt-center", targets: [0,1,6] }
+                    { className: "dt-center", targets: [0,1,5] }
                 ],
                 language: {
                     loadingRecords: '&nbsp;',
@@ -297,9 +285,8 @@
         // ========================= CLICK NEW =========================
         $(document).on('click', '#button_new', function(event) {
 
-            $("#customer_name").val("");
-            $("#no_telp").val("");
-            $("#address").val("");
+            $("#work_type_name").val("");
+            $("#work_type_description").val("");
 
             document.getElementById('status').checked = true;
 
@@ -308,9 +295,8 @@
         // ========================= CLEAR INPUT MODAL =========================
         $(document).on('click', '#button_clear_modal', function(event) {
 
-            $("#customer_name").val("");
-            $("#no_telp").val("");
-            $("#address").val("");
+            $("#work_type_name").val("");
+            $("#work_type_description").val("");
 
             document.getElementById('status').checked = true;
 
@@ -319,9 +305,8 @@
         // ========================= SUBMIT NEW DATA =========================
         $(document).on('click', '#button_submit_modal', function(event) {
 
-            var customerName = $("#customer_name").val();
-            var noTelp = $("#no_telp").val();
-            var address = $("#address").val();
+            var workTypeName = $("#work_type_name").val();
+            var workTypeDesc = $("#work_type_description").val();
             var status = $("#status:checked").val();
 
             if ( status == 1 ) {
@@ -332,15 +317,16 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-new-customer') }}",
+                url: "{{ url('/post-new-work-type') }}",
                 dataType: 'json',
                 data: {
-                    customerName: customerName,
-                    noTelp: noTelp,
-                    address: address,
+                    workTypeName: workTypeName,
+                    workTypeDesc: workTypeDesc,
                     status: flag,
                 },
                 success: function(response) {
+
+                    console.log(response);
 
                     return Swal.fire({
                         title: response.title,
@@ -367,7 +353,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit customer request',
+                        text: error.responseJSON.message ?? 'Failed submit work type request',
                         target: document.getElementById('newCreationModal'),
                     });
                     $("#button_submit").prop('disabled', false);
@@ -383,17 +369,17 @@
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-old-data-of-customer') }}",
+                url: "{{ url('/get-old-data-of-work-type') }}",
                 dataType: 'json',
                 data: {
-                    customer_id: data_id,
+                    work_type_id: data_id,
                 },
                 success: function(response) {
 
-                    $("#customer_id_edit").val(response.id);
-                    $("#customer_name_edit").val(response.customer_name);
-                    $("#no_telp_edit").val(response.no_telp);
-                    $("#address_edit").val(response.address);
+                    $("#work_type_id_edit").val(response.id);
+                    $("#work_type_code_edit").val(response.work_type_code);
+                    $("#work_type_name_edit").val(response.work_type_name);
+                    $("#work_type_description_edit").val(response.work_type_desc);
 
                     if ( response.flag == 1 ) {
                         $("#status_edit").attr('checked', true);
@@ -407,7 +393,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of customer',
+                        text: error.responseJSON.message ?? 'Failed get list of work type',
                     });
                 },
             });
@@ -417,10 +403,10 @@
         // ========================= SUBMIT EDIT DATA =========================
         $(document).on('click', '#button_submit_modal_edit', function() {
 
-            var id = $("#customer_id_edit").val();
-            var customerName = $("#customer_name_edit").val();
-            var noTelp = $("#no_telp_edit").val();
-            var address = $("#address_edit").val();
+            var id = $("#work_type_id_edit").val();
+            var workTypeCode = $("#work_type_code_edit").val();
+            var workTypeName = $("#work_type_name_edit").val();
+            var workTypeDesc = $("#work_type_description_edit").val();
             var status = document.getElementById('status_edit').checked;
 
             if ( status == 1 ) {
@@ -431,13 +417,13 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-edit-customer') }}",
+                url: "{{ url('/post-edit-work-type') }}",
                 dataType: 'json',
                 data: {
-                    id_customer: id,
-                    customer_name: customerName,
-                    no_telp: noTelp,
-                    address: address,
+                    id_work_type: id,
+                    work_type_code: workTypeCode,
+                    work_type_name: workTypeName,
+                    work_type_desc: workTypeDesc,
                     status: flag,
                 },
                 success: function(response) {
@@ -466,7 +452,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit customer request',
+                        text: error.responseJSON.message ?? 'Failed submit work type request',
                         target: document.getElementById('editModal'),
                     });
                     $("#button_submit_modal_edit").prop('disabled', false);

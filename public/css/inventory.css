@@ -345,8 +345,17 @@ hr {
     font-weight: 500;
 }
 
+.button_change_pw {
+    background-color: #E81F25;
+    border: 0px;
+    border-radius: 5px;
+    padding: 6px 10px 6px 10px;
+    color: white;
+    font-weight: 500;
+}
+
 .button_delete {
-    background-color: #3F3F3F;
+    background-color: #E81F25;
     border: 0px;
     border-radius: 5px;
     padding: 6px 10px 6px 10px;

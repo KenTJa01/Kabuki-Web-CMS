@@ -8,6 +8,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\WorkTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,9 @@ Route::get('/home', function () {
 
 Route::get('/get-all-data-menu', [MasterDataController::class, 'getAllDataMenu'])->name('get-all-data-menu');
 Route::get('/get-all-data-profile', [MasterDataController::class, 'getAllDataProfile'])->name('get-all-data-profile');
+Route::get('/get-all-data-work-type', [MasterDataController::class, 'getAllDataWorkType'])->name('get-all-data-work-type');
+Route::get('/get-all-data-order-type', [MasterDataController::class, 'getAllDataOrderType'])->name('get-all-data-order-type');
+Route::get('/get-all-data-customer', [MasterDataController::class, 'getAllDataCustomer'])->name('get-all-data-customer');
 
 // ========================= MASTER USER =========================
 Route::get('/master_data/user', [UserController::class, 'masterUserPage'])->name('/master_data/user');
@@ -37,6 +41,7 @@ Route::get('/get-user-list-datatable', [UserController::class, 'getUserListDatat
 Route::post('/post-new-user', [UserController::class, 'postNewUser'])->name('post-new-user');
 Route::get('/get-old-data-of-user', [UserController::class, 'getOldDataUser'])->name('get-old-data-of-user');
 Route::post('/post-edit-user', [UserController::class, 'postEditUser'])->name('post-edit-user');
+Route::post('/post-user-req-reset-pw', [UserController::class, 'postUserReqResetPw'])->name('post-user-req-reset-pw');
 
 // ========================= MASTER PROFILE =========================
 Route::get('/master_data/profile', [ProfileController::class, 'masterProfilePage'])->name('/master_data/profile');
@@ -78,3 +83,9 @@ Route::post('/post-edit-work-type', [WorkTypeController::class, 'postEditWorkTyp
 Route::get('/transaction/form', function () {
     return view('transaction/form_transaction');
 })->name('/transaction/form');
+Route::get('/transaction/form', [TransactionController::class, 'transactionFormPage'])->name('/transaction/form');
+Route::get('/get-data-customer-by-id', [TransactionController::class, 'getDataCustomerById'])->name('get-data-customer-by-id');
+Route::get('/get-trs-item', [TransactionController::class, 'getTrsItem'])->name('get-trs-item');
+Route::get('/get-trs-stock-qty', [TransactionController::class, 'getTrsStockQty'])->name('get-trs-stock-qty');
+Route::get('/get-trs-subtotal', [TransactionController::class, 'getTrsSubtotal'])->name('get-trs-subtotal');
+

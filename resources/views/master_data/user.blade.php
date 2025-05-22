@@ -553,6 +553,61 @@
 
         });
 
+        $(document).on('click', '.button_change_pw', function(event) {
+            const data = $(this).data('id');
+
+            Swal.fire({
+                icon: "warning",
+                title: "Reset Password",
+                text: "Are you sure want to reset the password?",
+                showCancelButton: true,
+                confirmButtonText: "Reset",
+                confirmButtonColor: "#d33",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ url('/post-user-req-reset-pw') }}",
+                        dataType: 'json',
+                        data: {
+                            id_user: data,
+                        },
+                        success: function(response) {
+
+                            return Swal.fire({
+                                title: response.title,
+                                text: response.message,
+                                timer: 5000,
+                                icon: "success",
+                                timerProgressBar: true,
+                                showConfirmButton: true,
+                                willClose: () => {
+                                    if (typeof response.route !== "undefined") {
+                                        window.location.href = response.route;
+                                    }
+                                },
+                            });
+
+                        },
+                        error: function(error) {
+
+                            console.log(error.responseJSON);
+                            Swal.fire({
+                                icon: 'error',
+                                title: "Error",
+                                text: error.responseJSON.message ?? 'Failed submit change password request',
+                                // target: document.getElementById('dialog_add'),
+                            });
+                            // $(".submitAdd").prop('disabled', false);
+                        },
+                    });
+                }
+            });
+
+
+            event.preventDefault();
+        });
+
     </script>
 
 @endsection

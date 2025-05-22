@@ -56,7 +56,7 @@
                     {{-- ORDER TYPE --}}
                     <td class="label_form">Order Type</td>
                     <td class="container_input_form">
-                        <select name="select_order_type" id="select_order_type" class="input_form" style="width: 100%;">
+                        <select name="select_order_type" id="select_order_type" class="input_form" style="width: 100%;" disabled>
                             <option value="">Select order type</option>
                         </select>
                     </td>
@@ -79,7 +79,7 @@
             <tr>
                 <td id="label_phone_member" style="width: 13.5%">Full Name</td>
                 <td class="" style="width: 87%; margin: 0; padding: 0;">
-                    <select name="select_customer_name" id="select_customer_name" class="input_form">
+                    <select name="select_customer_name" id="select_customer_name" class="input_form" disabled>
                         <option value="">Select customer's name</option>
                     </select>
                 </td>
@@ -92,7 +92,7 @@
                 {{-- CUSTOMER NAME --}}
                 <td class="label_form">Address</td>
                 <td class="container_input_form" rowspan=2>
-                    <textarea class="form-control" rows="3" cols="50" style="resize: none;"></textarea>
+                    <textarea class="form-control" id="address" rows="3" cols="50" style="resize: none;" readonly disabled></textarea>
                     {{-- <input type="text" class="form-control input_form" id="customer_name" readonly disabled> --}}
                 </td>
 
@@ -113,9 +113,9 @@
                 <td></td>
 
                 {{-- NO MEMBER --}}
-                <td class="label_form label_member_number" id="label_member_number">License Plate</td>
-                <td class="container_input_form label_member_number" id="input_member_number" style="margin: 0; padding: 0;">
-                    <input type="text" class="form-control input_form" id="member_number" readonly disabled>
+                <td class="label_form label_vehicle_number" id="label_vehicle_number">Vehicle Number</td>
+                <td class="container_input_form label_vehicle_number" id="input_vehicle_number" style="margin: 0; padding: 0;">
+                    <input type="text" class="form-control input_form" id="vehicle_number" disabled>
                 </td>
 
             </tr>
@@ -154,10 +154,15 @@
         </div>
 
         {{-- BUTTON ADD ROW --}}
-        <div class="row text-left" id="addRowDiv" style="width: 300px; margin-left: 0px; margin-bottom: 5px">
-            <button type="button" id="add" class="btn_add_row" style="display: none;">
+        <div class="row text-left d-flex justify-content-between" id="addRowDiv" style="width: 100%; margin-left: 0px; margin-bottom: 5px">
+
+            <button type="button" id="add" class="btn_add_row" style="display: none; width: 300px">
                 <font style="color: white">+ Add row</font>
             </button>
+            <div class="input_total d-flex" style="width: 300px">
+                <font style="margin: 8px 10px 0 0; font-weight: 500">Total</font>
+                <input type="number" class="form-control" id="total_price" value=0 readonly disabled style="text-align: right;">
+            </div>
         </div>
 
     </div>
@@ -192,324 +197,148 @@
             $(".item").prop('disabled', true);
             $('.btn_remove').prop('disabled', true);
 
+            getAllDataWorkType();
+
         });
 
-        function getListSite() {
+        // ========================= GET ALL DATA WORK TYPE =========================
+        function getAllDataWorkType() {
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-user-site-permission') }}",
+                url: "{{ url('/get-all-data-work-type') }}",
                 dataType: 'json',
                 data: {},
                 success: function(response) {
-
-                    var data = response;
-
-                    /** Set dropdown list */
-                    $('#select_site').find('option').remove().end().append();
-                    if (data.length != 1) {
-                        $('#select_site').append('<option value="" disabled selected>Select store</option>');
-                    }
-                    for (var i = 0; i < data.length; i++) {
-                        text = data[i].store_code+' - '+data[i].site_description;
-                        value = data[i].site_id;
-                        $('#select_site').append($("<option></option>").attr("value", value).text(text));
-                    }
-
-                    if (data.length == 1) {
-                        resetTable();
-                        getListItem();
-                        $('#no_member_telp').prop('disabled', false);
-                    }
-
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_work_type").append('<option value="' + value.id + '">' + value.work_type_name + '</option>');
+                    });
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list site',
+                        text: error.responseJSON.message ?? 'Failed get list of work type',
                     });
                 },
             });
 
         }
 
-        $('#select_site').on('change', function() {
-            $('#no_member_telp').prop('disabled', false);
-        });
+        $('#select_work_type').on('change', function() {
 
-        // $('.radio_customer_data').on('change', function(){
-
-        //     const label_phone = document.getElementById('label_phone_number');
-        //     const input_phone = document.getElementById('input_phone_number');
-        //     const label_member = document.getElementById('label_member_number');
-        //     const input_member = document.getElementById('input_member_number');
-
-        //     $('#no_member_telp').val("");
-        //     $('#customer_name').val("");
-        //     $('#customer_nik').val("");
-
-        //     if ( this.value == "phone" ) {
-        //         $("#label_phone_member").html("Phone Number");
-        //         label_member.classList.remove('d-none');
-        //         input_member.classList.remove('d-none');
-        //         label_phone.classList.add('d-none');
-        //         input_phone.classList.add('d-none');
-
-        //         $('#phone_number').val("");
-
-        //     } else if ( this.value == "member" ) {
-        //         $("#label_phone_member").html("Member Number");
-        //         label_phone.classList.remove('d-none');
-        //         input_phone.classList.remove('d-none');
-        //         label_member.classList.add('d-none');
-        //         input_member.classList.add('d-none');
-
-        //         $('#member_number').val("");
-
-        //     }
-
-        // });
-
-        var isPhone = 0;
-        var isMember = 0;
-
-        $('#no_member_telp').on('change', function() {
-
-            isPhone = 0;
-            isMember = 0;
-            checking(this.value);
+            $('#select_order_type').prop('disabled', false);
+            getAllDataOrderType();
 
         });
 
-        function checking(data) {
-
-            cekIsPhone(data).then(function() {
-                cekIsMember(data).then(function() {
-                    finalChecking(data);
-                });
-            });
-
-        }
-
-        function cekIsPhone(data) {
-            return new Promise(function(resolve, reject) {
-                paramBody = {
-                    "shared": {
-                        "corpCode": "1",
-                        "orgCode": "102",
-                        "appCode": "myYOGYA"
-                    },
-                    "data": {
-                        "identifierType": "3",
-                        "identifierCode": data,
-                        "callOption": 2
-                    }
-                };
-
-                $.ajax({
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Accept", "application/json");
-                        request.setRequestHeader("Content-type", "application/json");
-                    },
-                    url: 'http://172.16.106.80:30694/portal-api/zt/api/member/MemberInfo?token=',
-                    data: JSON.stringify(paramBody),
-                    dataType: "json",
-                    success: function(msg) {
-
-                        if ( msg.Data != null ) {
-                            isPhone += 1;
-
-                        } else {
-                            isPhone += 0;
-
-                        }
-                        resolve();
-                    },
-                    error: function() {
-                        reject();
-                    }
-                });
-            });
-        }
-
-        function cekIsMember(data) {
-            return new Promise(function(resolve, reject) {
-                paramBody = {
-                    "shared": {
-                        "corpCode": "1",
-                        "orgCode": "102",
-                        "appCode": "myYOGYA"
-                    },
-                    "data": {
-                        "identifierType": "2",
-                        "identifierCode": data,
-                        "callOption": 2
-                    }
-                };
-
-                $.ajax({
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Accept", "application/json");
-                        request.setRequestHeader("Content-type", "application/json");
-                    },
-                    url: 'http://172.16.106.80:30694/portal-api/zt/api/member/MemberInfo?token=',
-                    data: JSON.stringify(paramBody),
-                    dataType: "json",
-                    success: function(msg) {
-
-                        if ( msg.Data != null ) {
-                            isMember += 1;
-
-                        } else {
-                            isMember += 0;
-
-                        }
-                        resolve();
-                    },
-                    error: function() {
-                        reject();
-                    }
-                });
-            });
-
-        }
-
-        function finalChecking(data) {
-
-            if ( isPhone == 1 ) {
-
-                paramBody = {
-                    "shared": {
-                        "corpCode": "1",
-                        "orgCode": "102",
-                        "appCode": "myYOGYA"
-                    },
-                    "data": {
-                        "identifierType": "3",
-                        "identifierCode": data,
-                        "callOption": 2
-                    }
-                };
-
-                $.ajax({
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Accept", "application/json");
-                        request.setRequestHeader("Content-type", "application/json");
-                    },
-                    url: 'http://172.16.106.80:30694/portal-api/zt/api/member/MemberInfo?token=',
-                    data: JSON.stringify(paramBody),
-                    dataType: "json",
-                    success: function(msg) {
-
-                        if ( msg.Data != null ) {
-                            $('#customer_name').val(msg.Data.FullName);
-                            $('#customer_nik').val(msg.Data.Idno);
-                            $('#phone_number').val(msg.Data.MobileNo);
-                            $('#member_number').val(msg.Data.CardCode);
-
-                            resetTable();
-                            getListItem();
-
-                        } else {
-
-                            $('#customer_name').val("");
-                            $('#customer_nik').val("");
-                            $('#phone_number').val("");
-                            $('#member_number').val("");
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: "Error",
-                                text: "Failed get customer's data",
-                            });
-
-                        }
-
-                    },
-                    error: function() {
-                        reject();
-                    }
-                });
-
-            } else {
-
-                paramBody = {
-                    "shared": {
-                        "corpCode": "1",
-                        "orgCode": "102",
-                        "appCode": "myYOGYA"
-                    },
-                    "data": {
-                        "identifierType": "2",
-                        "identifierCode": data,
-                        "callOption": 2
-                    }
-                };
-
-                $.ajax({
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Accept", "application/json");
-                        request.setRequestHeader("Content-type", "application/json");
-                    },
-                    url: 'http://172.16.106.80:30694/portal-api/zt/api/member/MemberInfo?token=',
-                    data: JSON.stringify(paramBody),
-                    dataType: "json",
-                    success: function(msg) {
-
-                        if ( msg.Data != null ) {
-                            $('#customer_name').val(msg.Data.FullName);
-                            $('#customer_nik').val(msg.Data.Idno);
-                            $('#phone_number').val(msg.Data.MobileNo);
-                            $('#member_number').val(msg.Data.CardCode);
-
-                            resetTable();
-                            getListItem();
-
-                        } else {
-
-                            $('#customer_name').val("");
-                            $('#customer_nik').val("");
-                            $('#phone_number').val("");
-                            $('#member_number').val("");
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: "Error",
-                                text: "Failed get customer's data",
-                            });
-
-                        }
-
-                    },
-                    error: function() {
-                        reject();
-                    }
-                });
-
-            }
-
-        }
-
-        var indexTable = 3;
-        var productListData = [];
-
-        function getListItem() {
-
-            var site = $('#select_site').val();
+        // ========================= GET ALL DATA ORDER TYPE =========================
+        function getAllDataOrderType() {
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-red-item') }}",
+                url: "{{ url('/get-all-data-order-type') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_order_type").append('<option value="' + value.id + '">' + value.order_type_name + '</option>');
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of order type',
+                    });
+                },
+            });
+
+        }
+
+        $('#select_order_type').on('change', function() {
+
+            $('#select_customer_name').prop('disabled', false);
+            getAllDataCustomer();
+
+        });
+
+        // ========================= GET ALL DATA CUSTOMER =========================
+        function getAllDataCustomer() {
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-customer') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_customer_name").append('<option value="' + value.id + '">' + value.customer_name + '</option>');
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of customer',
+                    });
+                },
+            });
+
+        }
+
+        $('#select_customer_name').on('change', function() {
+
+            $customer_id = $("#select_customer_name").val();
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-data-customer-by-id') }}",
                 dataType: 'json',
                 data: {
-                    site_id: site,
+                    customer_id: $customer_id,
                 },
+                success: function(response) {
+                    $("#address").val(response.address);
+                    $("#phone_number").val(response.no_telp);
+                    $("#vehicle_number").prop('disabled', false);
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of customer',
+                    });
+                },
+            });
+
+        });
+
+        $('#vehicle_number').on('change', function() {
+
+            getListItem();
+            resetTable();
+
+        });
+
+        var indexTable = 3;
+        var productListData = [];
+        var tampungTotalPrice = 0;
+
+        function getListItem() {
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-trs-item') }}",
+                dataType: 'json',
+                data: {},
                 success: function(response) {
                     itemListData = response.map(function (item) {
                         return {
@@ -700,8 +529,13 @@
                 var tempArr = buttonId.split("_");
                 $('#row_'+tempArr[2]).remove();
 
+                console.log(tempArr[2]);
+                $cek = $('#price_'+tempArr[2]).val();
+                console.log($cek);
+
                 enableTableRow(tempArr[2]);
                 showAddRowButton();
+
                 indexTable--;
             }
 
@@ -788,7 +622,6 @@
 
         function getStockQty(index) {
 
-            var site = $('#select_site').val();
             var item = $('#item_'+index+'_id').val();
 
             /** Reset qty, stock, unit */
@@ -797,10 +630,9 @@
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-red-stock-qty') }}",
+                url: "{{ url('/get-trs-stock-qty') }}",
                 dataType: 'json',
                 data: {
-                    site_id: site,
                     item_id: item,
                 },
                 success: function(response) {
@@ -838,7 +670,38 @@
             } else {
                 hideQtyErrorMessage(index);
                 enableTableRow(index);
+
+                $item_id = $('#item_'+index+'_id').val();
+                cekSubtotal($item_id, qty, index);
             }
+        }
+
+        function cekSubtotal(item_id, qty, index) {
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-trs-subtotal') }}",
+                dataType: 'json',
+                data: {
+                    item_id: item_id,
+                },
+                success: function(response) {
+                    $subtotal = response.price*qty;
+
+                    /** Enabled text input */
+                    $('#price_'+index).val($subtotal);
+                    tampungTotalPrice += $subtotal;
+                    $('#total_price').val(tampungTotalPrice);
+
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get subtotal',
+                    });
+                },
+            });
         }
 
         // ========================= SUBMIT REDEEM =========================
@@ -847,12 +710,11 @@
             event.preventDefault();
             $("#button_submit").prop('disabled', true);
 
-            var redeemDate = $('#redeem_date').val();
-            var site = $('#select_site').val();
-            var customer_fullname = $("#customer_name").val();
-            var id_no = $("#customer_nik").val();
-            var member_no = $("#member_number").val();
-            var phone_no = $("#phone_number").val();
+            var transaction_date = $('#transaction_date').val();
+            var customer_name = $("#select_customer_name").val();
+            var address = $("#address").val();
+            var no_telp = $("#phone_number").val();
+            var vehicle_number = $("#vehicle_number").val();
             var table = document.getElementById("table_form");
             var detailData = [];
 
@@ -861,6 +723,7 @@
                 var tempArr = row.id.split("_");
                 var itemId = $('#item_'+tempArr[1]+'_id').val();
                 var qty = $('#qty_'+tempArr[1]).val();
+                var subtotal = $('#price_'+tempArr[1]).val();
 
                 /** Get data detail that contain item id */
                 if (itemId != '') {
@@ -888,10 +751,14 @@
                         {
                             item_id: itemId,
                             qty: qty,
+                            subtotal,
                         }
                     );
                 }
             }
+
+            console.log(detailData);
+            return;
 
             $.ajax({
                 type: 'POST',

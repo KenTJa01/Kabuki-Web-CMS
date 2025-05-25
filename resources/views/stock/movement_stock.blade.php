@@ -1,4 +1,4 @@
-@extends("inventory.layouts.main")
+@extends("layouts.main")
 @section("container")
 
 <style>
@@ -23,9 +23,9 @@
             </div>
         </div>
 
-        @if ( $permission_export != null )
+        {{-- @if ( $permission_export != null )
             <button class="button_export" id="buttonExport">Export</button>
-        @endif
+        @endif --}}
 
     </div>
 
@@ -41,8 +41,8 @@
                 </td>
 
                 {{-- VERTICAL LINE --}}
-                <td style="width: 4%" rowspan="3">
-                    <hr class="vertical_line_three_row">
+                <td style="width: 4%" rowspan="2">
+                    <hr class="vertical_line_two_row">
                 </td>
 
                 {{-- TO DATE --}}
@@ -60,15 +60,6 @@
                     </select>
                 </td>
 
-                {{-- SITE --}}
-                <td class="label_form">Store</td>
-                <td class="container_input_form" style="margin: 0; padding: 0;">
-                    <select name="select_site" id="select_site" class="input_form" style="width: 100%">
-                        <option value="" readonly>Select store</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 {{-- MOVEMENT TYPE --}}
                 <td class="label_form">Movement Type</td>
                 <td class="container_input_form" style="margin: 0; padding: 0;">
@@ -95,7 +86,6 @@
             <thead>
                 <tr>
                     <th style="width: 50px">Seq ID</th>
-                    <th class="text-center" style="width: 120px">Site</th>
                     <th class="text-center" style="width: 120px">Item</th>
                     <th class="text-center" style="width: 120px">Mov Date</th>
                     <th class="text-center" style="width: 120px">Mov Type</th>
@@ -142,14 +132,6 @@
             multiple: false,
         });
 
-        $('#select_site').select2({
-            placeholder: {
-                id: '-1',
-                textw: 'Select an option'
-            },
-            multiple: false,
-        });
-
         $('#select_mov_type').select2({
             placeholder: {
                 id: '-1',
@@ -159,7 +141,6 @@
         });
 
         getAllDataItem();
-        getAllDataStore();
         getAllDataMovementType();
 
         // dataTable();
@@ -180,7 +161,7 @@
 
     });
 
-    $('#from_date, #to_date, #select_item, #select_site, #select_mov_type').on('change', function() {
+    $('#from_date, #to_date, #select_item, #select_mov_type').on('change', function() {
 
         dataTable();
 
@@ -209,19 +190,12 @@
                     d.fromDate = $('#from_date').val();
                     d.toDate = $('#to_date').val();
                     d.item = $('#select_item').val();
-                    d.site = $('#select_site').val();
                     d.mov_type = $('#select_mov_type').val();
                 },
             },
             columns: [
                 {
                     data: 'id', name: 'id'
-                },
-                {
-                    data: null,
-                    render: function(data, type, row){
-                        return row.store_code;
-                    }
                 },
                 {
                     data: 'item_name', name: 'item_name'
@@ -275,43 +249,9 @@
                     $('#select_item').append('<option value="">ALL ITEM</option>');
                 }
                 for (var i = 0; i < data.length; i++) {
-                    text = data[i].item_name+' - '+data[i].item_desc;
+                    text = data[i].item_name;
                     value = data[i].id;
                     $('#select_item').append($("<option></option>").attr("value", value).text(text));
-                }
-
-            },
-            error: function(error) {
-                console.log(error.responseJSON);
-                Swal.fire({
-                    icon: 'error',
-                    title: "Error",
-                    text: error.responseJSON.message ?? 'Failed get list site from',
-                });
-            },
-        });
-
-    }
-
-    function getAllDataStore() {
-
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('/get-user-site-permission') }}",
-            dataType: 'json',
-            data: {},
-            success: function(response) {
-
-                var data = response;
-
-                // $('#select_site').find('option').remove().end().append();
-                if (data.length != 1) {
-                    $('#select_site').append('<option value="">ALL STORE</option>');
-                }
-                for (var i = 0; i < data.length; i++) {
-                    text = data[i].store_code+' - '+data[i].site_description;
-                    value = data[i].site_id;
-                    $('#select_site').append($("<option></option>").attr("value", value).text(text));
                 }
 
             },

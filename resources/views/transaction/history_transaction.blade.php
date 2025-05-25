@@ -7,7 +7,7 @@
         <div class="title_n_button justify-content-between">
 
             <div class="d-flex">
-                <h4 class="title" style="margin-left: 0px">ON PROCESS TRANSACTION</h4>
+                <h4 class="title" style="margin-left: 0px">HISTORY TRANSACTION</h4>
 
                 <div class="user_guide active text-center">
                     <font class="text_tooltip">i</font>
@@ -90,7 +90,7 @@
                 orderCellsTop: true,
                 ajax: {
                     type: 'GET',
-                    url: `{{ route("/get-transaction-list-datatable") }}`,
+                    url: `{{ route("/get-transaction-history-datatable") }}`,
                     data: {
                     },
                 },

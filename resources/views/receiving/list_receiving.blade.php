@@ -1,4 +1,4 @@
-@extends("inventory.layouts.main")
+@extends("layouts.main")
 @section("container")
 
     <div class="content">
@@ -15,9 +15,9 @@
                 </div>
             </div>
 
-            @if ( $permission_export != null )
+            {{-- @if ( $permission_export != null )
                 <button class="button_export" id="buttonExport">Export</button>
-            @endif
+            @endif --}}
 
         </div>
 
@@ -30,8 +30,8 @@
                     <tr>
                         <th class="top_left_tableData">Receiving No.</th>
                         <th>Receiving Date</th>
-                        <th>From Store / Supplier</th>
-                        <th>To Store</th>
+                        <th>Invoice No.</th>
+                        <th>Supplier</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
                 </thead>
@@ -40,8 +40,8 @@
                     <tr>
                         <th class="bottom_left_tableData">Receiving No.</th>
                         <th>Receiving Date</th>
-                        <th>From Store / Supplier</th>
-                        <th>To Store</th>
+                        <th>Invoice No.</th>
+                        <th>Supplier</th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
@@ -104,14 +104,12 @@
                         }
                     },
                     {
-                        data: 'origin',
-                        name: 'origin',
+                        data: 'invoice_no',
+                        name: 'invoice_no',
                     },
                     {
-                        data: null,
-                        render: function(data, type, row) {
-                            return row.to_store_code;
-                        }
+                        data: 'supp_name',
+                        name: 'supp_name',
                     },
                     {
                         data: 'actions',
@@ -123,7 +121,7 @@
                 ],
                 order: [[1, 'desc'], [0, 'desc']],
                 columnDefs: [
-                    { className: "dt-center", targets: [0,1,2,3] }
+                    { className: "dt-center", targets: [0,1,2,3,4] }
                 ],
                 language: {
                     loadingRecords: '&nbsp;',

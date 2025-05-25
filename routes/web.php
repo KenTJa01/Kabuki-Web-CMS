@@ -8,6 +8,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\WorkTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ReceivingController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'loginPage'])->name('login')->middleware('guest');
 Route::post('/post-request-login', [LoginController::class, 'postRequestLogin'])->name('post-request-login')->middleware('guest');
 
+
+Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/home', function () {
     return view('home');
 })->name('/home');
@@ -33,7 +37,10 @@ Route::get('/get-all-data-menu', [MasterDataController::class, 'getAllDataMenu']
 Route::get('/get-all-data-profile', [MasterDataController::class, 'getAllDataProfile'])->name('get-all-data-profile');
 Route::get('/get-all-data-work-type', [MasterDataController::class, 'getAllDataWorkType'])->name('get-all-data-work-type');
 Route::get('/get-all-data-order-type', [MasterDataController::class, 'getAllDataOrderType'])->name('get-all-data-order-type');
+Route::get('/get-all-data-payment-status', [MasterDataController::class, 'getAllDataPaymentStatus'])->name('get-all-data-payment-status');
 Route::get('/get-all-data-customer', [MasterDataController::class, 'getAllDataCustomer'])->name('get-all-data-customer');
+Route::get('/get-all-data-item', [MasterDataController::class, 'getAllDataItem'])->name('get-all-data-item');
+Route::get('/get-all-data-movement-type', [MasterDataController::class, 'getAllDataMovementType'])->name('get-all-data-movement-type');
 
 // ========================= MASTER USER =========================
 Route::get('/master_data/user', [UserController::class, 'masterUserPage'])->name('/master_data/user');
@@ -80,12 +87,34 @@ Route::post('/post-new-work-type', [WorkTypeController::class, 'postNewWorkType'
 Route::get('/get-old-data-of-work-type', [WorkTypeController::class, 'getOldDataOfWorkType'])->name('get-old-data-of-work-type');
 Route::post('/post-edit-work-type', [WorkTypeController::class, 'postEditWorkType'])->name('post-edit-work-type');
 
-Route::get('/transaction/form', function () {
-    return view('transaction/form_transaction');
-})->name('/transaction/form');
+// ========================= TRANSACTION =========================
+Route::get('/transaction/list', [TransactionController::class, 'transactionListPage'])->name('/transaction/list');
+Route::get('/get-transaction-list-datatable', [TransactionController::class, 'getTransactionListDatatable'])->name('/get-transaction-list-datatable');
+Route::get('/transaction/view/{id}', [TransactionController::class, 'viewTransactionPage'])->name('transaction/view');
+Route::post('/post-trs-on-process-submit', [TransactionController::class, 'postTrsOnProcessSubmit'])->name('post-trs-on-process-submit');
+
+Route::get('/transaction/history', [TransactionController::class, 'transactionHistoryPage'])->name('/transaction/history');
+Route::get('/get-transaction-history-datatable', [TransactionController::class, 'getTransactionHistoryDatatable'])->name('/get-transaction-history-datatable');
+
 Route::get('/transaction/form', [TransactionController::class, 'transactionFormPage'])->name('/transaction/form');
 Route::get('/get-data-customer-by-id', [TransactionController::class, 'getDataCustomerById'])->name('get-data-customer-by-id');
 Route::get('/get-trs-item', [TransactionController::class, 'getTrsItem'])->name('get-trs-item');
 Route::get('/get-trs-stock-qty', [TransactionController::class, 'getTrsStockQty'])->name('get-trs-stock-qty');
 Route::get('/get-trs-subtotal', [TransactionController::class, 'getTrsSubtotal'])->name('get-trs-subtotal');
+Route::post('/post-trs-submit', [TransactionController::class, 'postTrsSubmit'])->name('post-trs-submit');
 
+
+// ========================= RECEIVING =========================
+Route::get('/receiving/list', [ReceivingController::class, 'receivingListPage'])->name('/receiving/list');
+Route::get('/get-receiving-list-datatable', [ReceivingController::class, 'getReceivingListDatatable'])->name('/get-receiving-list-datatable');
+Route::get('/receiving/view/{id}', [ReceivingController::class, 'viewReceivingPage'])->name('receiving/view');
+Route::get('/receiving/form', [ReceivingController::class, 'receivingFormPage'])->name('/receiving/form');
+Route::get('/get-rec-item', [ReceivingController::class, 'getRecItem'])->name('get-rec-item');
+Route::post('/post-rec-submit', [ReceivingController::class, 'postRecSubmit'])->name('post-rec-submit');
+
+// ========================= STOCK =========================
+Route::get('/stock/list', [StockController::class, 'stockListPage'])->name('/stock/list');
+Route::post('/get-stock-list-datatable', [StockController::class, 'getStockListDatatable'])->name('get-stock-list-datatable');
+
+Route::get('/stock/movement', [StockController::class, 'listStockMovementPage'])->name('/stock/movement');
+Route::post('/get-movement-stock-list-datatable', [StockController::class, 'getMovementStockList'])->name('/get-movement-stock-list-datatable');

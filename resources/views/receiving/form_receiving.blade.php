@@ -1,13 +1,13 @@
-@extends("inventory.layouts.main")
+@extends("layouts.main")
 @section("container")
 
-    <style>
+<style>
 
-        table thead th, td {
-            padding: 5px 0px;
-        }
+    table thead th, td {
+        padding: 5px 0px;
+    }
 
-    </style>
+</style>
 
     <div class="content">
 
@@ -17,18 +17,19 @@
 
             <div class="user_guide active text-center">
                 <font class="text_tooltip">i</font>
-                <span class="user_guide_tooltip">You can make new Receiving here.</span>
+                <span class="user_guide_tooltip">You can make new Redeem here.</span>
             </div>
         </div>
 
         <hr>
 
-        <div style="margin-top: 0px; padding: 0px 10px">
+        <div class="form_header" style="padding: 0px 5px">
             <table style="width: 100%;">
+
                 <tr>
                     {{-- RECEIVING DATE --}}
                     <td class="label_form">Receiving Date</td>
-                    <td class="container_input_form" style="margin: 0; padding: 0;">
+                    <td class="container_input_form">
                         <input type="text" class="form-control input_form" id="receiving_date" readonly disabled>
                     </td>
 
@@ -37,72 +38,65 @@
                         <hr class="vertical_line_two_row">
                     </td>
 
-                    {{-- SITE --}}
-                    <td class="label_form">Site</td>
-                    <td class="container_input_form" style="margin: 0; padding: 0;">
-                        <select name="select_site" id="select_site" class="input_form" disabled style="width: 100%">
-                            <option value="">Select store</option>
-                        </select>
+                    {{-- SUPPLIER NAME --}}
+                    <td class="label_form">Supplier Name</td>
+                    <td class="container_input_form">
+                        <input type="text" class="form-control input_form" id="supplier_name">
                     </td>
                 </tr>
                 <tr>
-                    {{-- TYPE --}}
-                    <td class="label_form">Type</td>
-                    <td class="container_input_form" style="margin: 0; padding: 0;">
-                        <select name="select_type" id="select_type" class="input_form" style="width: 100%">
-                            <option value="">Select type</option>
-                            <option value="transfer">Transfer</option>
-                            <option value="supplier">Supplier</option>
-                        </select>
-                    </td>
-
-                    {{-- FROM TRANSFER --}}
-                    <td class="label_form trans d-none">From Transfer</td>
-                    <td class="container_input_form trans d-none">
-                        <select name="select_transfer" id="select_transfer" class="input_form" disabled style="width: 100%">
-                            <option value="">Select transfer</option>
-                        </select>
-                    </td>
-
-                    {{-- FROM SUPPLIER --}}
-                    <td class="label_form supp d-none">From Supplier</td>
-                    <td class="container_input_form supp d-none">
-                        <select name="select_supplier" id="select_supplier" class="input_form" disabled style="width: 100%">
-                            <option value="">Select supplier</option>
-                        </select>
+                    {{-- INVOICE --}}
+                    <td class="label_form">Invoice No.</td>
+                    <td class="container_input_form">
+                        <input type="text" class="form-control input_form" id="invoice_no">
                     </td>
                 </tr>
+
             </table>
         </div>
     </div>
 
-    {{-- INPUT NOMOR FAKTUR --}}
-    <div class="content mt-2 d-none" id="content_no_faktur">
-        <table style="width: 100%;">
-            <tr>
-                <td class="" style="width: 13%">Delivery Number</td>
-                <td class="" style="width: 87%">
-                    <input type="text" class="form-control input_form" id="invoice_number" disabled>
-                </td>
-            </tr>
-        </table>
-    </div>
-
     {{-- TABLE LIST ITEMS --}}
-    <div class="content mt-2 d-none" id="content_table_form">
+    <div class="content  mt-2" id="content_table_form">
 
-        <div style="height: 290px;" id="container_table_form"></div>
+        <div style="height: 290px;" id="container_table_form">
 
-        <div class="row text-left" id="addRowDiv" style="width: 300px; margin-left: 0px; margin-bottom: 5px">
-            <button type="button" id="add" class="btn_add_row" style="display: none;">
+            {{-- TITLE --}}
+            <div class="title_n_button">
+                <h4 class="title" style="margin-left: 0px">LIST OF ITEMS</h4>
+            </div>
+
+            <hr>
+
+            {{-- TABLE ITEM --}}
+            <div class="table_scroll">
+                <table class="table table-bordered align-middle table_form" id="table_form" style="width:100%;">
+                    <thead class="thead">
+                        <tr class="text-center" style="width: 100%;">
+                            <th class="text-center">Items</th>
+                            <th class="text-center" style="width:200px">Stock Quantity</th>
+                            <th class="text-center" style="width:100px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: white"></tbody>
+                </table>
+            </div>
+
+        </div>
+
+        {{-- BUTTON ADD ROW --}}
+        <div class="row text-left d-flex justify-content-between" id="addRowDiv" style="width: 100%; margin-left: 0px; margin-bottom: 5px">
+
+            <button type="button" id="add" class="btn_add_row" style="display: none; width: 300px">
                 <font style="color: white">+ Add row</font>
             </button>
+
         </div>
 
     </div>
 
     {{-- BUTTON SUBMIT --}}
-    <div class="d-flex justify-content-end d-none" id="content_button_submit">
+    <div class="d-flex justify-content-end" id="content_button_submit">
         <button class="button_submit_form mt-2" id="button_submit">Submit</button>
     </div>
 
@@ -121,319 +115,28 @@
             const todayDate = new Date().toLocaleDateString('id-ID');
             document.getElementById("receiving_date").value = todayDate;
 
-            $("#select_type").select2();
-            $("#select_site").select2();
-            $("#select_transfer").select2();
-            $("#select_supplier").select2();
+            //getListSite();
+            tableItems();
 
-            getListSite();
+            $(".item").prop('disabled', true);
+            $('.btn_remove').prop('disabled', true);
+
+            getListItem();
+            resetTable();
 
         });
 
         var indexTable = 3;
-        var itemListData = [];
+        var productListData = [];
 
-
-        $("#select_type").change(function(){
-
-            const trans = document.getElementsByClassName("trans");
-            const supp = document.getElementsByClassName("supp");
-
-            const contentNoFaktur = document.getElementById('content_no_faktur');
-            const contentTableForm = document.getElementById('content_table_form');
-            const contentButtonSubmit = document.getElementById('content_button_submit');
-
-            if ( this.value == "transfer" ) {
-
-                trans[0].classList.remove('d-none');
-                trans[1].classList.remove('d-none');
-                supp[0].classList.add('d-none');
-                supp[1].classList.add('d-none');
-                $('#select_site').prop('disabled', false);
-
-                contentNoFaktur.classList.add('d-none');
-                $('#container_table_form').html('');
-                contentTableForm.classList.add('d-none');
-                contentButtonSubmit.classList.add('d-none');
-
-                document.getElementById('add').style.display = 'none';
-
-                var site = $("#select_site").val();
-                if ( site != null ) {
-                    getFromTransfer(site);
-                    $('#select_transfer').prop('disabled', false);
-                }
-
-            } else if ( this.value == "supplier" ) {
-
-                trans[0].classList.add('d-none');
-                trans[1].classList.add('d-none');
-                supp[0].classList.remove('d-none');
-                supp[1].classList.remove('d-none');
-                $('#select_site').prop('disabled', false);
-
-                var site = $("#select_site").val();
-
-                if ( site != null ) {
-                    getListSupplier();
-                    $('#select_supplier').prop('disabled', false);
-                } else {
-                    $('#select_supplier').prop('disabled', true);
-
-                }
-
-                tableSupplier();
-
-            }
-
-        });
-
-        function getListSite() {
+        function getListItem() {
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-user-site-permission') }}",
+                url: "{{ url('/get-rec-item') }}",
                 dataType: 'json',
                 data: {},
                 success: function(response) {
-                    var data = response;
-
-                    /** Set dropdown list */
-                    $('#select_site').find('option').remove().end().append();
-
-                    if (data.length != 1) {
-                        $('#select_site').append('<option value="" disabled selected>Select store</option>');
-                    }
-
-                    for (var i = 0; i < data.length; i++) {
-                        text = data[i].store_code+' - '+data[i].site_description;
-                        value = data[i].site_id;
-                        $('#select_site').append($("<option></option>").attr("value", value).text(text));
-                    }
-
-                    // if (data.length == 1) {
-                    //     resetTable();
-                    //     getListItem();
-                    // }
-
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list site',
-                    });
-                },
-            });
-
-        }
-
-        $(document).on('change', '#select_site', function(event){
-
-            var type = $('#select_type').val();
-            // resetTable();
-
-            if ( type == "transfer" ) {
-                getFromTransfer(this.value);
-                $('#select_transfer').prop('disabled', false);
-
-            } else if ( type == "supplier" ) {
-                getListSupplier();
-                $('#select_supplier').prop('disabled', false);
-
-            }
-
-        });
-
-        function getFromTransfer(data) {
-
-            var site = data;
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-from-transfer') }}",
-                dataType: 'json',
-                data: {
-                    site_id: site,
-                },
-                success: function(response) {
-                    var data = response;
-
-                    /** Set dropdown list */
-                    $('#select_transfer').find('option').remove().end().append();
-                    if (data.length != 1) {
-                        $('#select_transfer').append('<option value="" disabled selected>Select transfer</option>');
-                    }
-
-                    for (var i = 0; i < data.length; i++) {
-                        text = data[i].trf_no;
-                        value = data[i].id;
-                        $('#select_transfer').append($("<option></option>").attr("value", value).text(text));
-                    }
-
-                    if (data.length == 1) {
-                        var select_transfer = $('#select_transfer').val();
-                        tableTransfer(select_transfer);
-                        resetTable();
-                    }
-
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list transer',
-                    });
-                },
-            });
-
-        }
-
-        $(document).on('change', '#select_transfer', function(event){
-
-            tableTransfer(this.value);
-
-        });
-
-        function tableTransfer(trf_id) {
-
-            const contentTableForm = document.getElementById('content_table_form');
-            const contentButtonSubmit = document.getElementById('content_button_submit');
-
-            contentTableForm.classList.remove('d-none');
-            contentButtonSubmit.classList.remove('d-none');
-
-            $('#container_table_form').html(
-                `<div class="title_n_button">
-                    <h4 class="title" style="margin-left: 0px">LIST OF ITEMS</h4>
-                </div>
-
-                <hr>
-                <div class="table_scroll">
-                    <table class="table table-bordered tableData align-middle table_form" id="table_form" style="width:100%;">
-                        <thead class="thead">
-                            <tr class="text-center" style="width: 100%;">
-                                <th class="text-center">Item Description</th>
-                                <th class="text-center" style="width:200px">Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody style="background-color: white"></tbody>
-                    </table>
-                </div>`
-            )
-
-            addTableRowTransfer(trf_id);
-
-        }
-
-        function addTableRowTransfer(trf_id) {
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-transfer-detail-by-trf-id') }}",
-                dataType: 'json',
-                data: {
-                    trf_id: trf_id,
-                },
-                success: function(response) {
-                    var data = response;
-
-                    if (data.length == 0) {
-                        $('#table_form').append(
-                            `<tr id="row" class="tableRow">
-                                <td colspan=2>No Data</td>
-                            </tr>`
-                        )
-                    }
-
-                    for (var index = 0; index < data.length; index++) {
-                        $('#table_form').append(
-                            `<tr id="row_`+index+`" class="tableRow">
-                                <td class="text-center">
-                                <input type="hidden" name="item_`+index+`_id" id="item_`+index+`_id" value="`+data[index].item_id+`">
-                                    `+ data[index].item_desc +`
-                                </td>
-                                <input type="hidden" name="qty_`+index+`" id="qty_`+index+`" value="`+data[index].quantity+`">
-                                <td class="text-center">
-                                    `+ data[index].quantity +`
-                                </td>
-                            </tr>`
-                        )
-                    }
-
-
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list transer',
-                    });
-                },
-            });
-
-        }
-
-        function getListSupplier() {
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-all-data-supplier') }}",
-                dataType: 'json',
-                data: {},
-                success: function(response) {
-                    var data = response;
-
-                    /** Set dropdown list */
-                    $('#select_supplier').find('option').remove().end().append();
-                    if (data.length != 1) {
-                        $('#select_supplier').append('<option value="" disabled selected>Select supplier</option>');
-                    }
-                    for (var i = 0; i < data.length; i++) {
-                        text = data[i].supp_name;
-                        value = data[i].id;
-                        $('#select_supplier').append($("<option></option>").attr("value", value).text(text));
-                    }
-
-                    if (data.length == 1) {
-                        resetTable();
-                        $('#invoice_number').prop('disabled', false);
-                        getListItem($('#select_supplier').val());
-                    }
-
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list site',
-                    });
-                },
-            });
-
-        }
-
-        $(document).on('change', '#select_supplier', function(event){
-            $('#invoice_number').prop('disabled', false);
-            resetTable();
-            getListItem(this.value);
-        });
-
-        function getListItem(supp_id) {
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-rec-supplier-item') }}",
-                dataType: 'json',
-                data: {
-                    supp_id: supp_id,
-                },
-                success: function(response) {
-
                     itemListData = response.map(function (item) {
                         return {
                             label: item.item_code+' - '+item.item_name,
@@ -453,52 +156,22 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list product',
+                        text: error.responseJSON.message ?? 'Failed get list item',
                     });
                 },
             });
 
         }
 
-        function tableSupplier() {
-
-            const contentNoFaktur = document.getElementById('content_no_faktur');
-            const contentTableForm = document.getElementById('content_table_form');
-            const contentButtonSubmit = document.getElementById('content_button_submit');
-
-            contentNoFaktur.classList.remove('d-none');
-            contentTableForm.classList.remove('d-none');
-            contentButtonSubmit.classList.remove('d-none');
-
-            $('#container_table_form').html(
-                `<div class="title_n_button">
-                    <h4 class="title" style="margin-left: 0px">LIST OF ITEMS</h4>
-                </div>
-
-                <hr>
-                <div class="table_scroll">
-                    <table class="table table-bordered align-middle table_form" id="table_form" style="width:100%;">
-                        <thead class="thead">
-                            <tr class="text-center" style="width: 100%;">
-                                <th class="text-center">Items</th>
-                                <th class="text-center" style="width:200px">Quantity</th>
-                                <th class="text-center" style="width:100px">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody style="background-color: white"></tbody>
-                    </table>
-                </div>`
-            )
+        function tableItems() {
             document.getElementById('add').style.display = 'block';
 
             for (var i = 0 ; i < indexTable ; i++) {
                 addTableRow(i);
                 $(".item").prop('disabled', true);
                 $("#add").prop('disabled', true);
+                $("#button_submit").prop('disabled', true);
             }
-
-            // getListItem();
-
         }
 
         function addTableRow(index) {
@@ -516,9 +189,8 @@
                         <div name="err_qty_`+index+`" id="err_qty_`+index+`" style="text-align: left; display: none;">
                             <p name="err_qty_msg_`+index+`" id="err_qty_msg_`+index+`" style="margin-bottom: 0; color: red; font-size: 12px;"></p>
                         </div>
-
                     </td>
-                    <td class="text-center"><button type="button" name="remove" id="button_remove_`+index+`" class="btn btn-danger btn_remove">X</button></td>
+                    <td class="text-center"><buxtton type="button" name="remove" id="button_remove_`+index+`" class="btn btn-danger btn_remove">X</button></td>
                 </tr>`
             )
         }
@@ -643,8 +315,13 @@
                 var tempArr = buttonId.split("_");
                 $('#row_'+tempArr[2]).remove();
 
+                console.log(tempArr[2]);
+                $cek = $('#price_'+tempArr[2]).val();
+                console.log($cek);
+
                 enableTableRow(tempArr[2]);
                 showAddRowButton();
+
                 indexTable--;
             }
 
@@ -708,6 +385,7 @@
                         /** Reset qty, stock, unit */
                         document.getElementById("qty_"+tempArr[1]).value = '';
                         hideQtyErrorMessage(tempArr[1]);
+
                         $('#qty_'+tempArr[1]).prop('disabled', false);
 
                         return false;
@@ -726,20 +404,25 @@
             }
         }
 
-        // ========================= SUBMIT TRANSFER =========================
+        $(document).on('change', '.qty', function() {
+            var qtyId = $(this).attr("id");
+
+            var tempArr = qtyId.split("_");
+            validateQty(tempArr[1]);
+        });
+
+        // ========================= SUBMIT REDEEM =========================
         $(document).on('click', '#button_submit', function(event) {
 
             event.preventDefault();
             $("#button_submit").prop('disabled', true);
 
-            var receivingDate = $('#receiving_date').val();
-            var type = $('#select_type').val();
-            var site = $('#select_site').val();
-            var transfer = $('#select_transfer').val();
-            var supplier = $('#select_supplier').val();
-            var invoice_no = $('#invoice_number').val();
+            var receiving_date = $('#receiving_date').val();
+            var invoice_no = $("#invoice_no").val();
+            var supplier_name = $('#supplier_name').val();
             var table = document.getElementById("table_form");
             var detailData = [];
+
 
             /** Prepare data for detail data */
             for (var i = 1, row ; row = table.rows[i] ; i++) {
@@ -783,18 +466,12 @@
                 url: "{{ url('/post-rec-submit') }}",
                 dataType: 'json',
                 data: {
-                    receiving_date: receivingDate,
-                    site_id: site,
-                    transfer: transfer,
-                    supplier: supplier,
+                    receiving_date: receiving_date,
                     invoice_no: invoice_no,
+                    supplier_name: supplier_name,
                     detail: detailData,
                 },
                 success: function(response) {
-
-                    /** Disable all input field */
-                    $('#select_site').prop('disabled', true);
-                    disableTableRow(-1);
 
                     return Swal.fire({
                         title: response.title,
@@ -820,14 +497,14 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit receiving request',
+                        text: error.responseJSON.message ?? 'Failed submit transaction request',
                     });
                     $("#button_submit").prop('disabled', false);
                 },
             });
+
         });
 
     </script>
-
 
 @endsection

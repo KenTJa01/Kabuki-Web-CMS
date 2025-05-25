@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaction_headers', function (Blueprint $table) {
+        Schema::create('transaction_histories', function (Blueprint $table) {
 
             $table->bigIncrements('id');
-            $table->string('trs_no')->unique();
+            $table->string('trs_no');
             $table->date('trs_date');
 
             $table->bigInteger("work_type_id")->nullable();
@@ -44,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaction_headers');
+        Schema::dropIfExists('transaction_histories');
     }
 };

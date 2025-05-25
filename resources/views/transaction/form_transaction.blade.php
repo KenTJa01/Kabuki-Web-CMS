@@ -37,10 +37,12 @@
                         <hr class="vertical_line_three_row">
                     </td>
 
-                    {{-- NOTE --}}
-                    <td class="label_form">Note</td>
-                    <td class="container_input_form" rowspan="3">
-                        <textarea class="form-control" id="" cols="50" rows="5" style="resize: none;"></textarea>
+                    {{-- STATUS --}}
+                    <td class="label_form">Payment Status</td>
+                    <td class="container_input_form">
+                        <select name="select_payment_status" id="select_payment_status" class="input_form" style="width: 100%;" disabled>
+                            <option value="">Select payment status</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -50,6 +52,12 @@
                         <select name="select_work_type" id="select_work_type" class="input_form" style="width: 100%;">
                             <option value="">Select work type</option>
                         </select>
+                    </td>
+
+                    {{-- NOTE --}}
+                    <td class="label_form">Note</td>
+                    <td class="container_input_form" rowspan="2">
+                        <textarea class="form-control" id="note" cols="50" rows="3" style="resize: none;"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -65,7 +73,7 @@
         </div>
     </div>
 
-    {{-- NOMOR MEMBER --}}
+    {{-- CUSTOMER'S DATA --}}
     <div class="content mt-2" id="content_no_faktur">
 
         {{-- TITLE --}}
@@ -189,6 +197,7 @@
 
             $("#select_work_type").select2();
             $("#select_order_type").select2();
+            $("#select_payment_status").select2();
             $("#select_customer_name").select2();
 
             //getListSite();
@@ -262,10 +271,37 @@
 
         $('#select_order_type').on('change', function() {
 
+            $('#select_payment_status').prop('disabled', false);
             $('#select_customer_name').prop('disabled', false);
+            getAllDataPaymentStatus();
             getAllDataCustomer();
 
         });
+
+        function getAllDataPaymentStatus() {
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-payment-status') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_payment_status").append('<option value="' + value.id + '">' + value.flag_desc + '</option>');
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of customer',
+                    });
+                },
+            });
+
+        }
 
         // ========================= GET ALL DATA CUSTOMER =========================
         function getAllDataCustomer() {
@@ -711,12 +747,18 @@
             $("#button_submit").prop('disabled', true);
 
             var transaction_date = $('#transaction_date').val();
-            var customer_name = $("#select_customer_name").val();
+            var work_type = $('#select_work_type').val();
+            var order_type = $('#select_order_type').val();
+            var payment_status = $('#select_payment_status').val();
+            var note = $('#note').val();
+            var customer_id = $("#select_customer_name").val();
             var address = $("#address").val();
             var no_telp = $("#phone_number").val();
             var vehicle_number = $("#vehicle_number").val();
             var table = document.getElementById("table_form");
             var detailData = [];
+
+            var total_price = tampungTotalPrice;
 
             /** Prepare data for detail data */
             for (var i = 1, row ; row = table.rows[i] ; i++) {
@@ -751,36 +793,30 @@
                         {
                             item_id: itemId,
                             qty: qty,
-                            subtotal,
+                            subtotal: subtotal,
                         }
                     );
                 }
             }
 
-            console.log(detailData);
-            return;
-
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-red-submit') }}",
+                url: "{{ url('/post-trs-submit') }}",
                 dataType: 'json',
                 data: {
-                    redeem_date: redeemDate,
-                    site_id: site,
-                    customer_fullname: customer_fullname,
-                    id_no: id_no,
-                    member_no: member_no,
-                    phone_no: phone_no,
+                    transaction_date: transaction_date,
+                    work_type: work_type,
+                    order_type: order_type,
+                    payment_status: payment_status,
+                    note: note,
+                    customer_id: customer_id,
+                    address: address,
+                    no_telp: no_telp,
+                    vehicle_number: vehicle_number,
                     detail: detailData,
+                    total_price: total_price,
                 },
                 success: function(response) {
-
-                    // console.log(response);
-                    // return;
-
-                    /** Disable all input field */
-                    $('#select_site').prop('disabled', true);
-                    disableTableRow(-1);
 
                     return Swal.fire({
                         title: response.title,
@@ -806,7 +842,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit transfer request',
+                        text: error.responseJSON.message ?? 'Failed submit transaction request',
                     });
                     $("#button_submit").prop('disabled', false);
                 },

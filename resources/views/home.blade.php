@@ -4,7 +4,7 @@
     {{-- BANNER --}}
     <div class="row" style="flex: 0;">
         <div class="col">
-            <img src="img/banner_inv_home.png" class="banner_home">
+            <img src="img/banner_inv_home.svg" class="banner_home">
         </div>
     </div>
 

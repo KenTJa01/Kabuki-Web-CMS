@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction_header extends Model
+class Transaction_history extends Model
 {
 
     use HasFactory;
@@ -29,6 +29,6 @@ class Transaction_header extends Model
         'updated_by',
     ];
 
-    protected $table = 'transaction_headers';
+    protected $table = 'transaction_histories';
 
 }

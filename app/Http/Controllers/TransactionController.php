@@ -224,6 +224,12 @@ class TransactionController extends Controller
 
     }
 
+    public function getOrderTypeById(Request $request)
+    {
+        $data = Order_type::where('work_type_id', $request->work_type_id)->where('flag', 1)->get();
+        return response()->json($data);
+    }
+
     public function getDataCustomerById(Request $request)
     {
         $data = Customer::where('id', $request->customer_id)->where('flag', 1)->first();
@@ -298,7 +304,6 @@ class TransactionController extends Controller
         $validate = Validator::make($request->all(), [
             'transaction_date' => ['required'],
             'work_type' => ['required'],
-            'order_type' => ['required'],
             'payment_status' => ['required'],
             'customer_id' => ['required'],
             'address' => ['required', 'string'],
@@ -328,7 +333,18 @@ class TransactionController extends Controller
         $trsNumber = $prefixTrsNumber.str_pad($seqNum, 3, '0', STR_PAD_LEFT);
 
         $work_type = Work_type::where('id', $validated['work_type'])->first();
-        $order_type = Order_type::where('id', $validated['order_type'])->first();
+        $order_type = "";
+
+        if ( $request->order_type == null ) {
+
+            $order_type = null;
+
+        } else {
+
+            $order_type = Order_type::where('id', $validated['order_type'])->first()->id;
+
+        }
+
         $payment_status = Status::where('id', $validated['payment_status'])->first();
 
         $note = "";
@@ -357,7 +373,7 @@ class TransactionController extends Controller
                 'trs_no' => $trsNumber,
                 'trs_date' => $transactionDate,
                 'work_type_id' => $work_type->id,
-                'order_type_id' => $order_type->id,
+                'order_type_id' => $order_type,
                 'customer_fullname' => $customer_name,
                 'address' => $address,
                 'no_telp' => $no_telp,
@@ -370,21 +386,21 @@ class TransactionController extends Controller
             ]);
 
             /** Insert transaction history */
-            $trsHistory = Transaction_history::create([
-                'trs_no' => $trsNumber,
-                'trs_date' => $transactionDate,
-                'work_type_id' => $work_type->id,
-                'order_type_id' => $order_type->id,
-                'customer_fullname' => $customer_name,
-                'address' => $address,
-                'no_telp' => $no_telp,
-                'vehicle_number' => $vehicle_number,
-                'total_price' => $total_price,
-                'note' => $note,
-                'flag' => $payment_status->id,
-                'created_by' => $user?->id,
-                'updated_by' => $user?->id,
-            ]);
+            // $trsHistory = Transaction_history::create([
+            //     'trs_no' => $trsNumber,
+            //     'trs_date' => $transactionDate,
+            //     'work_type_id' => $work_type->id,
+            //     'order_type_id' => $order_type,
+            //     'customer_fullname' => $customer_name,
+            //     'address' => $address,
+            //     'no_telp' => $no_telp,
+            //     'vehicle_number' => $vehicle_number,
+            //     'total_price' => $total_price,
+            //     'note' => $note,
+            //     'flag' => $payment_status->id,
+            //     'created_by' => $user?->id,
+            //     'updated_by' => $user?->id,
+            // ]);
 
             /** Looping details */
             foreach ($validated['detail'] as $detail) {
@@ -507,77 +523,77 @@ class TransactionController extends Controller
         return view('/transaction/view_transaction', $data);
     }
 
-    public function postTrsOnProcessSubmit(Request $request)
-    {
+    // public function postTrsOnProcessSubmit(Request $request)
+    // {
 
-        $user = Auth::user();
+    //     $user = Auth::user();
 
-        /** Validate Input */
-        $validate = Validator::make($request->all(), [
-            'id_trs_header' => ['required'],
-            'work_type' => ['required', 'integer'],
-            'order_type' => ['required', 'integer'],
-        ]);
+    //     /** Validate Input */
+    //     $validate = Validator::make($request->all(), [
+    //         'id_trs_header' => ['required'],
+    //         'work_type' => ['required', 'integer'],
+    //         'order_type' => ['required', 'integer'],
+    //     ]);
 
 
-        if ($validate->fails()) {
-            throw new ValidationException($validate);
-        }
-        (array) $validated = $validate->validated();
+    //     if ($validate->fails()) {
+    //         throw new ValidationException($validate);
+    //     }
+    //     (array) $validated = $validate->validated();
 
-        $work_type = Work_type::where('id', $validated['work_type'])->first();
-        $order_type = Order_type::where('id', $validated['order_type'])->first();
+    //     $work_type = Work_type::where('id', $validated['work_type'])->first();
+    //     $order_type = Order_type::where('id', $validated['order_type'])->first();
 
-        DB::beginTransaction();
-        try {
+    //     DB::beginTransaction();
+    //     try {
 
-            $trsHeaderData = Transaction_header::where('id', $validated['id_trs_header'])->first();
+    //         $trsHeaderData = Transaction_header::where('id', $validated['id_trs_header'])->first();
 
-            $trsHeaderData->work_type_id = $work_type->id;
-            $trsHeaderData->order_type_id = $order_type->id;
-            $trsHeaderData->updated_by = $user?->id;
-            $trsHeaderData->save();
+    //         $trsHeaderData->work_type_id = $work_type->id;
+    //         $trsHeaderData->order_type_id = $order_type->id;
+    //         $trsHeaderData->updated_by = $user?->id;
+    //         $trsHeaderData->save();
 
-            /** Insert transaction history */
-            $trsHeader = Transaction_history::create([
-                'trs_no' => $trsHeaderData->trs_no,
-                'trs_date' => $trsHeaderData->trs_date,
-                'work_type_id' => $work_type->id,
-                'order_type_id' => $order_type->id,
-                'customer_fullname' => $trsHeaderData->customer_fullname,
-                'address' => $trsHeaderData->address,
-                'no_telp' => $trsHeaderData->no_telp,
-                'vehicle_number' => $trsHeaderData->vehicle_number,
-                'total_price' => $trsHeaderData->total_price,
-                'note' => $trsHeaderData->note,
-                'flag' => $trsHeaderData->flag,
-                'created_by' => $user?->id,
-                'updated_by' => $user?->id,
-            ]);
+    //         /** Insert transaction history */
+    //         $trsHeader = Transaction_history::create([
+    //             'trs_no' => $trsHeaderData->trs_no,
+    //             'trs_date' => $trsHeaderData->trs_date,
+    //             'work_type_id' => $work_type->id,
+    //             'order_type_id' => $order_type->id,
+    //             'customer_fullname' => $trsHeaderData->customer_fullname,
+    //             'address' => $trsHeaderData->address,
+    //             'no_telp' => $trsHeaderData->no_telp,
+    //             'vehicle_number' => $trsHeaderData->vehicle_number,
+    //             'total_price' => $trsHeaderData->total_price,
+    //             'note' => $trsHeaderData->note,
+    //             'flag' => $trsHeaderData->flag,
+    //             'created_by' => $user?->id,
+    //             'updated_by' => $user?->id,
+    //         ]);
 
-            (string) $title = 'Success';
-            (string) $message = "Transaction request successfully submitted with number: ".$trsHeaderData->trs_no;
-            (array) $data = [
-                'trx_number' => $trsHeaderData->trs_no,
-            ];
-            (string) $route = route('/transaction/list');
+    //         (string) $title = 'Success';
+    //         (string) $message = "Transaction request successfully submitted with number: ".$trsHeaderData->trs_no;
+    //         (array) $data = [
+    //             'trx_number' => $trsHeaderData->trs_no,
+    //         ];
+    //         (string) $route = route('/transaction/list');
 
-            DB::commit();
-            return response()->json([
-                'title' => $title,
-                'message' => $message,
-                'route' => $route,
-                'data' => $data,
-            ]);
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            Log::warning('Validation error when submit transaction request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
-            throw $e;
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            throw new CommonCustomException('Failed to submit transaction request', 422, $e);
-        }
+    //         DB::commit();
+    //         return response()->json([
+    //             'title' => $title,
+    //             'message' => $message,
+    //             'route' => $route,
+    //             'data' => $data,
+    //         ]);
+    //     } catch (ValidationException $e) {
+    //         DB::rollBack();
+    //         Log::warning('Validation error when submit transaction request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
+    //         throw $e;
+    //     } catch (\Throwable $e) {
+    //         DB::rollBack();
+    //         throw new CommonCustomException('Failed to submit transaction request', 422, $e);
+    //     }
 
-    }
+    // }
 
 }

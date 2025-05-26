@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CommonCustomException;
 use App\Models\Order_type;
+use App\Models\Work_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -56,8 +57,9 @@ class OrderTypeController extends Controller
     {
 
         $user = Auth::user();
-        $sql = ("SELECT ot.id, ot.order_type_code, ot.order_type_name, ot.order_type_desc, (CASE WHEN ot.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
-                FROM order_types ot
+        $sql = ("SELECT ot.id, ot.order_type_code, ot.order_type_name, ot.order_type_desc, wt.work_type_name, (CASE WHEN ot.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
+                FROM order_types ot, work_types wt
+                WHERE ot.work_type_id = wt.id
                 ORDER BY ot.id ASC");
 
         // $sqlPermissionEdit = ("SELECT pp.id, perm.key, s.submenu_name, u.username
@@ -103,6 +105,7 @@ class OrderTypeController extends Controller
         $validate = Validator::make($request->all(), [
             'orderTypeName' => ['required', 'string'],
             'orderTypeDesc' => ['required', 'string'],
+            'workType' => ['required'],
             'status' => ['required'],
         ]);
 
@@ -126,6 +129,7 @@ class OrderTypeController extends Controller
 
         $order_type_name = $validated['orderTypeName'];
         $order_type_desc = $validated['orderTypeDesc'];
+        $work_type = Work_type::where('id', $validated['workType'])->first();
         $status = $validated['status'];
 
         $orderTypeCek = Order_type::where('order_type_name', $order_type_name)->first();
@@ -141,6 +145,7 @@ class OrderTypeController extends Controller
                 'order_type_code' => $order_type_code,
                 'order_type_name' => $order_type_name,
                 'order_type_desc' => $order_type_desc,
+                'work_type_id' => $work_type->id,
                 'flag' => $status,
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
@@ -188,6 +193,7 @@ class OrderTypeController extends Controller
             'order_type_code' => ['required', 'string'],
             'order_type_name' => ['required', 'string'],
             'order_type_desc' => ['required', 'string'],
+            'work_type' => ['required'],
             'status' => ['required'],
         ]);
 
@@ -200,6 +206,7 @@ class OrderTypeController extends Controller
         $order_type_name = $validated['order_type_name'];
         $order_type_code = $validated['order_type_code'];
         $order_type_desc = $validated['order_type_desc'];
+        $work_type = Work_type::where('id', $validated['work_type'])->first();
         $status = $validated['status'];
 
         DB::beginTransaction();
@@ -210,6 +217,7 @@ class OrderTypeController extends Controller
             $orderTypeData->order_type_code = $order_type_code;
             $orderTypeData->order_type_name = $order_type_name;
             $orderTypeData->order_type_desc = $order_type_desc;
+            $orderTypeData->work_type_id = $work_type->id;
             $orderTypeData->flag = $status;
             $orderTypeData->updated_by = $user?->id;
             $orderTypeData->save();

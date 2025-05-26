@@ -51,7 +51,7 @@
                 <input type="hidden" id="work_type_id" value="{{ $trs_header_data->work_type_id }}">
                 <td class="label_form">Work Type</td>
                 <td class="container_input_form">
-                    <select name="select_work_type" id="select_work_type" class="input_form" style="width: 100%;">
+                    <select name="select_work_type" id="select_work_type" class="input_form" style="width: 100%;" disabled>
                         <option value="">Select work type</option>
                     </select>
                 </td>
@@ -67,7 +67,7 @@
                 <input type="hidden" id="order_type_id" value="{{ $trs_header_data->order_type_id }}">
                 <td class="label_form">Order Type</td>
                 <td class="container_input_form">
-                    <select name="select_order_type" id="select_order_type" class="input_form" style="width: 100%;">
+                    <select name="select_order_type" id="select_order_type" class="input_form" style="width: 100%;" disabled>
                         <option value="">Select order type</option>
                     </select>
                 </td>
@@ -170,9 +170,9 @@
 </div>
 
 {{-- BUTTON SUBMIT --}}
-<div class="d-flex justify-content-end" id="content_button_submit">
+{{-- <div class="d-flex justify-content-end" id="content_button_submit">
     <button class="button_submit_form mt-2" id="button_submit">Submit</button>
-</div>
+</div> --}}
 
 <div class="bottom_space"></div>
 

@@ -35,17 +35,26 @@
     <div class="content">
 
         {{-- TITLE & BUTTON NEW --}}
-        <div class="title_n_button">
+        <div class="title_n_button justify-content-between">
             <div style="display: flex">
-                <button class="button_new" id="button_new" data-bs-toggle="modal" data-bs-target="#newCreationModal">
+                {{-- @if ( $permission_create != null ) --}}
+                    <button class="button_new" id="button_new" data-bs-toggle="modal" data-bs-target="#newCreationModal">
                         <svg xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px" width="20" viewBox="0 0 24 24" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="20" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg>
                         New
-                </button>
-                <h4 class="title">LIST OF PROFILES</h4>
+                    </button>
+                {{-- @endif --}}
+
+                <h4 class="title">LIST OF USERS</h4>
+
                 <div class="user_guide active text-center">
                     <font class="text_tooltip">i</font>
-                    <span class="user_guide_tooltip">You can set access rights for each menu when creating a new profile.</span>
+                    <span class="user_guide_tooltip">You can manage the master data of DGM's gift items here.</span>
                 </div>
+            </div>
+            <div>
+                {{-- @if ( $permission_export != null ) --}}
+                <button class="button_export" id="buttonExport">Export</button>
+                {{-- @endif --}}
             </div>
         </div>
 
@@ -56,8 +65,9 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 120px">Profile Code</th>
-                        <th>Profile Name</th>
+                        <th style="width: 120px">Username</th>
+                        <th>Name</th>
+                        <th>Profile</th>
                         <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
@@ -66,9 +76,10 @@
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 120px">Profile Code</th>
-                        <th>Profile Name</th>
-                        <th style="width: 120px">Status</th>
+                        <th style="width: 120px">Username</th>
+                        <th>Name</th>
+                        <th>Profile</th>
+                        <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
@@ -83,25 +94,39 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW PROFILE</h1>
+                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW USER</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row input_modal">
-                        <label for="profile_name" class="col-sm-4 col-form-label">Profile Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="profile_name">
+                        <label for="username" class="col-sm-3 col-form-label">Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" placeholder="Enter username">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="select_menu" class="col-sm-4 col-form-label">Menu</label>
-                        <div class="col-sm-8">
-                            <select name="select_menu" id="select_menu" class="form-select" style="width: 100%;"></select>
+                        <label for="name" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="password" class="col-sm-3 col-form-label">Password</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="select_profile" class="col-sm-3 col-form-label">Profile</label>
+                        <div class="col-sm-9">
+                            <select name="select_profile" id="select_profile" class="form-select" style="width: 100%;">
+                                <option value="" disabled>Select profile</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="status" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status" value="1" checked>
@@ -126,32 +151,34 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT PROFILE</h1>
+                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT USER</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="profile_id_edit">
+                    <input type="hidden" name="id" id="user_id_edit">
                     <div class="row input_modal">
-                        <label for="profile_code_edit" class="col-sm-4 col-form-label">Profile Code</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="profile_code_edit" readonly disabled>
+                        <label for="username_edit" class="col-sm-3 col-form-label">Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username_edit" placeholder="Enter username">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="profile_name_edit" class="col-sm-4 col-form-label">Profile Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="profile_name_edit">
+                        <label for="name_edit" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name_edit" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="select_menu_edit" class="col-sm-4 col-form-label">Menu</label>
-                        <div class="col-sm-8">
-                            <select name="select_menu_edit" id="select_menu_edit" class="form-select" style="width: 100%;"></select>
+                        <label for="select_profile_edit" class="col-sm-3 col-form-label">Profile</label>
+                        <div class="col-sm-9">
+                            <select name="select_profile_edit" id="select_profile_edit" class="form-select" style="width: 100%;">
+                                <option value="" disabled>Select profile</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status_edit" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="status_edit" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status_edit" value="1" checked>
@@ -163,10 +190,9 @@
                         </div>
                     </div>
 
-
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button_clear_modal" id="button_clear_modal_edit">Clear</button>
+                    {{-- <button type="button" class="button_clear_modal" id="button_clear_modal_edit">Clear</button> --}}
                     <button type="button" class="button_submit_modal" id="button_submit_modal_edit">Submit</button>
                 </div>
             </div>
@@ -175,7 +201,7 @@
 
     <script>
 
-        // ==================== GLOBAL SETUP CSRF ====================
+        // ========================= GLOBAL SETUP CSRF =========================
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
@@ -184,22 +210,13 @@
 
         $(document).ready(function(){
 
-            $('#select_menu').select2({
+            $('#select_profile').select2({
                 dropdownParent: $("#newCreationModal"),
                 placeholder: {
                     id: '-1',
                     text: 'Select an option'
                 },
-                multiple: true
-            });
-
-            $('#select_menu_edit').select2({
-                dropdownParent: $("#editModal"),
-                placeholder: {
-                    id: '-1',
-                    text: ''
-                },
-                multiple: true
+                multiple: false
             });
 
             dataTable();
@@ -235,7 +252,7 @@
                 orderCellsTop: true,
                 ajax: {
                     type: 'GET',
-                    url: `{{ route("get-profile-list-datatable") }}`,
+                    url: `{{ route("get-user-list-datatable") }}`,
                     data: {
                     },
                 },
@@ -247,12 +264,16 @@
                         searchable:false
                     },
                     {
-                        data: 'profile_code',
-                        name: 'profile_code',
+                        data: 'username',
+                        name: 'username',
                     },
                     {
-                        data: 'profile_name',
-                        name: 'profile_name',
+                        data: 'name',
+                        name: 'name',
+                    },
+                    {
+                        data: 'profile',
+                        name: 'profile',
                     },
                     {
                         data: 'status',
@@ -268,7 +289,7 @@
                 ],
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { className: "dt-center", targets: [0,1,3] }
+                    { className: "dt-center", targets: [0,1,5] }
                 ],
                 language: {
                     loadingRecords: '&nbsp;',
@@ -289,38 +310,42 @@
         // ========================= CLICK NEW =========================
         $(document).on('click', '#button_new', function(event) {
 
-            $("#profile_name").val("");
-            $("#select_menu").val("");
-            $('#select_menu').trigger("change");
+            $("#username").val("");
+            $("#name").val("");
+            $("#password").val("");
+            $("#select_profile").val("");
+            $('#select_profile').trigger("change");
             document.getElementById('status').checked = true;
 
-            getListMenu();
+            getAllDataProfile();
 
         });
 
         // ========================= CLEAR INPUT MODAL =========================
         $(document).on('click', '#button_clear_modal', function(event) {
 
-            $("#profile_name").val("");
-            $("#select_menu").val("");
-            $('#select_menu').trigger("change");
+            $("#username").val("");
+            $("#name").val("");
+            $("#password").val("");
+            $("#select_profile").val("");
+            $('#select_profile').trigger("change");
+
             document.getElementById('status').checked = true;
 
         });
 
-        function getListMenu() {
-
-            $("#select_menu").html('');
+        // ========================= GET ALL DATA PROFILE =========================
+        function getAllDataProfile() {
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-all-data-menu') }}",
+                url: "{{ url('/get-all-data-profile') }}",
                 dataType: 'json',
                 data: {},
                 success: function(response) {
                     $.each(response,function(key, value)
                     {
-                        $("#select_menu").append('<option value="' + value.id + '">' + value.menu_name + '</option>');
+                        $("#select_profile").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
                     });
                 },
                 error: function(error) {
@@ -328,7 +353,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list menu',
+                        text: error.responseJSON.message ?? 'Failed get list of profile',
                     });
                 },
             });
@@ -338,8 +363,10 @@
         // ========================= SUBMIT NEW DATA =========================
         $(document).on('click', '#button_submit_modal', function(event) {
 
-            var profileName = $("#profile_name").val();
-            var menu = $("#select_menu").val();
+            var username = $("#username").val();
+            var name = $("#name").val();
+            var password = $("#password").val();
+            var profile = $("#select_profile").val();
             var status = $("#status:checked").val();
 
             if ( status == 1 ) {
@@ -350,11 +377,13 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-new-profile') }}",
+                url: "{{ url('/post-new-user') }}",
                 dataType: 'json',
                 data: {
-                    profileName: profileName,
-                    menu: menu,
+                    username: username,
+                    name: name,
+                    password: password,
+                    profile: profile,
                     status: flag,
                 },
                 success: function(response) {
@@ -384,7 +413,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit profile request',
+                        text: error.responseJSON.message ?? 'Failed submit user request',
                         target: document.getElementById('newCreationModal'),
                     });
                     $("#button_submit").prop('disabled', false);
@@ -400,16 +429,16 @@
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-old-data-of-profile') }}",
+                url: "{{ url('/get-old-data-of-user') }}",
                 dataType: 'json',
                 data: {
-                    profile_id: data_id,
+                    user_id: data_id,
                 },
                 success: function(response) {
 
-                    $("#profile_id_edit").val(response.id);
-                    $("#profile_code_edit").val(response.profile_code);
-                    $("#profile_name_edit").val(response.profile_name);
+                    $("#user_id_edit").val(response.id);
+                    $("#username_edit").val(response.username);
+                    $("#name_edit").val(response.name);
 
                     if ( response.flag == 1 ) {
                         $("#status_edit").attr('checked', true);
@@ -417,8 +446,39 @@
                         $("#status_edit").attr('checked', false);
                     }
 
-                    getProfileMenuById(response.id);
+                    getProfileById(response.profile_id);
 
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of item',
+                    });
+                },
+            });
+
+        });
+
+        function getProfileById(profile_id){
+
+            $("#select_profile_edit").html('<option value="">Select profile</option>');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-profile') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        if ( value.id == profile_id ) {
+                            $("#select_profile_edit").append('<option value="' + value.id + '" selected>' + value.profile_name + '</option>');
+                        } else {
+                            $("#select_profile_edit").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
+                        }
+                    });
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
@@ -430,71 +490,15 @@
                 },
             });
 
-        });
-
-        function getProfileMenuById(profile_id) {
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-profile-menu-by-id') }}",
-                dataType: 'json',
-                data: {
-                    profile_id: profile_id,
-                },
-                success: function(response) {
-                    getMenuById(response);
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? "Failed get list of profile's menu",
-                    });
-                },
-            });
-
-        }
-
-        function getMenuById(data) {
-
-            $("#select_menu_edit").html("");
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-all-data-menu') }}",
-                dataType: 'json',
-                data: {},
-                success: function(response) {
-
-                    $.each(response,function(key, value)
-                    {
-                        if ( data.includes(value.id) ) {
-                            $("#select_menu_edit").append('<option value="' + value.id + '" selected>' + value.menu_name + '</option>');
-                        } else {
-                            $("#select_menu_edit").append('<option value="' + value.id + '">' + value.menu_name + '</option>');
-                        }
-
-                    });
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list supplier',
-                    });
-                },
-            });
-
         }
 
         // ========================= SUBMIT EDIT DATA =========================
         $(document).on('click', '#button_submit_modal_edit', function() {
 
-            var id = $("#profile_id_edit").val();
-            var profileName = $("#profile_name_edit").val();
-            var menu = $("#select_menu_edit").val();
+            var id = $("#user_id_edit").val();
+            var username = $("#username_edit").val();
+            var name = $("#name_edit").val();
+            var profile = $("#select_profile_edit").val();
             var status = document.getElementById('status_edit').checked;
 
             if ( status == 1 ) {
@@ -505,12 +509,13 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-edit-profile') }}",
+                url: "{{ url('/post-edit-user') }}",
                 dataType: 'json',
                 data: {
-                    id_profile: id,
-                    profile_name: profileName,
-                    menu: menu,
+                    id_user: id,
+                    username: username,
+                    name: name,
+                    profile: profile,
                     status: flag,
                 },
                 success: function(response) {
@@ -548,7 +553,61 @@
 
         });
 
-    </script>
+        $(document).on('click', '.button_change_pw', function(event) {
+            const data = $(this).data('id');
 
+            Swal.fire({
+                icon: "warning",
+                title: "Reset Password",
+                text: "Are you sure want to reset the password?",
+                showCancelButton: true,
+                confirmButtonText: "Reset",
+                confirmButtonColor: "#d33",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ url('/post-user-req-reset-pw') }}",
+                        dataType: 'json',
+                        data: {
+                            id_user: data,
+                        },
+                        success: function(response) {
+
+                            return Swal.fire({
+                                title: response.title,
+                                text: response.message,
+                                timer: 5000,
+                                icon: "success",
+                                timerProgressBar: true,
+                                showConfirmButton: true,
+                                willClose: () => {
+                                    if (typeof response.route !== "undefined") {
+                                        window.location.href = response.route;
+                                    }
+                                },
+                            });
+
+                        },
+                        error: function(error) {
+
+                            console.log(error.responseJSON);
+                            Swal.fire({
+                                icon: 'error',
+                                title: "Error",
+                                text: error.responseJSON.message ?? 'Failed submit change password request',
+                                // target: document.getElementById('dialog_add'),
+                            });
+                            // $(".submitAdd").prop('disabled', false);
+                        },
+                    });
+                }
+            });
+
+
+            event.preventDefault();
+        });
+
+    </script>
 
 @endsection

@@ -68,6 +68,7 @@
                         <th style="width: 200px">Order Type Code</th>
                         <th>Order Type Name</th>
                         <th>Order Type Description</th>
+                        <th>Work Type</th>
                         <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
@@ -79,6 +80,7 @@
                         <th style="width: 200px">Order Type Code</th>
                         <th>Order Type Name</th>
                         <th>Order Type Description</th>
+                        <th>Work Type</th>
                         <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
@@ -108,6 +110,14 @@
                         <label for="order_type_description" class="col-sm-3 col-form-label">Description</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="order_type_description" placeholder="Enter description">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="select_work_type" class="col-sm-3 col-form-label">Work Type</label>
+                        <div class="col-sm-9">
+                            <select name="select_work_type" id="select_work_type" class="input_form" style="width: 100%;">
+                                <option value="">Select work type</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row input_modal">
@@ -143,26 +153,34 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" id="order_type_id_edit">
                     <div class="row input_modal">
-                        <label for="order_type_code_edit" class="col-sm-4 col-form-label">Code</label>
-                        <div class="col-sm-8">
+                        <label for="order_type_code_edit" class="col-sm-3 col-form-label">Code</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="order_type_code_edit" disabled placeholder="Enter code">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="order_type_name_edit" class="col-sm-4 col-form-label">Name</label>
-                        <div class="col-sm-8">
+                        <label for="order_type_name_edit" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="order_type_name_edit" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="order_type_description_edit" class="col-sm-4 col-form-label">Description</label>
-                        <div class="col-sm-8">
+                        <label for="order_type_description_edit" class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="order_type_description_edit" placeholder="Enter description">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status_edit" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="select_work_type_edit" class="col-sm-3 col-form-label">Work Type</label>
+                        <div class="col-sm-9">
+                            <select name="select_work_type_edit" id="select_work_type_edit" class="input_form" style="width: 100%;">
+                                <option value="">Select work type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="status_edit" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status_edit" value="1" checked>
@@ -193,6 +211,15 @@
         });
 
         $(document).ready(function(){
+
+            $('#select_work_type').select2({
+                dropdownParent: $("#newCreationModal"),
+                placeholder: {
+                    id: '-1',
+                    text: 'Select an option'
+                },
+                multiple: false
+            });
 
             dataTable();
 
@@ -251,6 +278,10 @@
                         name: 'order_type_desc',
                     },
                     {
+                        data: 'work_type_name',
+                        name: 'work_type_name',
+                    },
+                    {
                         data: 'status',
                         name: 'status',
                     },
@@ -287,8 +318,12 @@
 
             $("#order_type_name").val("");
             $("#order_type_description").val("");
+            $("#select_work_type").val("");
+            $('#select_work_type').trigger("change");
 
             document.getElementById('status').checked = true;
+
+            getAllDataWorkType();
 
         });
 
@@ -297,16 +332,47 @@
 
             $("#order_type_name").val("");
             $("#order_type_description").val("");
+            $("#select_work_type").val("");
+            $('#select_work_type').trigger("change");
 
             document.getElementById('status').checked = true;
 
         });
+
+        // ========================= GET ALL DATA WORK TYPE =========================
+        function getAllDataWorkType() {
+
+            $("#select_work_type").html('<option value="">Select work type</option>');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-work-type') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_work_type").append('<option value="' + value.id + '">' + value.work_type_name + '</option>');
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of work type',
+                    });
+                },
+            });
+
+        }
 
         // ========================= SUBMIT NEW DATA =========================
         $(document).on('click', '#button_submit_modal', function(event) {
 
             var orderTypeName = $("#order_type_name").val();
             var orderTypeDesc = $("#order_type_description").val();
+            var workType = $("#select_work_type").val();
             var status = $("#status:checked").val();
 
             if ( status == 1 ) {
@@ -322,6 +388,7 @@
                 data: {
                     orderTypeName: orderTypeName,
                     orderTypeDesc: orderTypeDesc,
+                    workType: workType,
                     status: flag,
                 },
                 success: function(response) {
@@ -385,6 +452,17 @@
                         $("#status_edit").attr('checked', false);
                     }
 
+                    $('#select_work_type_edit').select2({
+                        dropdownParent: $("#editModal"),
+                        placeholder: {
+                            id: '-1',
+                            text: 'Select an option'
+                        },
+                        multiple: false
+                    });
+
+                    getWorkTypeById(response.work_type_id);
+
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
@@ -398,6 +476,38 @@
 
         });
 
+        // ========================= GET OLD DATA WORK TYPE =========================
+        function getWorkTypeById(work_type_id) {
+
+            $("#select_work_type_edit").html('<option value="">Select work type</option>');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-work-type') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        if ( value.id == work_type_id ) {
+                            $("#select_work_type_edit").append('<option value="' + value.id + '" selected>' + value.work_type_name + '</option>');
+                        } else {
+                            $("#select_work_type_edit").append('<option value="' + value.id + '">' + value.work_type_name + '</option>');
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of profile',
+                    });
+                },
+            });
+
+        }
+
         // ========================= SUBMIT EDIT DATA =========================
         $(document).on('click', '#button_submit_modal_edit', function() {
 
@@ -405,6 +515,7 @@
             var orderTypeCode = $("#order_type_code_edit").val();
             var orderTypeName = $("#order_type_name_edit").val();
             var orderTypeDesc = $("#order_type_description_edit").val();
+            var workType = $("#select_work_type_edit").val();
             var status = document.getElementById('status_edit').checked;
 
             if ( status == 1 ) {
@@ -422,6 +533,7 @@
                     order_type_code: orderTypeCode,
                     order_type_name: orderTypeName,
                     order_type_desc: orderTypeDesc,
+                    work_type: workType,
                     status: flag,
                 },
                 success: function(response) {

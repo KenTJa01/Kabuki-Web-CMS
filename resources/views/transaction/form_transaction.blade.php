@@ -213,6 +213,8 @@
         // ========================= GET ALL DATA WORK TYPE =========================
         function getAllDataWorkType() {
 
+            $("#select_work_type").html('<option value="">Select work type</option>');
+
             $.ajax({
                 type: 'GET',
                 url: "{{ url('/get-all-data-work-type') }}",
@@ -238,24 +240,43 @@
 
         $('#select_work_type').on('change', function() {
 
+            var work_type_id = $("#select_work_type").val();
             $('#select_order_type').prop('disabled', false);
-            getAllDataOrderType();
+            getAllDataOrderType(work_type_id);
 
         });
 
         // ========================= GET ALL DATA ORDER TYPE =========================
-        function getAllDataOrderType() {
+        function getAllDataOrderType(work_type_id) {
+
+            $("#select_order_type").html('<option value="">Select order type</option>');
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-all-data-order-type') }}",
+                url: "{{ url('/get-order-type-by-id') }}",
                 dataType: 'json',
-                data: {},
+                data: {
+                    work_type_id: work_type_id,
+                },
                 success: function(response) {
-                    $.each(response,function(key, value)
-                    {
-                        $("#select_order_type").append('<option value="' + value.id + '">' + value.order_type_name + '</option>');
-                    });
+
+                    if (response.length === 0) {
+
+                        $('#select_order_type').prop('disabled', true);
+                        $('#select_payment_status').prop('disabled', false);
+                        $('#select_customer_name').prop('disabled', false);
+                        getAllDataPaymentStatus();
+                        getAllDataCustomer();
+
+                    } else {
+
+                        $.each(response,function(key, value)
+                        {
+                            $("#select_order_type").append('<option value="' + value.id + '">' + value.order_type_name + '</option>');
+                        });
+
+                    }
+
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
@@ -759,6 +780,10 @@
             var detailData = [];
 
             var total_price = tampungTotalPrice;
+
+            if ( order_type == "" ) {
+                order_type = null;
+            }
 
             /** Prepare data for detail data */
             for (var i = 1, row ; row = table.rows[i] ; i++) {

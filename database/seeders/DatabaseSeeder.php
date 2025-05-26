@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             StatusSeeder::class,
             MovementTypeSeeder::class,
+            IncomeTypeSeeder::class,
+            ExpenseTypeSeeder::class,
             ProfileSeeder::class,
             UserSeeder::class,
             ItemSeeder::class,

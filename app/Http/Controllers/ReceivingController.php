@@ -248,7 +248,7 @@ class ReceivingController extends Controller
                     'mov_date' => $receivingDate,
                     'item_id' => $item->id,
                     'item_code' => $item->item_code,
-                    'quantity' => $detail['qty'] * -1,
+                    'quantity' => $detail['qty'],
                     'mov_code' => $mov_code->mov_code,
                     'ref_no' => $recNumber,
                     'purch_price' => 0,

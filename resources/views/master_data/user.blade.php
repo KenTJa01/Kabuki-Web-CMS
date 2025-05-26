@@ -337,6 +337,8 @@
         // ========================= GET ALL DATA PROFILE =========================
         function getAllDataProfile() {
 
+            $("#select_profile").html('<option value="">Select profile</option>');
+
             $.ajax({
                 type: 'GET',
                 url: "{{ url('/get-all-data-profile') }}",
@@ -445,6 +447,15 @@
                     } else if ( response.flag == 0 ) {
                         $("#status_edit").attr('checked', false);
                     }
+
+                    $('#select_profile_edit').select2({
+                        dropdownParent: $("#editModal"),
+                        placeholder: {
+                            id: '-1',
+                            text: 'Select an option'
+                        },
+                        multiple: false
+                    });
 
                     getProfileById(response.profile_id);
 

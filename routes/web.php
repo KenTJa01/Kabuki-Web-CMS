@@ -4,6 +4,7 @@ use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\WorkTypeController;
@@ -97,6 +98,7 @@ Route::get('/transaction/history', [TransactionController::class, 'transactionHi
 Route::get('/get-transaction-history-datatable', [TransactionController::class, 'getTransactionHistoryDatatable'])->name('/get-transaction-history-datatable');
 
 Route::get('/transaction/form', [TransactionController::class, 'transactionFormPage'])->name('/transaction/form');
+Route::get('/get-order-type-by-id', [TransactionController::class, 'getOrderTypeById'])->name('get-order-type-by-id');
 Route::get('/get-data-customer-by-id', [TransactionController::class, 'getDataCustomerById'])->name('get-data-customer-by-id');
 Route::get('/get-trs-item', [TransactionController::class, 'getTrsItem'])->name('get-trs-item');
 Route::get('/get-trs-stock-qty', [TransactionController::class, 'getTrsStockQty'])->name('get-trs-stock-qty');
@@ -118,3 +120,7 @@ Route::post('/get-stock-list-datatable', [StockController::class, 'getStockListD
 
 Route::get('/stock/movement', [StockController::class, 'listStockMovementPage'])->name('/stock/movement');
 Route::post('/get-movement-stock-list-datatable', [StockController::class, 'getMovementStockList'])->name('/get-movement-stock-list-datatable');
+
+// ========================= FINANCE =========================
+Route::get('/finance/income', [FinanceController::class, 'financeIncomePage'])->name('/finance/income');
+Route::get('/get-income-list-datatable', [FinanceController::class, 'getIncomeListDatatable'])->name('get-income-list-datatable');

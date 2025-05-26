@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string("order_type_code", 15)->unique();
             $table->string("order_type_name");
             $table->string("order_type_desc");
+
+            $table->bigInteger("work_type_id")->nullable();
+            $table->foreign("work_type_id")->references("id")->on("work_types");
+
             $table->integer("flag")->default(1);
             $table->timestamps();
             $table->bigInteger("created_by");

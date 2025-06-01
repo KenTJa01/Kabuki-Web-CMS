@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CommonCustomException;
 use App\Models\Customer;
+use App\Models\Finance_income;
+use App\Models\Income_type;
 use App\Models\Item;
 use App\Models\Movement_type;
 use App\Models\Order_type;
@@ -304,7 +306,7 @@ class TransactionController extends Controller
         $validate = Validator::make($request->all(), [
             'transaction_date' => ['required'],
             'work_type' => ['required'],
-            'payment_status' => ['required'],
+            // 'payment_status' => ['required'],
             'customer_id' => ['required'],
             'address' => ['required', 'string'],
             'no_telp' => ['required', 'string'],
@@ -341,11 +343,11 @@ class TransactionController extends Controller
 
         } else {
 
-            $order_type = Order_type::where('id', $validated['order_type'])->first()->id;
+            $order_type = Order_type::where('id', $request->order_type)->first()->id;
 
         }
 
-        $payment_status = Status::where('id', $validated['payment_status'])->first();
+        $status = Status::where('module', 'transaction')->where('flag_value', 1)->first();
 
         $note = "";
 
@@ -366,6 +368,17 @@ class TransactionController extends Controller
         $vehicle_number = $validated['vehicle_number'];
         $total_price = $validated['total_price'];
 
+        $prefixIncomeNumber = 'INC/'.$trsDateMonthYear.'/';
+        $sqlIncome = ("SELECT COALESCE(MAX(TO_NUMBER(RIGHT(income_no,3), '999')),0) AS no FROM finance_incomes WHERE income_no LIKE '$prefixIncomeNumber%'");
+        $dataIncome = DB::select($sqlIncome);
+        foreach ($dataIncome as $d) {
+            $seqNumIncome = $d->no + 1;
+        }
+        $incomeNumber = $prefixIncomeNumber.str_pad($seqNumIncome, 3, '0', STR_PAD_LEFT);
+
+        $income_type = Income_type::where('income_name', 'Transaction')->first();
+        $income_desc = "Transaksi atas nama " . $customer_name . ". Nomor Transaksi : " . $trsNumber . ".";
+
         DB::beginTransaction();
         try {
             /** Insert transaction header */
@@ -380,7 +393,18 @@ class TransactionController extends Controller
                 'vehicle_number' => $vehicle_number,
                 'total_price' => $total_price,
                 'note' => $note,
-                'flag' => $payment_status->id,
+                'flag' => $status->id,
+                'created_by' => $user?->id,
+                'updated_by' => $user?->id,
+            ]);
+
+            /** Insert Finance Income  */
+            $financeIncome = Finance_income::create([
+                'income_no' => $incomeNumber,
+                'income_date' => $trsHeader->trs_date,
+                'income_type_id' => $income_type->id,
+                'amount' => $total_price,
+                'description' => $income_desc,
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
             ]);
@@ -397,7 +421,7 @@ class TransactionController extends Controller
             //     'vehicle_number' => $vehicle_number,
             //     'total_price' => $total_price,
             //     'note' => $note,
-            //     'flag' => $payment_status->id,
+            //     'flag' => $status->id,
             //     'created_by' => $user?->id,
             //     'updated_by' => $user?->id,
             // ]);

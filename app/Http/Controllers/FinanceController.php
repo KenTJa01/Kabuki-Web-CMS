@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CommonCustomException;
+use App\Models\Finance_income;
+use App\Models\Income_type;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -90,6 +94,77 @@ class FinanceController extends Controller
             })
             ->rawColumns(['actions'])
             ->make(true);
+
+    }
+
+    public function postFinIncomeSubmit(Request $request)
+    {
+
+        $user = Auth::user();
+
+        /** Validate Input */
+        $validate = Validator::make($request->all(), [
+            'income_date' => ['required'],
+            'income_type' => ['required'],
+            'amount' => ['required'],
+            'description' => ['required'],
+        ]);
+        if ($validate->fails()) {
+            throw new ValidationException($validate);
+        }
+        (array) $validated = $validate->validated();
+
+        /** Prepare transaction number, Format: TRF/MM.YY/STORE_CODE/SEQ */
+        $income_date = Carbon::createFromFormat('Y-m-d', $validated['income_date'], 'Asia/Jakarta')->setTimezone('Asia/Jakarta');
+        $incomeDateMonthYear = Carbon::parse($income_date)->setTimezone('Asia/Jakarta')->format('m.y');
+        $prefixIncNumber = 'INC/'.$incomeDateMonthYear.'/';
+
+        $sql = ("SELECT COALESCE(MAX(TO_NUMBER(RIGHT(income_no,3), '999')),0) AS no FROM finance_incomes WHERE income_no LIKE '$prefixIncNumber%'");
+        $data = DB::select($sql);
+        foreach ($data as $d) {
+            $seqNum = $d->no + 1;
+        }
+        $incomeNumber = $prefixIncNumber.str_pad($seqNum, 3, '0', STR_PAD_LEFT);
+
+        $income_type = Income_type::where('id', $validated['income_type'])->first();
+        $amount = $validated['amount'];
+        $description = $validated['description'];
+
+        DB::beginTransaction();
+        try {
+            /** Insert Finance Income  */
+            $financeIncome = Finance_income::create([
+                'income_no' => $incomeNumber,
+                'income_date' => $income_date,
+                'income_type_id' => $income_type->id,
+                'amount' => $amount,
+                'description' => $description,
+                'created_by' => $user?->id,
+                'updated_by' => $user?->id,
+            ]);
+
+            (string) $title = 'Success';
+            (string) $message = 'Income request successfully submitted with number: '.$incomeNumber;
+            (array) $data = [
+                'trx_number' => $incomeNumber,
+            ];
+            (string) $route = route('/finance/income');
+
+            DB::commit();
+            return response()->json([
+                'title' => $title,
+                'message' => $message,
+                'route' => $route,
+                'data' => $data,
+            ]);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            Log::warning('Validation error when submit income request', ['userId' => $user?->id, 'userName' => $user?->name, 'errors' => $e->getMessage()]);
+            throw $e;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw new CommonCustomException('Failed to submit income request', 422, $e);
+        }
 
     }
 

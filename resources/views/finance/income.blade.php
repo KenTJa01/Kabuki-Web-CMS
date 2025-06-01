@@ -65,7 +65,7 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 250px">Income No.</th>
+                        <th style="width: 150px">Income No.</th>
                         <th>Date</th>
                         <th>Income Type</th>
                         <th>Amount</th>
@@ -77,7 +77,7 @@
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 250px">Income No.</th>
+                        <th style="width: 150px">Income No.</th>
                         <th>Date</th>
                         <th>Income Type</th>
                         <th>Amount</th>
@@ -96,47 +96,34 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW USER</h1>
+                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW INCOME</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row input_modal">
-                        <label for="username" class="col-sm-3 col-form-label">Username</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        <label for="income_date" class="col-sm-4 col-form-label">Income Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="income_date">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="name" class="col-sm-3 col-form-label">Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name" placeholder="Enter name">
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="password" class="col-sm-3 col-form-label">Password</label>
-                        <div class="col-sm-9">
-                            <input type="password" class="form-control" id="password" placeholder="Enter password">
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="select_profile" class="col-sm-3 col-form-label">Profile</label>
-                        <div class="col-sm-9">
-                            <select name="select_profile" id="select_profile" class="form-select" style="width: 100%;">
-                                <option value="" disabled>Select profile</option>
+                        <label for="select_income_type" class="col-sm-4 col-form-label">Income Type</label>
+                        <div class="col-sm-8">
+                            <select name="select_income_type" id="select_income_type" class="form-select" style="width: 100%;">
+                                <option value="" disabled>Select income type</option>
                             </select>
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status" class="col-sm-3 col-form-label">Status</label>
-                        <div class="col-sm-9">
-                            <div style="width: 75px;">
-                                <div class="container_toggle">
-                                    <input type="checkbox" class="checkbox" id="status" value="1" checked>
-                                    <label class="switch" for="status">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </div>
+                        <label for="amount" class="col-sm-4 col-form-label">Amount</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="amount" placeholder="Enter amount">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="description" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description" cols="30" rows="5" style="resize: none;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -153,45 +140,36 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT USER</h1>
+                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT INCOME</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="user_id_edit">
                     <div class="row input_modal">
-                        <label for="username_edit" class="col-sm-3 col-form-label">Username</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="username_edit" placeholder="Enter username">
+                        <label for="income_date_edit" class="col-sm-4 col-form-label">Income Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="income_date_edit">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="name_edit" class="col-sm-3 col-form-label">Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name_edit" placeholder="Enter name">
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="select_profile_edit" class="col-sm-3 col-form-label">Profile</label>
-                        <div class="col-sm-9">
-                            <select name="select_profile_edit" id="select_profile_edit" class="form-select" style="width: 100%;">
-                                <option value="" disabled>Select profile</option>
+                        <label for="select_income_type_edit" class="col-sm-4 col-form-label">Income Type</label>
+                        <div class="col-sm-8">
+                            <select name="select_income_type_edit" id="select_income_type_edit" class="form-select" style="width: 100%;">
+                                <option value="" disabled>Select income type</option>
                             </select>
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status_edit" class="col-sm-3 col-form-label">Status</label>
-                        <div class="col-sm-9">
-                            <div style="width: 75px;">
-                                <div class="container_toggle">
-                                    <input type="checkbox" class="checkbox" id="status_edit" value="1" checked>
-                                    <label class="switch" for="status_edit">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </div>
+                        <label for="amount_edit" class="col-sm-4 col-form-label">Amount</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="amount_edit" placeholder="Enter amount">
                         </div>
                     </div>
-
+                    <div class="row input_modal">
+                        <label for="description_edit" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description_edit" cols="30" rows="5" style="resize: none;"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="button_clear_modal" id="button_clear_modal_edit">Clear</button> --}}
@@ -212,14 +190,14 @@
 
         $(document).ready(function(){
 
-            // $('#select_profile').select2({
-            //     dropdownParent: $("#newCreationModal"),
-            //     placeholder: {
-            //         id: '-1',
-            //         text: 'Select an option'
-            //     },
-            //     multiple: false
-            // });
+            $('#select_income_type').select2({
+                dropdownParent: $("#newCreationModal"),
+                placeholder: {
+                    id: '-1',
+                    text: 'Select income type'
+                },
+                multiple: false
+            });
 
             dataTable();
 
@@ -316,42 +294,40 @@
         // ========================= CLICK NEW =========================
         $(document).on('click', '#button_new', function(event) {
 
-            $("#username").val("");
-            $("#name").val("");
-            $("#password").val("");
-            $("#select_profile").val("");
-            $('#select_profile').trigger("change");
-            document.getElementById('status').checked = true;
+            $("#income_date").val("");
+            $("#amount").val("");
+            $("#description").val("");
+            $("#select_income_type").val("");
+            $('#select_income_type').trigger("change");
 
-            getAllDataProfile();
+            getAllDataIncomeType();
 
         });
 
         // ========================= CLEAR INPUT MODAL =========================
         $(document).on('click', '#button_clear_modal', function(event) {
 
-            $("#username").val("");
-            $("#name").val("");
-            $("#password").val("");
-            $("#select_profile").val("");
-            $('#select_profile').trigger("change");
+            $("#income_date").val("");
+            $("#amount").val("");
+            $("#description").val("");
+            $("#select_income_type").val("");
+            $('#select_income_type').trigger("change");
 
-            document.getElementById('status').checked = true;
 
         });
 
         // ========================= GET ALL DATA PROFILE =========================
-        function getAllDataProfile() {
+        function getAllDataIncomeType() {
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-all-data-profile') }}",
+                url: "{{ url('/get-all-data-income-type') }}",
                 dataType: 'json',
                 data: {},
                 success: function(response) {
                     $.each(response,function(key, value)
                     {
-                        $("#select_profile").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
+                        $("#select_income_type").append('<option value="' + value.id + '">' + value.income_name + '</option>');
                     });
                 },
                 error: function(error) {
@@ -359,7 +335,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of profile',
+                        text: error.responseJSON.message ?? 'Failed get list of income type',
                     });
                 },
             });
@@ -369,28 +345,20 @@
         // ========================= SUBMIT NEW DATA =========================
         $(document).on('click', '#button_submit_modal', function(event) {
 
-            var username = $("#username").val();
-            var name = $("#name").val();
-            var password = $("#password").val();
-            var profile = $("#select_profile").val();
-            var status = $("#status:checked").val();
-
-            if ( status == 1 ) {
-                var flag = 1;
-            } else {
-                var flag = 0;
-            }
+            var income_date = $("#income_date").val();
+            var amount = $("#amount").val();
+            var description = $("#description").val();
+            var income_type = $("#select_income_type").val();
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-new-user') }}",
+                url: "{{ url('/post-new-finance-income') }}",
                 dataType: 'json',
                 data: {
-                    username: username,
-                    name: name,
-                    password: password,
-                    profile: profile,
-                    status: flag,
+                    income_date: income_date,
+                    income_type: income_type,
+                    amount: amount,
+                    description: description,
                 },
                 success: function(response) {
 
@@ -415,7 +383,6 @@
                 },
                 error: function(error) {
 
-                    console.log(error.responseJSON);
                     Swal.fire({
                         icon: 'error',
                         title: "Error",

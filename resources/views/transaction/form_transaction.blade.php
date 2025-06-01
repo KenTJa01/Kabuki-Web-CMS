@@ -38,11 +38,17 @@
                     </td>
 
                     {{-- STATUS --}}
-                    <td class="label_form">Payment Status</td>
+                    {{-- <td class="label_form">Payment Status</td>
                     <td class="container_input_form">
                         <select name="select_payment_status" id="select_payment_status" class="input_form" style="width: 100%;" disabled>
                             <option value="">Select payment status</option>
                         </select>
+                    </td> --}}
+
+                    {{-- NOTE --}}
+                    <td class="label_form">Note</td>
+                    <td class="container_input_form" rowspan="2">
+                        <textarea class="form-control" id="note" cols="50" rows="3" style="resize: none;"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -55,10 +61,10 @@
                     </td>
 
                     {{-- NOTE --}}
-                    <td class="label_form">Note</td>
+                    {{-- <td class="label_form">Note</td>
                     <td class="container_input_form" rowspan="2">
                         <textarea class="form-control" id="note" cols="50" rows="3" style="resize: none;"></textarea>
-                    </td>
+                    </td> --}}
                 </tr>
                 <tr>
                     {{-- ORDER TYPE --}}
@@ -197,7 +203,7 @@
 
             $("#select_work_type").select2();
             $("#select_order_type").select2();
-            $("#select_payment_status").select2();
+            // $("#select_payment_status").select2();
             $("#select_customer_name").select2();
 
             //getListSite();
@@ -263,7 +269,7 @@
                     if (response.length === 0) {
 
                         $('#select_order_type').prop('disabled', true);
-                        $('#select_payment_status').prop('disabled', false);
+                        // $('#select_payment_status').prop('disabled', false);
                         $('#select_customer_name').prop('disabled', false);
                         getAllDataPaymentStatus();
                         getAllDataCustomer();
@@ -292,14 +298,16 @@
 
         $('#select_order_type').on('change', function() {
 
-            $('#select_payment_status').prop('disabled', false);
+            // $('#select_payment_status').prop('disabled', false);
             $('#select_customer_name').prop('disabled', false);
-            getAllDataPaymentStatus();
+            // getAllDataPaymentStatus();
             getAllDataCustomer();
 
         });
 
         function getAllDataPaymentStatus() {
+
+            $("#select_payment_status").html('<option value="">Select payment status</option>');
 
             $.ajax({
                 type: 'GET',
@@ -326,6 +334,8 @@
 
         // ========================= GET ALL DATA CUSTOMER =========================
         function getAllDataCustomer() {
+
+            $("#select_customer_name").html('<option value="">Select customer name</option>');
 
             $.ajax({
                 type: 'GET',
@@ -770,7 +780,7 @@
             var transaction_date = $('#transaction_date').val();
             var work_type = $('#select_work_type').val();
             var order_type = $('#select_order_type').val();
-            var payment_status = $('#select_payment_status').val();
+            // var payment_status = $('#select_payment_status').val();
             var note = $('#note').val();
             var customer_id = $("#select_customer_name").val();
             var address = $("#address").val();
@@ -783,6 +793,8 @@
 
             if ( order_type == "" ) {
                 order_type = null;
+            } else {
+                order_type = $('#select_order_type').val();
             }
 
             /** Prepare data for detail data */
@@ -832,7 +844,7 @@
                     transaction_date: transaction_date,
                     work_type: work_type,
                     order_type: order_type,
-                    payment_status: payment_status,
+                    // payment_status: payment_status,
                     note: note,
                     customer_id: customer_id,
                     address: address,

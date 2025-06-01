@@ -65,24 +65,24 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 200px">Order Type Code</th>
+                        <th style="width: 150px">Order Type Code</th>
                         <th>Order Type Name</th>
-                        <th>Order Type Description</th>
-                        <th>Work Type</th>
-                        <th style="width: 120px">Status</th>
-                        <th style="width: 120px" class="top_right_tableData">Action</th>
+                        <th style="width: 200px;">Order Type Description</th>
+                        <th style="width: 120px;">Work Type</th>
+                        <th style="width: 100px">Status</th>
+                        <th style="width: 70px" class="top_right_tableData">Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 200px">Order Type Code</th>
+                        <th style="width: 150px">Order Type Code</th>
                         <th>Order Type Name</th>
-                        <th>Order Type Description</th>
-                        <th>Work Type</th>
-                        <th style="width: 120px"></th>
-                        <th style="width: 120px" class="bottom_right_tableData"></th>
+                        <th style="width: 200px;">Order Type Description</th>
+                        <th style="width: 120px;">Work Type</th>
+                        <th style="width: 100px"></th>
+                        <th style="width: 70px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
             </table>

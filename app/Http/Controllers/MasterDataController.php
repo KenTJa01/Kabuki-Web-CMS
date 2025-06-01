@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Income_type;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Menu;
@@ -60,6 +61,12 @@ class MasterDataController extends Controller
     public function getAllDataMovementType()
     {
         $data = Movement_type::all();
+        return response()->json($data);
+    }
+
+    public function getAllDataIncomeType()
+    {
+        $data = Income_type::where('flag', 1)->get();
         return response()->json($data);
     }
 

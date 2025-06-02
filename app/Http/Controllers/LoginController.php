@@ -32,8 +32,8 @@ class LoginController extends Controller
 
                 if ( Auth::attempt($credentials) ) {
 
-                    // $userController = new UserController;
-                    // $userController->getMenu();
+                    $userController = new UserController;
+                    $userController->getMenu();
                     // $userController->getProfileDgmCore();
                     // $userController->getMenuDgmCore();
 

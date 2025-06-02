@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -281,6 +282,26 @@ class UserController extends Controller
             DB::rollBack();
             throw new CommonCustomException('Failed to submit change password request', 422, $e);
         }
+
+    }
+
+    public function getMenu()
+    {
+
+        $user = Auth::user();
+
+        $query = "SELECT u.username, pm.menu_id, m.menu_name
+                    FROM users u, profiles p, profile_menus pm, menus m
+                    WHERE u.profile_id = p.id
+                        AND pm.profile_id = p.id
+                        AND pm.menu_id = m.id
+                        AND u.id = $user->id";
+
+        $data = DB::select($query);
+        // return response()->json($data);
+
+        Session::forget('listMenu');
+        Session::put('listMenu', $data);
 
     }
 

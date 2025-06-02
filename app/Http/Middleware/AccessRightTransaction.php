@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AccessRightMasterData
+class AccessRightTransaction
 {
     /**
      * Handle an incoming request.
@@ -28,7 +28,7 @@ class AccessRightMasterData
             $user = Auth::user();
             $userProfile = $user->profile_id;
 
-            $menu = Menu::where('menu_name', 'Master Data')->first();
+            $menu = Menu::where('menu_name', 'Transaction')->first();
             $profileMenu = Profile_menu::where('profile_id', $userProfile)
                             ->select('menu_id')
                             ->pluck('menu_id')

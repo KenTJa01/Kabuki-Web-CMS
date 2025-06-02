@@ -48,87 +48,108 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-all-data-movement-type', [MasterDataController::class, 'getAllDataMovementType'])->name('get-all-data-movement-type');
     Route::get('/get-all-data-income-type', [MasterDataController::class, 'getAllDataIncomeType'])->name('get-all-data-income-type');
 
-    // ========================= MASTER USER =========================
-    Route::get('/master_data/user', [UserController::class, 'masterUserPage'])->name('/master_data/user');
-    Route::get('/get-user-list-datatable', [UserController::class, 'getUserListDatatable'])->name('get-user-list-datatable');
-    Route::post('/post-new-user', [UserController::class, 'postNewUser'])->name('post-new-user');
-    Route::get('/get-old-data-of-user', [UserController::class, 'getOldDataUser'])->name('get-old-data-of-user');
-    Route::post('/post-edit-user', [UserController::class, 'postEditUser'])->name('post-edit-user');
-    Route::post('/post-user-req-reset-pw', [UserController::class, 'postUserReqResetPw'])->name('post-user-req-reset-pw');
+    Route::group(['middleware' => 'master_data'], function () {
 
-    // ========================= MASTER PROFILE =========================
-    Route::get('/master_data/profile', [ProfileController::class, 'masterProfilePage'])->name('/master_data/profile');
-    Route::get('/get-profile-list-datatable', [ProfileController::class, 'getProfileListDatatable'])->name('get-profile-list-datatable');
-    Route::post('/post-new-profile', [ProfileController::class, 'postNewProfile'])->name('post-new-profile');
-    Route::get('/get-old-data-of-profile', [ProfileController::class, 'getOldDataProfile'])->name('get-old-data-of-profile');
-    Route::get('/get-profile-menu-by-id', [ProfileController::class, 'getProfileMenuById'])->name('get-profile-menu-by-id');
-    Route::post('/post-edit-profile', [ProfileController::class, 'postEditProfile'])->name('post-edit-profile');
+        // ========================= MASTER USER =========================
+        Route::get('/master_data/user', [UserController::class, 'masterUserPage'])->name('/master_data/user');
+        Route::get('/get-user-list-datatable', [UserController::class, 'getUserListDatatable'])->name('get-user-list-datatable');
+        Route::post('/post-new-user', [UserController::class, 'postNewUser'])->name('post-new-user');
+        Route::get('/get-old-data-of-user', [UserController::class, 'getOldDataUser'])->name('get-old-data-of-user');
+        Route::post('/post-edit-user', [UserController::class, 'postEditUser'])->name('post-edit-user');
+        Route::post('/post-user-req-reset-pw', [UserController::class, 'postUserReqResetPw'])->name('post-user-req-reset-pw');
 
-
-    // ========================= MASTER CUSTOMER =========================
-    Route::get('/master_data/customer', [CustomerController::class, 'masterCustomerPage'])->name('/master_data/customer');
-    Route::get('/get-customer-list-datatable', [CustomerController::class, 'getCustomerListDatatable'])->name('get-customer-list-datatable');
-    Route::post('/post-new-customer', [CustomerController::class, 'postNewCustomer'])->name('post-new-customer');
-    Route::get('/get-old-data-of-customer', [CustomerController::class, 'getOldDataOfCustomer'])->name('get-old-data-of-customer');
-    Route::post('/post-edit-customer', [CustomerController::class, 'postEditCustomer'])->name('post-edit-customer');
-
-    // ========================= MASTER ITEM =========================
-    Route::get('/master_data/item', [ItemController::class, 'masterItemPage'])->name('/master_data/item');
-    Route::get('/get-item-list-datatable', [ItemController::class, 'getItemListDatatable'])->name('get-item-list-datatable');
-    Route::post('/post-new-item', [ItemController::class, 'postNewItem'])->name('post-new-item');
-    Route::get('/get-old-data-of-item', [ItemController::class, 'getOldDataOfItem'])->name('get-old-data-of-item');
-    Route::post('/post-edit-item', [ItemController::class, 'postEditItem'])->name('post-edit-item');
-
-    // ========================= MASTER ORDER TYPE =========================
-    Route::get('/master_data/order_type', [OrderTypeController::class, 'masterOrderTypePage'])->name('/master_data/order_type');
-    Route::get('/get-order-type-list-datatable', [OrderTypeController::class, 'getOrderTypeListDatatable'])->name('get-order-type-list-datatable');
-    Route::post('/post-new-order-type', [OrderTypeController::class, 'postNewOrderType'])->name('post-new-order-type');
-    Route::get('/get-old-data-of-order-type', [OrderTypeController::class, 'getOldDataOfOrderType'])->name('get-old-data-of-order-type');
-    Route::post('/post-edit-order-type', [OrderTypeController::class, 'postEditOrderType'])->name('post-edit-order-type');
-
-    // ========================= MASTER WORK TYPE =========================
-    Route::get('/master_data/work_type', [WorkTypeController::class, 'masterWorkTypePage'])->name('/master_data/work_type');
-    Route::get('/get-work-type-list-datatable', [WorkTypeController::class, 'getWorkTypeListDatatable'])->name('get-work-type-list-datatable');
-    Route::post('/post-new-work-type', [WorkTypeController::class, 'postNewWorkType'])->name('post-new-work-type');
-    Route::get('/get-old-data-of-work-type', [WorkTypeController::class, 'getOldDataOfWorkType'])->name('get-old-data-of-work-type');
-    Route::post('/post-edit-work-type', [WorkTypeController::class, 'postEditWorkType'])->name('post-edit-work-type');
-
-    // ========================= TRANSACTION =========================
-    Route::get('/transaction/list', [TransactionController::class, 'transactionListPage'])->name('/transaction/list');
-    Route::get('/get-transaction-list-datatable', [TransactionController::class, 'getTransactionListDatatable'])->name('/get-transaction-list-datatable');
-    Route::get('/transaction/view/{id}', [TransactionController::class, 'viewTransactionPage'])->name('transaction/view');
-    Route::post('/post-trs-on-process-submit', [TransactionController::class, 'postTrsOnProcessSubmit'])->name('post-trs-on-process-submit');
-
-    Route::get('/transaction/history', [TransactionController::class, 'transactionHistoryPage'])->name('/transaction/history');
-    Route::get('/get-transaction-history-datatable', [TransactionController::class, 'getTransactionHistoryDatatable'])->name('/get-transaction-history-datatable');
-
-    Route::get('/transaction/form', [TransactionController::class, 'transactionFormPage'])->name('/transaction/form');
-    Route::get('/get-order-type-by-id', [TransactionController::class, 'getOrderTypeById'])->name('get-order-type-by-id');
-    Route::get('/get-data-customer-by-id', [TransactionController::class, 'getDataCustomerById'])->name('get-data-customer-by-id');
-    Route::get('/get-trs-item', [TransactionController::class, 'getTrsItem'])->name('get-trs-item');
-    Route::get('/get-trs-stock-qty', [TransactionController::class, 'getTrsStockQty'])->name('get-trs-stock-qty');
-    Route::get('/get-trs-subtotal', [TransactionController::class, 'getTrsSubtotal'])->name('get-trs-subtotal');
-    Route::post('/post-trs-submit', [TransactionController::class, 'postTrsSubmit'])->name('post-trs-submit');
+        // ========================= MASTER PROFILE =========================
+        Route::get('/master_data/profile', [ProfileController::class, 'masterProfilePage'])->name('/master_data/profile');
+        Route::get('/get-profile-list-datatable', [ProfileController::class, 'getProfileListDatatable'])->name('get-profile-list-datatable');
+        Route::post('/post-new-profile', [ProfileController::class, 'postNewProfile'])->name('post-new-profile');
+        Route::get('/get-old-data-of-profile', [ProfileController::class, 'getOldDataProfile'])->name('get-old-data-of-profile');
+        Route::get('/get-profile-menu-by-id', [ProfileController::class, 'getProfileMenuById'])->name('get-profile-menu-by-id');
+        Route::post('/post-edit-profile', [ProfileController::class, 'postEditProfile'])->name('post-edit-profile');
 
 
-    // ========================= RECEIVING =========================
-    Route::get('/receiving/list', [ReceivingController::class, 'receivingListPage'])->name('/receiving/list');
-    Route::get('/get-receiving-list-datatable', [ReceivingController::class, 'getReceivingListDatatable'])->name('/get-receiving-list-datatable');
-    Route::get('/receiving/view/{id}', [ReceivingController::class, 'viewReceivingPage'])->name('receiving/view');
-    Route::get('/receiving/form', [ReceivingController::class, 'receivingFormPage'])->name('/receiving/form');
-    Route::get('/get-rec-item', [ReceivingController::class, 'getRecItem'])->name('get-rec-item');
-    Route::post('/post-rec-submit', [ReceivingController::class, 'postRecSubmit'])->name('post-rec-submit');
+        // ========================= MASTER CUSTOMER =========================
+        Route::get('/master_data/customer', [CustomerController::class, 'masterCustomerPage'])->name('/master_data/customer');
+        Route::get('/get-customer-list-datatable', [CustomerController::class, 'getCustomerListDatatable'])->name('get-customer-list-datatable');
+        Route::post('/post-new-customer', [CustomerController::class, 'postNewCustomer'])->name('post-new-customer');
+        Route::get('/get-old-data-of-customer', [CustomerController::class, 'getOldDataOfCustomer'])->name('get-old-data-of-customer');
+        Route::post('/post-edit-customer', [CustomerController::class, 'postEditCustomer'])->name('post-edit-customer');
 
-    // ========================= STOCK =========================
-    Route::get('/stock/list', [StockController::class, 'stockListPage'])->name('/stock/list');
-    Route::post('/get-stock-list-datatable', [StockController::class, 'getStockListDatatable'])->name('get-stock-list-datatable');
+        // ========================= MASTER ITEM =========================
+        Route::get('/master_data/item', [ItemController::class, 'masterItemPage'])->name('/master_data/item');
+        Route::get('/get-item-list-datatable', [ItemController::class, 'getItemListDatatable'])->name('get-item-list-datatable');
+        Route::post('/post-new-item', [ItemController::class, 'postNewItem'])->name('post-new-item');
+        Route::get('/get-old-data-of-item', [ItemController::class, 'getOldDataOfItem'])->name('get-old-data-of-item');
+        Route::post('/post-edit-item', [ItemController::class, 'postEditItem'])->name('post-edit-item');
 
-    Route::get('/stock/movement', [StockController::class, 'listStockMovementPage'])->name('/stock/movement');
-    Route::post('/get-movement-stock-list-datatable', [StockController::class, 'getMovementStockList'])->name('/get-movement-stock-list-datatable');
+        // ========================= MASTER ORDER TYPE =========================
+        Route::get('/master_data/order_type', [OrderTypeController::class, 'masterOrderTypePage'])->name('/master_data/order_type');
+        Route::get('/get-order-type-list-datatable', [OrderTypeController::class, 'getOrderTypeListDatatable'])->name('get-order-type-list-datatable');
+        Route::post('/post-new-order-type', [OrderTypeController::class, 'postNewOrderType'])->name('post-new-order-type');
+        Route::get('/get-old-data-of-order-type', [OrderTypeController::class, 'getOldDataOfOrderType'])->name('get-old-data-of-order-type');
+        Route::post('/post-edit-order-type', [OrderTypeController::class, 'postEditOrderType'])->name('post-edit-order-type');
 
-    // ========================= FINANCE =========================
-    Route::get('/finance/list', [FinanceController::class, 'financeIncomePage'])->name('/finance/list');
-    Route::get('/get-income-list-datatable', [FinanceController::class, 'getIncomeListDatatable'])->name('get-income-list-datatable');
-    Route::post('/post-new-finance-income', [FinanceController::class, 'postFinIncomeSubmit'])->name('post-new-finance-income');
+        // ========================= MASTER WORK TYPE =========================
+        Route::get('/master_data/work_type', [WorkTypeController::class, 'masterWorkTypePage'])->name('/master_data/work_type');
+        Route::get('/get-work-type-list-datatable', [WorkTypeController::class, 'getWorkTypeListDatatable'])->name('get-work-type-list-datatable');
+        Route::post('/post-new-work-type', [WorkTypeController::class, 'postNewWorkType'])->name('post-new-work-type');
+        Route::get('/get-old-data-of-work-type', [WorkTypeController::class, 'getOldDataOfWorkType'])->name('get-old-data-of-work-type');
+        Route::post('/post-edit-work-type', [WorkTypeController::class, 'postEditWorkType'])->name('post-edit-work-type');
+
+    });
+
+
+    Route::group(['middleware' => 'transaction'], function () {
+
+        // ========================= TRANSACTION =========================
+        Route::get('/transaction/list', [TransactionController::class, 'transactionListPage'])->name('/transaction/list');
+        Route::get('/get-transaction-list-datatable', [TransactionController::class, 'getTransactionListDatatable'])->name('/get-transaction-list-datatable');
+        Route::get('/transaction/view/{id}', [TransactionController::class, 'viewTransactionPage'])->name('transaction/view');
+        Route::post('/post-trs-on-process-submit', [TransactionController::class, 'postTrsOnProcessSubmit'])->name('post-trs-on-process-submit');
+
+        Route::get('/transaction/history', [TransactionController::class, 'transactionHistoryPage'])->name('/transaction/history');
+        Route::get('/get-transaction-history-datatable', [TransactionController::class, 'getTransactionHistoryDatatable'])->name('/get-transaction-history-datatable');
+
+        Route::get('/transaction/form', [TransactionController::class, 'transactionFormPage'])->name('/transaction/form');
+        Route::get('/get-order-type-by-id', [TransactionController::class, 'getOrderTypeById'])->name('get-order-type-by-id');
+        Route::get('/get-data-customer-by-id', [TransactionController::class, 'getDataCustomerById'])->name('get-data-customer-by-id');
+        Route::get('/get-trs-item', [TransactionController::class, 'getTrsItem'])->name('get-trs-item');
+        Route::get('/get-trs-stock-qty', [TransactionController::class, 'getTrsStockQty'])->name('get-trs-stock-qty');
+        Route::get('/get-trs-subtotal', [TransactionController::class, 'getTrsSubtotal'])->name('get-trs-subtotal');
+        Route::post('/post-trs-submit', [TransactionController::class, 'postTrsSubmit'])->name('post-trs-submit');
+
+    });
+
+
+    Route::group(['middleware' => 'receiving'], function () {
+
+        // ========================= RECEIVING =========================
+        Route::get('/receiving/list', [ReceivingController::class, 'receivingListPage'])->name('/receiving/list');
+        Route::get('/get-receiving-list-datatable', [ReceivingController::class, 'getReceivingListDatatable'])->name('/get-receiving-list-datatable');
+        Route::get('/receiving/view/{id}', [ReceivingController::class, 'viewReceivingPage'])->name('receiving/view');
+        Route::get('/receiving/form', [ReceivingController::class, 'receivingFormPage'])->name('/receiving/form');
+        Route::get('/get-rec-item', [ReceivingController::class, 'getRecItem'])->name('get-rec-item');
+        Route::post('/post-rec-submit', [ReceivingController::class, 'postRecSubmit'])->name('post-rec-submit');
+
+    });
+
+    Route::group(['middleware' => 'stock'], function () {
+
+        // ========================= STOCK =========================
+        Route::get('/stock/list', [StockController::class, 'stockListPage'])->name('/stock/list');
+        Route::post('/get-stock-list-datatable', [StockController::class, 'getStockListDatatable'])->name('get-stock-list-datatable');
+
+        Route::get('/stock/movement', [StockController::class, 'listStockMovementPage'])->name('/stock/movement');
+        Route::post('/get-movement-stock-list-datatable', [StockController::class, 'getMovementStockList'])->name('/get-movement-stock-list-datatable');
+
+    });
+
+    Route::group(['middleware' => 'finance'], function () {
+
+        // ========================= FINANCE =========================
+        Route::get('/finance/list', [FinanceController::class, 'financeIncomePage'])->name('/finance/list');
+        Route::get('/get-income-list-datatable', [FinanceController::class, 'getIncomeListDatatable'])->name('get-income-list-datatable');
+        Route::post('/post-new-finance-income', [FinanceController::class, 'postFinIncomeSubmit'])->name('post-new-finance-income');
+
+    });
 
 });

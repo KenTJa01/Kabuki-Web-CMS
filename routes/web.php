@@ -104,6 +104,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/transaction/list', [TransactionController::class, 'transactionListPage'])->name('/transaction/list');
         Route::get('/get-transaction-list-datatable', [TransactionController::class, 'getTransactionListDatatable'])->name('/get-transaction-list-datatable');
         Route::get('/transaction/view/{id}', [TransactionController::class, 'viewTransactionPage'])->name('transaction/view');
+        Route::get('/document-trs/{id}', [TransactionController::class, 'documentTrsPage'])->name('document-trs');
         Route::post('/post-trs-on-process-submit', [TransactionController::class, 'postTrsOnProcessSubmit'])->name('post-trs-on-process-submit');
 
         Route::get('/transaction/history', [TransactionController::class, 'transactionHistoryPage'])->name('/transaction/history');

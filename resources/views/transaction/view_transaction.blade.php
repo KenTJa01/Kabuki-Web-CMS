@@ -169,10 +169,12 @@
 
 </div>
 
-{{-- BUTTON SUBMIT --}}
-{{-- <div class="d-flex justify-content-end" id="content_button_submit">
-    <button class="button_submit_form mt-2" id="button_submit">Submit</button>
-</div> --}}
+{{-- BUTTON PRINT --}}
+<div class="d-flex justify-content-end" id="content_button_submit">
+    <a target="_blank" href="{{ '/document-trs/'.$trs_id }}" title="Print" style="width:100%">
+        <button class="button_submit_form mt-2" id="button_submit" style="width:100%">Print Invoice</button>
+    </a>
+</div>
 
 <div class="bottom_space"></div>
 
@@ -185,170 +187,170 @@
         }
     });
 
-    $(document).ready(function(){
+    // $(document).ready(function(){
 
-        $('#select_work_type').select2();
-        $('#select_order_type').select2();
-        $('#select_payment_status').select2();
+    //     $('#select_work_type').select2();
+    //     $('#select_order_type').select2();
+    //     $('#select_payment_status').select2();
 
-        const id_work_type = $('#work_type_id').val();
-        const id_order_type = $('#order_type_id').val();
-        const id_payment_status = $('#payment_status_id').val();
+    //     const id_work_type = $('#work_type_id').val();
+    //     const id_order_type = $('#order_type_id').val();
+    //     const id_payment_status = $('#payment_status_id').val();
 
-        getOldWorkTypeData(id_work_type);
-        getOldOrderTypeData(id_order_type);
-        getOldPaymentStatusData(id_payment_status);
+    //     getOldWorkTypeData(id_work_type);
+    //     getOldOrderTypeData(id_order_type);
+    //     getOldPaymentStatusData(id_payment_status);
 
-    });
+    // });
 
-    function getOldWorkTypeData(id_work_type)
-    {
+    // function getOldWorkTypeData(id_work_type)
+    // {
 
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('/get-all-data-work-type') }}",
-            dataType: 'json',
-            data: {},
-            success: function(response) {
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: "{{ url('/get-all-data-work-type') }}",
+    //         dataType: 'json',
+    //         data: {},
+    //         success: function(response) {
 
-                $.each(response,function(key, value)
-                {
-                    if ( value.id == id_work_type ) {
-                        $("#select_work_type").append('<option value="' + value.id + '" selected>' + value.work_type_name + '</option>');
-                    } else {
-                        $("#select_work_type").append('<option value="' + value.id + '">' + value.work_type_name + '</option>');
-                    }
-                });
+    //             $.each(response,function(key, value)
+    //             {
+    //                 if ( value.id == id_work_type ) {
+    //                     $("#select_work_type").append('<option value="' + value.id + '" selected>' + value.work_type_name + '</option>');
+    //                 } else {
+    //                     $("#select_work_type").append('<option value="' + value.id + '">' + value.work_type_name + '</option>');
+    //                 }
+    //             });
 
-            },
-            error: function(error) {
-                console.log(error.responseJSON);
-                Swal.fire({
-                    icon: 'error',
-                    title: "Error",
-                    text: error.responseJSON.message ?? 'Failed get list of work type',
-                });
-            },
-        });
+    //         },
+    //         error: function(error) {
+    //             console.log(error.responseJSON);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: "Error",
+    //                 text: error.responseJSON.message ?? 'Failed get list of work type',
+    //             });
+    //         },
+    //     });
 
-    }
+    // }
 
-    function getOldOrderTypeData(id_order_type)
-    {
+    // function getOldOrderTypeData(id_order_type)
+    // {
 
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('/get-all-data-order-type') }}",
-            dataType: 'json',
-            data: {},
-            success: function(response) {
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: "{{ url('/get-all-data-order-type') }}",
+    //         dataType: 'json',
+    //         data: {},
+    //         success: function(response) {
 
-                $.each(response,function(key, value)
-                {
-                    if ( value.id == id_order_type ) {
-                        $("#select_order_type").append('<option value="' + value.id + '" selected>' + value.order_type_name + '</option>');
-                    } else {
-                        $("#select_order_type").append('<option value="' + value.id + '">' + value.order_type_name + '</option>');
-                    }
-                });
+    //             $.each(response,function(key, value)
+    //             {
+    //                 if ( value.id == id_order_type ) {
+    //                     $("#select_order_type").append('<option value="' + value.id + '" selected>' + value.order_type_name + '</option>');
+    //                 } else {
+    //                     $("#select_order_type").append('<option value="' + value.id + '">' + value.order_type_name + '</option>');
+    //                 }
+    //             });
 
-            },
-            error: function(error) {
-                console.log(error.responseJSON);
-                Swal.fire({
-                    icon: 'error',
-                    title: "Error",
-                    text: error.responseJSON.message ?? 'Failed get list of order type',
-                });
-            },
-        });
+    //         },
+    //         error: function(error) {
+    //             console.log(error.responseJSON);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: "Error",
+    //                 text: error.responseJSON.message ?? 'Failed get list of order type',
+    //             });
+    //         },
+    //     });
 
-    }
+    // }
 
-    function getOldPaymentStatusData(id_payment_status)
-    {
+    // function getOldPaymentStatusData(id_payment_status)
+    // {
 
-        $.ajax({
-            type: 'GET',
-            url: "{{ url('/get-all-data-payment-status') }}",
-            dataType: 'json',
-            data: {},
-            success: function(response) {
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: "{{ url('/get-all-data-payment-status') }}",
+    //         dataType: 'json',
+    //         data: {},
+    //         success: function(response) {
 
-                $.each(response,function(key, value)
-                {
-                    if ( value.id == id_payment_status ) {
-                        $("#select_payment_status").append('<option value="' + value.id + '" selected>' + value.flag_desc + '</option>');
-                    } else {
-                        $("#select_payment_status").append('<option value="' + value.id + '">' + value.flag_desc + '</option>');
-                    }
-                });
+    //             $.each(response,function(key, value)
+    //             {
+    //                 if ( value.id == id_payment_status ) {
+    //                     $("#select_payment_status").append('<option value="' + value.id + '" selected>' + value.flag_desc + '</option>');
+    //                 } else {
+    //                     $("#select_payment_status").append('<option value="' + value.id + '">' + value.flag_desc + '</option>');
+    //                 }
+    //             });
 
-            },
-            error: function(error) {
-                console.log(error.responseJSON);
-                Swal.fire({
-                    icon: 'error',
-                    title: "Error",
-                    text: error.responseJSON.message ?? 'Failed get list of order type',
-                });
-            },
-        });
+    //         },
+    //         error: function(error) {
+    //             console.log(error.responseJSON);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: "Error",
+    //                 text: error.responseJSON.message ?? 'Failed get list of order type',
+    //             });
+    //         },
+    //     });
 
-    }
+    // }
 
-    // ========================= SUBMIT TRANSACTION =========================
-    $(document).on('click', '#button_submit', function(event) {
+    // // ========================= SUBMIT TRANSACTION =========================
+    // $(document).on('click', '#button_submit', function(event) {
 
-        event.preventDefault();
-        $("#button_submit").prop('disabled', true);
+    //     event.preventDefault();
+    //     $("#button_submit").prop('disabled', true);
 
-        var id_trs_header = $('#transaction_header_id').val();
-        var work_type = $('#select_work_type').val();
-        var order_type = $('#select_order_type').val();
+    //     var id_trs_header = $('#transaction_header_id').val();
+    //     var work_type = $('#select_work_type').val();
+    //     var order_type = $('#select_order_type').val();
 
-        $.ajax({
-            type: 'POST',
-            url: "{{ url('/post-trs-on-process-submit') }}",
-            dataType: 'json',
-            data: {
-                id_trs_header: id_trs_header,
-                work_type: work_type,
-                order_type: order_type,
-            },
-            success: function(response) {
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ url('/post-trs-on-process-submit') }}",
+    //         dataType: 'json',
+    //         data: {
+    //             id_trs_header: id_trs_header,
+    //             work_type: work_type,
+    //             order_type: order_type,
+    //         },
+    //         success: function(response) {
 
-                return Swal.fire({
-                    title: response.title,
-                    text: response.message,
-                    timer: 5000,
-                    icon: "success",
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonColor: "#DFBA86",
-                    customClass: {
-                        confirmButton: 'custom-confirm-button-swal'
-                    },
-                    willClose: () => {
-                        if (typeof response.route !== "undefined") {
-                            window.location.href = response.route;
-                        }
-                    },
-                });
+    //             return Swal.fire({
+    //                 title: response.title,
+    //                 text: response.message,
+    //                 timer: 5000,
+    //                 icon: "success",
+    //                 timerProgressBar: true,
+    //                 showConfirmButton: true,
+    //                 confirmButtonColor: "#DFBA86",
+    //                 customClass: {
+    //                     confirmButton: 'custom-confirm-button-swal'
+    //                 },
+    //                 willClose: () => {
+    //                     if (typeof response.route !== "undefined") {
+    //                         window.location.href = response.route;
+    //                     }
+    //                 },
+    //             });
 
-            },
-            error: function(error) {
-                console.log(error.responseJSON);
-                Swal.fire({
-                    icon: 'error',
-                    title: "Error",
-                    text: error.responseJSON.message ?? 'Failed submit transaction request',
-                });
-                $("#button_submit").prop('disabled', false);
-            },
-        });
+    //         },
+    //         error: function(error) {
+    //             console.log(error.responseJSON);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: "Error",
+    //                 text: error.responseJSON.message ?? 'Failed submit transaction request',
+    //             });
+    //             $("#button_submit").prop('disabled', false);
+    //         },
+    //     });
 
-    });
+    // });
 
 </script>
 

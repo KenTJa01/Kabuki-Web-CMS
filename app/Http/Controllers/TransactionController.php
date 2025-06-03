@@ -547,6 +547,41 @@ class TransactionController extends Controller
         return view('/transaction/view_transaction', $data);
     }
 
+    public function documentTrsPage($id): View
+    {
+        $user = Auth::user();
+        Log::debug('User is request transaction request page', ['userId' => $user?->id, 'userName' => $user?->name, 'trfId' => $id]);
+
+        /** Get transaction header data */
+        $sqlHeader = "SELECT *
+            FROM transaction_headers th
+                WHERE th.id = $id
+            LIMIT 1";
+
+        /** Get transaction detail data */
+        $sqlDetail = "SELECT td.id AS detail_id, td.item_id, td.item_code, td.item_desc,
+                td.quantity
+            FROM transaction_details td
+            WHERE td.trs_id = $id
+            ORDER BY td.item_desc";
+
+        /** Permission for print document */
+        // $isPrintAllowed = false;
+        // $trsHeader = collect(DB::select($sqlHeader))->first();
+        // if (Profile::authorize(InterfaceClass::TRANSFER_PRINT) && $trsHeader->flag == $statustrsSubmit && in_array($trsHeader->site_code_orig, $userSites)) {
+        //     $isPrintAllowed = true;
+        // }
+
+        (array) $data = [
+            'trs_id' => $id,
+            'trs_header_data' => collect(DB::select($sqlHeader))->first(),
+            'trs_detail_data' => DB::select($sqlDetail),
+            // 'is_print_allowed' => $isPrintAllowed,
+        ];
+
+        return view('transaction/document_transaction', $data);
+    }
+
     // public function postTrsOnProcessSubmit(Request $request)
     // {
 

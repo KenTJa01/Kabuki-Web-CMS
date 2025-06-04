@@ -31,8 +31,24 @@ class MenuSeeder extends Seeder
         ]);
 
         Menu::create([
+            'menu_name' => 'Receiving',
+            'menu_url' => '/receiving',
+            'flag' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
+        Menu::create([
             'menu_name' => 'Stock',
             'menu_url' => '/stock',
+            'flag' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
+        Menu::create([
+            'menu_name' => 'Finance',
+            'menu_url' => '/finance',
             'flag' => 1,
             'created_by' => 1,
             'updated_by' => 1,

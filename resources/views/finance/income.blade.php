@@ -53,7 +53,7 @@
             </div>
             <div>
                 {{-- @if ( $permission_export != null ) --}}
-                <button class="button_export" id="buttonExport">Export</button>
+                {{-- <button class="button_export" id="buttonExport">Export</button> --}}
                 {{-- @endif --}}
             </div>
         </div>

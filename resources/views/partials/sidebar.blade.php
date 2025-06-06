@@ -282,6 +282,7 @@
     const finSub = document.getElementById("financeSubmenu");
     const finLab = document.getElementById("financeLabel");
     const finList = document.getElementById("list-finance");
+    // const finForm = document.getElementById("form-finance");
 
     var angkaMaster = 0;
     var angkaTransaction = 0;
@@ -298,7 +299,7 @@
             if ( element.menu_name == "Master Data" ) {
 
                 master.classList.remove("d-none");
-                master.classList.remove("dropend");
+                // master.classList.remove("dropend");
                 masterUser.classList.remove("d-none");
                 masterProfile.classList.remove("d-none");
                 masterCustomer.classList.remove("d-none");
@@ -328,7 +329,7 @@
 
                 finance.classList.remove("d-none");
                 finList.classList.remove("d-none");
-                finForm.classList.remove("d-none");
+                // finForm.classList.remove("d-none");
 
             }
 
@@ -337,6 +338,7 @@
         $(document).on('click', '#master', function() {
 
             angkaMaster += 1;
+
 
             if (master.classList.contains('aktif')) {
 

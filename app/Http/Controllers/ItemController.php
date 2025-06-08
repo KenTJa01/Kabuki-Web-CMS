@@ -58,7 +58,7 @@ class ItemController extends Controller
     {
 
         $user = Auth::user();
-        $sql = ("SELECT i.id, i.item_code, item_name, i.item_desc, i.price, (CASE WHEN i.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
+        $sql = ("SELECT i.id, i.item_code, item_name, i.item_desc, i.unit_type, i.price, (CASE WHEN i.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
                 FROM items i
                 ORDER BY i.id ASC");
 
@@ -105,6 +105,7 @@ class ItemController extends Controller
         $validate = Validator::make($request->all(), [
             'itemName' => ['required', 'string'],
             'itemDesc' => ['required', 'string'],
+            'unitType' => ['required', 'string'],
             'price' => ['required', 'integer'],
             'status' => ['required'],
         ]);
@@ -129,7 +130,7 @@ class ItemController extends Controller
 
         $item_name = $validated['itemName'];
         $item_desc = $validated['itemDesc'];
-
+        $unit_type = $validated['unitType'];
         $price = $validated['price'];
         $status = $validated['status'];
 
@@ -146,6 +147,7 @@ class ItemController extends Controller
                 'item_code' => $item_code,
                 'item_name' => $item_name,
                 'item_desc' => $item_desc,
+                'unit_type' => $unit_type,
                 'price' => $price,
                 'flag' => $status,
                 'created_by' => $user?->id,
@@ -194,6 +196,7 @@ class ItemController extends Controller
             'item_code' => ['required', 'string'],
             'item_name' => ['required', 'string'],
             'item_desc' => ['required', 'string'],
+            'unit_type' => ['required', 'string'],
             'price' => ['required'],
             'status' => ['required'],
         ]);
@@ -207,6 +210,7 @@ class ItemController extends Controller
         $item_name = $validated['item_name'];
         $item_code = $validated['item_code'];
         $item_desc = $validated['item_desc'];
+        $unit_type = $validated['unit_type'];
         $price = $validated['price'];
         $status = $validated['status'];
 
@@ -218,6 +222,7 @@ class ItemController extends Controller
             $itemData->item_code = $item_code;
             $itemData->item_name = $item_name;
             $itemData->item_desc = $item_desc;
+            $itemData->unit_type = $unit_type;
             $itemData->price = $price;
             $itemData->flag = $status;
             $itemData->updated_by = $user?->id;

@@ -1,4 +1,4 @@
-@extends("inventory.layouts.main")
+@extends("layouts.main")
 @section("container")
 
     <div class="content">
@@ -15,9 +15,9 @@
                 </div>
             </div>
 
-            @if ( $permission_export != null )
+            {{-- @if ( $permission_export != null )
                 <button class="button_export" id="buttonExport">Export</button>
-            @endif
+            @endif --}}
 
         </div>
 
@@ -30,7 +30,7 @@
                     <tr>
                         <th class="top_left_tableData">Adjustment No.</th>
                         <th>Adjustment Date</th>
-                        <th>Store</th>
+                        <th>Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
                 </thead>
@@ -39,7 +39,7 @@
                     <tr>
                         <th class="bottom_left_tableData">Adjustment No.</th>
                         <th>Adjustment Date</th>
-                        <th>Store</th>
+                        <th>Status</th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
@@ -100,8 +100,8 @@
                         name: 'adj_date',
                     },
                     {
-                        data: 'store_name',
-                        name: 'store_name',
+                        data: 'status',
+                        name: 'status',
                     },
                     {
                         data: 'actions',

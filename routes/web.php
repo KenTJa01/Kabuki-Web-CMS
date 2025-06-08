@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
@@ -132,6 +133,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/post-rec-submit', [ReceivingController::class, 'postRecSubmit'])->name('post-rec-submit');
 
     });
+
+    // ========================= ADJUSTMENT =========================
+    Route::get('/adjustment/list', [AdjustmentController::class, 'adjustmentListPage'])->name('/adjustment/list');
+    Route::get('/get-adjustment-list-datatable', [AdjustmentController::class, 'getAdjustmentListDatatable'])->name('/get-adjustment-list-datatable');
+    Route::get('/adjustment/view/{id}', [AdjustmentController::class, 'viewAdjustmentPage'])->name('adjustment/view');
+    Route::get('/adjustment/form', [AdjustmentController::class, 'adjustmentFormPage'])->name('/adjustment/form');
+    Route::get('/get-adj-item', [AdjustmentController::class, 'getAdjItem'])->name('/get-adj-item');
+    Route::get('/get-adj-stock-qty', [AdjustmentController::class, 'getAdjStockQty'])->name('/get-adj-stock-qty');
+    Route::get('/get-adj-update-qty-list', [AdjustmentController::class, 'getAdjUpdQty'])->name('/get-adj-update-qty-list');
+    Route::post('/post-adj-submit', [AdjustmentController::class, 'postAdjSubmit'])->name('post-adj-submit');
 
     Route::group(['middleware' => 'stock'], function () {
 

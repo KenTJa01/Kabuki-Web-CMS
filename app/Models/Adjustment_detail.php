@@ -5,25 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class Adjustment_detail extends Model
 {
 
-    use HasFactory;
-
+    protected $table = "adjustment_details";
     protected $primaryKey = "id";
-    public $increment = true;
-
     protected $fillable = [
+        'adj_id',
+        'item_id',
         'item_code',
-        'item_name',
         'item_desc',
-        'price',
-        'unit_type',
-        'flag',
+        'adj_qty',
+        'stock_before_adj',
+        'stock_after_adj',
+        'reason',
         'created_by',
-        'updated_by',
+        'updated_by'
     ];
-
-    protected $table = 'items';
 
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("item_name");
             $table->string("item_desc");
             $table->float("price")->default(0);
+            $table->string("unit_type");
             $table->integer("flag")->default(1);
             $table->timestamps();
             $table->bigInteger("created_by");

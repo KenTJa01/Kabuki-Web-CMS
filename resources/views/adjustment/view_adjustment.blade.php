@@ -1,4 +1,4 @@
-@extends('inventory.layouts.main')
+@extends('layouts.main')
 
 @section('container')
 
@@ -14,28 +14,21 @@
     <div class="form_header" style="padding: 0px 5px">
         <table style="width: 100%;">
             <tr>
-                {{-- TRANSFER NO --}}
-                <td class="label_form">Transfer No.</td>
+                {{-- ADJUSTMENT NO --}}
+                <td class="label_form">Adjustment No.</td>
                 <td class="container_input_form">
-                    <input type="text" class="form-control input_form" id="transfer_no" value="{{ $adj_header_data?->adj_no }}" readonly disabled>
+                    <input type="text" class="form-control input_form" id="ADJUSTMENT_no" value="{{ $adj_header_data?->adj_no }}" readonly disabled>
                 </td>
 
                 {{-- VERTICAL LINE --}}
-                <td style="width: 4%" rowspan="2">
-                    <hr class="vertical_line">
+                <td style="width: 4%">
+                    <hr class="vertical_line_one_row">
                 </td>
 
-                {{-- SITE --}}
-                <td class="label_form">Store</td>
+                {{-- ADJUSTMENT DATE --}}
+                <td class="label_form">Adjustment Date</td>
                 <td class="container_input_form">
-                    <input type="text" class="form-control input_form" id="from_store" value="{{ $adj_header_data?->store_code.' - '.$adj_header_data?->site_description }}" readonly disabled>
-                </td>
-            </tr>
-            <tr>
-                {{-- TRANSFER DATE --}}
-                <td class="label_form">Transfer Date</td>
-                <td class="container_input_form">
-                    <input type="text" class="form-control input_form" id="transfer_date" value="{{ date_format(new DateTime($adj_header_data?->adj_date), 'd/m/Y') }}" readonly disabled>
+                    <input type="text" class="form-control input_form" id="ADJUSTMENT_date" value="{{ date_format(new DateTime($adj_header_data?->adj_date), 'd/m/Y') }}" readonly disabled>
                 </td>
             </tr>
         </table>
@@ -60,20 +53,20 @@
                 <thead class="thead">
                     <tr class="text-center" style="width: 100%;">
                         <th class="text-center">Items</th>
+                        <th class="text-center" style="width:200px">Reason</th>
                         <th class="text-center">Before Adjustment</th>
                         <th class="text-center">Adjust Qty</th>
                         <th class="text-center">After Adjustment</th>
-                        <th class="text-center" style="width:200px">Reason</th>
                     </tr>
                 </thead>
                 <tbody style="background-color: white">
                     @foreach ( $adj_detail_data as $add )
                         <tr>
                             <td class="text-center">{{ $add?->item_desc . ' - ' . $add?->item_code }}</td>
-                            <td class="text-center" style="width: 300px">{{ $add?->stock_before_adj }}</td>
-                            <td class="text-center" style="width: 300px">{{ $add?->adj_qty }}</td>
-                            <td class="text-center" style="width: 300px">{{ $add?->stock_after_adj }}</td>
-                            <td class="text-center" style="width: 400px">{{ $add?->reason_desc }}</td>
+                            <td class="text-center" style="width: 100px">{{ $add?->reason }}</td>
+                            <td class="text-center" style="width: 200px">{{ $add?->stock_before_adj }}</td>
+                            <td class="text-center" style="width: 150px">{{ $add?->adj_qty }}</td>
+                            <td class="text-center" style="width: 200px">{{ $add?->stock_after_adj }}</td>
                         </tr>
                     @endforeach
                 </tbody>

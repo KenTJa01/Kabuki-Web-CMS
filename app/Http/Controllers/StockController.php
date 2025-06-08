@@ -172,14 +172,14 @@ class StockController extends Controller
                     AND sm.item_id = i.id
                     AND sm.mov_code = mt.mov_code
                     $params
-            -- UNION ALL
-            --     SELECT sm.id, i.item_name, sm.mov_date, sm.mov_code, sm.quantity, CAST(adj.site_code AS TEXT) as from_site, sm.ref_no
-            --     FROM stock_movements sm, adjustment_headers adj, items i, movement_types mt
-            --     WHERE sm.mov_code = 'ADJ'
-            --         AND sm.ref_no = adj.adj_no
-            --         AND sm.item_id = i.id
-            --         AND sm.mov_code = mt.mov_code
-            --         $params
+            UNION ALL
+                SELECT sm.id, i.item_name, sm.mov_date, sm.mov_code, sm.quantity, sm.ref_no
+                FROM stock_movements sm, adjustment_headers adj, items i, movement_types mt
+                WHERE sm.mov_code = 'ADJ'
+                    AND sm.ref_no = adj.adj_no
+                    AND sm.item_id = i.id
+                    AND sm.mov_code = mt.mov_code
+                    $params
             -- UNION ALL
             --     SELECT sm.id, i.item_name, sm.mov_date, sm.mov_code, sm.quantity, CAST(so.site_code AS TEXT) as from_site, sm.ref_no
             --     FROM stock_movements sm, stock_opname_headers so, items i, movement_types mt

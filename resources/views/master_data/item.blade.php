@@ -68,6 +68,7 @@
                         <th style="width: 120px">Item Code</th>
                         <th>Item Name</th>
                         <th>Item Description</th>
+                        <th>Unit Type</th>
                         <th>Price</th>
                         <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
@@ -80,6 +81,7 @@
                         <th style="width: 120px">Item Code</th>
                         <th>Item Name</th>
                         <th>Item Description</th>
+                        <th>Unit Type</th>
                         <th>Price</th>
                         <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
@@ -110,6 +112,18 @@
                         <label for="item_description" class="col-sm-3 col-form-label">Description</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="item_description" placeholder="Enter description">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="select_unit_type" class="col-sm-3 col-form-label">Unit Type</label>
+                        <div class="col-sm-9">
+                            <select name="select_unit_type" id="select_unit_type" class="input_form" style="width: 100%;">
+                                <option value="">Select unit type</option>
+                                <option value="meter">Meter</option>
+                                <option value="sentimeter">Sentimeter</option>
+                                <option value="liter">Liter</option>
+                                <option value="mililiter">Mililiter</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row input_modal">
@@ -151,32 +165,40 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" id="item_id_edit">
                     <div class="row input_modal">
-                        <label for="item_code_edit" class="col-sm-4 col-form-label">Item Code</label>
-                        <div class="col-sm-8">
+                        <label for="item_code_edit" class="col-sm-3 col-form-label">Item Code</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="item_code_edit" disabled placeholder="Enter code">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="item_name_edit" class="col-sm-4 col-form-label">Item Name</label>
-                        <div class="col-sm-8">
+                        <label for="item_name_edit" class="col-sm-3 col-form-label">Item Name</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="item_name_edit" placeholder="Enter name">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="item_description_edit" class="col-sm-4 col-form-label">Description</label>
-                        <div class="col-sm-8">
+                        <label for="item_description_edit" class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="item_description_edit" placeholder="Enter description">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="price_edit" class="col-sm-4 col-form-label">Price</label>
-                        <div class="col-sm-8">
+                        <label for="select_unit_type_edit" class="col-sm-3 col-form-label">Unit Type</label>
+                        <div class="col-sm-9">
+                            <select name="select_unit_type_edit" id="select_unit_type_edit" class="input_form" style="width: 100%;">
+                                <option value="">Select unit type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="price_edit" class="col-sm-3 col-form-label">Price</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="price_edit" placeholder="Enter price">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status_edit" class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
+                        <label for="status_edit" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
                             <div style="width: 75px;">
                                 <div class="container_toggle">
                                     <input type="checkbox" class="checkbox" id="status_edit" value="1" checked>
@@ -265,6 +287,10 @@
                         name: 'item_desc',
                     },
                     {
+                        data: 'unit_type',
+                        name: 'unit_type',
+                    },
+                    {
                         data: 'price',
                         name: 'price',
                     },
@@ -305,6 +331,8 @@
 
             $("#item_name").val("");
             $("#item_description").val("");
+            $("#select_unit_type").val("");
+            $('#select_unit_type').trigger("change");
             $("#price").val("");
 
             document.getElementById('status').checked = true;
@@ -316,6 +344,8 @@
 
             $("#item_name").val("");
             $("#item_description").val("");
+            $("#select_unit_type").val("");
+            $('#select_unit_type').trigger("change");
             $("#price").val("");
 
             document.getElementById('status').checked = true;
@@ -327,6 +357,7 @@
 
             var itemName = $("#item_name").val();
             var itemDesc = $("#item_description").val();
+            var unitType = $("#select_unit_type").val();
             var price = $("#price").val();
             var status = $("#status:checked").val();
 
@@ -343,6 +374,7 @@
                 data: {
                     itemName: itemName,
                     itemDesc: itemDesc,
+                    unitType: unitType,
                     price: price,
                     status: flag,
                 },
@@ -408,6 +440,46 @@
                         $("#status_edit").attr('checked', false);
                     }
 
+                    $("#select_unit_type_edit").html('<option value="">Select unit type</option>');
+
+                    if ( response.unit_type == "meter" ) {
+
+                        $("#select_unit_type_edit").append('<option value="meter" selected>Meter</option>');
+                        $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
+                        $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
+                        $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+
+                    } else if ( response.unit_type == "sentimeter" ) {
+
+                        $("#select_unit_type_edit").append('<option value="meter">Meter</option>');
+                        $("#select_unit_type_edit").append('<option value="sentimeter" selected>Sentimeter</option>');
+                        $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
+                        $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+
+                    } else if ( response.unit_type == "liter" ) {
+
+                        $("#select_unit_type_edit").append('<option value="meter">Meter</option>');
+                        $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
+                        $("#select_unit_type_edit").append('<option value="liter" selected>Liter</option>');
+                        $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+
+                    } else if ( response.unit_type == "mililiter" ) {
+
+                        $("#select_unit_type_edit").append('<option value="meter">Meter</option>');
+                        $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
+                        $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
+                        $("#select_unit_type_edit").append('<option value="mililiter" selected>Mililiter</option>');
+
+                    } else {
+
+                        $("#select_unit_type_edit").append('<option value="meter">Meter</option>');
+                        $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
+                        $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
+                        $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+
+                    }
+
+
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
@@ -428,6 +500,7 @@
             var itemCode = $("#item_code_edit").val();
             var itemName = $("#item_name_edit").val();
             var itemDesc = $("#item_description_edit").val();
+            var unitType = $("#select_unit_type_edit").val();
             var price = $("#price_edit").val();
             var status = document.getElementById('status_edit').checked;
 
@@ -446,6 +519,7 @@
                     item_code: itemCode,
                     item_name: itemName,
                     item_desc: itemDesc,
+                    unit_type: unitType,
                     price: price,
                     status: flag,
                 },

@@ -1,4 +1,4 @@
-@extends("inventory.layouts.main")
+@extends("layouts.main")
 @section("container")
 
     <style>
@@ -24,25 +24,12 @@
         <hr>
 
         <div style="margin-top: 0px; padding: 0px 10px">
-            <table style="width: 100%;">
+            <table style="width: 40%;">
                 <tr>
                     {{-- TRANSFER DATE --}}
                     <td class="label_form">Adjustment Date</td>
                     <td class="container_input_form" style="margin: 0; padding: 0;">
                         <input type="text" class="form-control input_form" id="adjustment_date" readonly disabled>
-                    </td>
-
-                    {{-- VERTICAL LINE --}}
-                    <td style="width: 4%" rowspan="2">
-                        <hr class="vertical_line_one_row">
-                    </td>
-
-                    {{-- SELECT STORE --}}
-                    <td class="label_form">Store</td>
-                    <td class="container_input_form" style="margin: 0; padding: 0;">
-                        <select name="select_site" id="select_site" class="input_form">
-                            <option value="">Select store</option>
-                        </select>
                     </td>
                 </tr>
             </table>
@@ -111,8 +98,9 @@
 
             $("#select_site").select2();
 
-            getListSite();
             tableItems();
+            resetTable();
+            getListItem();
 
             $(".item").prop('disabled', true);
             $('.btn_remove').prop('disabled', true);
@@ -122,68 +110,13 @@
         var indexTable = 3;
         var productListData = [];
 
-        function getListSite() {
-
-            /** Enabled dropdown */
-            $('#select_site').prop('disabled', false);
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-user-site-permission') }}",
-                dataType: 'json',
-                data: {},
-                success: function(response) {
-
-                    var data = response;
-
-                    /** Set dropdown list */
-                    $('#select_site').find('option').remove().end().append();
-                    if (data.length != 1) {
-                        $('#select_site').append('<option value="" disabled selected>Select store</option>');
-                    }
-                    for (var i = 0; i < data.length; i++) {
-                        text = data[i].store_code+' - '+data[i].site_description;
-                        value = data[i].site_id;
-                        $('#select_site').append($("<option></option>").attr("value", value).text(text));
-                    }
-
-                    if (data.length == 1) {
-                        resetTable();
-                        getListItem();
-                    }
-
-                    /** Enabled dropdown */
-                    $('#select_site').prop('disabled', false);
-
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list site',
-                    });
-                },
-            });
-
-        }
-
-        $(document).on('change', '#select_site', function(event){
-            resetTable();
-            getListItem();
-        });
-
         function getListItem() {
-
-            var site = $('#select_site').val();
 
             $.ajax({
                 type: 'GET',
                 url: "{{ url('/get-adj-item') }}",
                 dataType: 'json',
-                data: {
-                    site_id: site,
-                },
+                data: {},
                 success: function(response) {
                     itemListData = response.map(function (item) {
                         return {
@@ -486,21 +419,24 @@
 
         function getReason(index) {
 
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-adj-reason') }}",
-                dataType: 'json',
-                success: function(response) {
-                    $('#reason_'+index).find('option').remove().end().append();
-                    $('#reason_'+index).append('<option value="" disabled selected>Select reason</option>');
+            $('#reason_'+index).find('option').remove().end().append();
+            $('#reason_'+index).append('<option value="" disabled selected>Select reason</option>');
+            $('#reason_'+index).append('<option value="+">PLUS</option>');
+            $('#reason_'+index).append('<option value="-">MINUS</option>');
 
-                    $.each(response,function(key, value)
-                    {
-                        $('#reason_'+index).append('<option value="'+value.id+'|'+value.default_operator+'">' + value.reason_code + ' - ' + value.reason_desc + '</option>');
-                    });
-                }
+            // $.ajax({
+            //     type: 'GET',
+            //     url: "{{ url('/get-adj-reason') }}",
+            //     dataType: 'json',
+            //     success: function(response) {
 
-            });
+            //         $.each(response,function(key, value)
+            //         {
+            //             $('#reason_'+index).append('<option value="'+value.id+'|'+value.default_operator+'">' + value.reason_code + ' - ' + value.reason_desc + '</option>');
+            //         });
+            //     }
+
+            // });
 
         }
 
@@ -522,7 +458,6 @@
 
         function getStockQty(index) {
 
-            var site = $('#select_site').val();
             var item = $('#item_'+index+'_id').val();
 
             /** Reset qty, stock, unit */
@@ -534,7 +469,6 @@
                 url: "{{ url('/get-adj-stock-qty') }}",
                 dataType: 'json',
                 data: {
-                    site_id: site,
                     item_id: item,
                 },
                 success: function(response) {
@@ -586,7 +520,7 @@
 
             var tempArr = index.split("_");
             var reason = $('#reason_'+tempArr[1]).val();
-            var getOpr = reason.split("|");
+            // var getOpr = reason.split("|");
             var qty = $('#qty_'+tempArr[1]).val();
             var stockQty = $('#stock_qty_'+tempArr[1]+'_id').val();
 
@@ -596,7 +530,7 @@
                     disableTableRow(tempArr[1]);
                     return;
                 }
-                if (getOpr[1] == '-') {
+                if (reason == '-') {
                     if (parseInt(qty) > parseInt(stockQty)) {
                         showQtyErrorMessage(tempArr[1], 'Stock not available');
                         disableTableRow(tempArr[1]);
@@ -608,7 +542,7 @@
                             url: "{{ url('/get-adj-update-qty-list') }}",
                             dataType: 'json',
                             data: {
-                                reasonData: getOpr[0],
+                                operator: reason,
                                 qtyData: qty,
                                 stockQtyData: stockQty,
                             },
@@ -633,7 +567,7 @@
                         url: "{{ url('/get-adj-update-qty-list') }}",
                         dataType: 'json',
                         data: {
-                            reasonData: getOpr[0],
+                            operator: reason,
                             qtyData: qty,
                             stockQtyData: stockQty,
                         },
@@ -669,8 +603,7 @@
             for (var i = 1, row ; row = table.rows[i] ; i++) {
                 var tempArr = row.id.split("_");
                 var itemId = $('#item_'+tempArr[1]+'_id').val();
-                var reasonId = $('#reason_'+tempArr[1]).val();
-                var reason = null;
+                var operator = $('#reason_'+tempArr[1]).val();
                 var stockQty = $('#stock_qty_'+tempArr[1]+'_id').val();
                 var qty = $('#qty_'+tempArr[1]).val();
                 var updateQty = $('#update_qty_'+tempArr[1]).val();
@@ -689,12 +622,10 @@
                         return;
                     }
 
-                    if (reasonId == null) {
+                    if (operator == null) {
                         showReasonErrorMessage(tempArr[1], 'Required');
                         disableTableRow(tempArr[1]);
                         return;
-                    } else {
-                        reason = reasonId.split("|");
                     }
 
                     /** Validate qty input */
@@ -708,7 +639,7 @@
                     detailData.push(
                         {
                             item_id: itemId,
-                            reason_id: reason[0],
+                            operator: operator,
                             stock_qty: stockQty,
                             qty: qty,
                             update_qty: updateQty,

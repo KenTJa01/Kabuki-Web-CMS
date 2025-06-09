@@ -756,8 +756,8 @@
 
                     /** Enabled text input */
                     $('#price_'+index).val($subtotal);
-                    tampungTotalPrice += $subtotal;
-                    $('#total_price').val(tampungTotalPrice);
+
+                    getTotalPrice();
 
                 },
                 error: function(error) {
@@ -769,6 +769,22 @@
                     });
                 },
             });
+        }
+
+        function getTotalPrice() {
+
+            $('#total_price').val("");
+            tampungTotalPrice = 0;
+
+            for (let i = 0; i < indexTable; i++) {
+
+                $subtotal = Number($('#price_'+i).val());
+                tampungTotalPrice += $subtotal;
+
+            }
+
+            $('#total_price').val(tampungTotalPrice);
+
         }
 
         // ========================= SUBMIT REDEEM =========================

@@ -18,6 +18,7 @@ class Transaction_header extends Model
         'trs_date',
         'work_type_id',
         'order_type_id',
+        'payment_type',
         'customer_fullname',
         'address',
         'no_telp',

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign("work_type_id")->references("id")->on("work_types");
             $table->bigInteger("order_type_id")->nullable();
             $table->foreign("order_type_id")->references("id")->on("order_types");
-
+            $table->string("payment_type");
 
             $table->string("customer_fullname");
             $table->string("address");
@@ -33,8 +33,6 @@ return new class extends Migration
 
             $table->integer('flag');
             $table->timestamps();
-            $table->bigInteger('created_by');
-            $table->bigInteger('updated_by');
 
         });
     }

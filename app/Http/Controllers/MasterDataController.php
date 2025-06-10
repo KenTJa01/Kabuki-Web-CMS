@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\expense_type;
 use App\Models\Income_type;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -67,6 +68,12 @@ class MasterDataController extends Controller
     public function getAllDataIncomeType()
     {
         $data = Income_type::where('flag', 1)->get();
+        return response()->json($data);
+    }
+
+    public function getAllDataExpenseType()
+    {
+        $data = expense_type::where('flag', 1)->get();
         return response()->json($data);
     }
 

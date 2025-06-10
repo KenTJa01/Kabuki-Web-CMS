@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-all-data-item', [MasterDataController::class, 'getAllDataItem'])->name('get-all-data-item');
     Route::get('/get-all-data-movement-type', [MasterDataController::class, 'getAllDataMovementType'])->name('get-all-data-movement-type');
     Route::get('/get-all-data-income-type', [MasterDataController::class, 'getAllDataIncomeType'])->name('get-all-data-income-type');
+    Route::get('/get-all-data-expense-type', [MasterDataController::class, 'getAllDataExpenseType'])->name('get-all-data-expense-type');
 
     Route::group(['middleware' => 'master_data'], function () {
 
@@ -158,9 +159,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'finance'], function () {
 
         // ========================= FINANCE =========================
-        Route::get('/finance/list', [FinanceController::class, 'financeIncomePage'])->name('/finance/list');
+        Route::get('/finance/income', [FinanceController::class, 'financeIncomePage'])->name('/finance/income');
         Route::get('/get-income-list-datatable', [FinanceController::class, 'getIncomeListDatatable'])->name('get-income-list-datatable');
         Route::post('/post-new-finance-income', [FinanceController::class, 'postFinIncomeSubmit'])->name('post-new-finance-income');
+        Route::get('/finance/expense', [FinanceController::class, 'financeExpensePage'])->name('/finance/expense');
+        Route::get('/get-expense-list-datatable', [FinanceController::class, 'getExpenseListDatatable'])->name('get-expense-list-datatable');
 
     });
 

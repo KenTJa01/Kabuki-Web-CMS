@@ -38,18 +38,13 @@
                     </td>
 
                     {{-- STATUS --}}
-                    {{-- <td class="label_form">Payment Status</td>
+                    <td class="label_form">Payment Type</td>
                     <td class="container_input_form">
-                        <select name="select_payment_status" id="select_payment_status" class="input_form" style="width: 100%;" disabled>
-                            <option value="">Select payment status</option>
+                        <select name="select_payment_type" id="select_payment_type" class="input_form" style="width: 100%;" disabled>
+                            <option value="">Select payment type</option>
                         </select>
-                    </td> --}}
-
-                    {{-- NOTE --}}
-                    <td class="label_form">Note</td>
-                    <td class="container_input_form" rowspan="2">
-                        <textarea class="form-control" id="note" cols="50" rows="3" style="resize: none;"></textarea>
                     </td>
+
                 </tr>
                 <tr>
                     {{-- WORK TYPE --}}
@@ -60,11 +55,12 @@
                         </select>
                     </td>
 
+
                     {{-- NOTE --}}
-                    {{-- <td class="label_form">Note</td>
+                    <td class="label_form">Note</td>
                     <td class="container_input_form" rowspan="2">
                         <textarea class="form-control" id="note" cols="50" rows="3" style="resize: none;"></textarea>
-                    </td> --}}
+                    </td>
                 </tr>
                 <tr>
                     {{-- ORDER TYPE --}}
@@ -177,6 +173,7 @@
                 <font style="margin: 8px 10px 0 0; font-weight: 500">Total</font>
                 <input type="number" class="form-control" id="total_price" value=0 readonly disabled style="text-align: right;">
             </div>
+
         </div>
 
     </div>
@@ -203,7 +200,7 @@
 
             $("#select_work_type").select2();
             $("#select_order_type").select2();
-            // $("#select_payment_status").select2();
+            $("#select_payment_type").select2();
             $("#select_customer_name").select2();
 
             //getListSite();
@@ -269,9 +266,9 @@
                     if (response.length === 0) {
 
                         $('#select_order_type').prop('disabled', true);
-                        // $('#select_payment_status').prop('disabled', false);
+                        $('#select_payment_type').prop('disabled', false);
                         $('#select_customer_name').prop('disabled', false);
-                        getAllDataPaymentStatus();
+                        getAllDataPaymentType();
                         getAllDataCustomer();
 
                     } else {
@@ -298,37 +295,19 @@
 
         $('#select_order_type').on('change', function() {
 
-            // $('#select_payment_status').prop('disabled', false);
+            $('#select_payment_type').prop('disabled', false);
             $('#select_customer_name').prop('disabled', false);
-            // getAllDataPaymentStatus();
+            getAllDataPaymentType();
             getAllDataCustomer();
 
         });
 
-        function getAllDataPaymentStatus() {
+        function getAllDataPaymentType() {
 
-            $("#select_payment_status").html('<option value="">Select payment status</option>');
-
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-all-data-payment-status') }}",
-                dataType: 'json',
-                data: {},
-                success: function(response) {
-                    $.each(response,function(key, value)
-                    {
-                        $("#select_payment_status").append('<option value="' + value.id + '">' + value.flag_desc + '</option>');
-                    });
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of customer',
-                    });
-                },
-            });
+            $("#select_payment_type").html('<option value="">Select payment type</option>');
+            $("#select_payment_type").append('<option value="Cash">Cash</option>');
+            $("#select_payment_type").append('<option value="Transfer Bank">Transfer Bank</option>');
+            $("#select_payment_type").append('<option value="QRIS">QRIS</option>');
 
         }
 
@@ -796,7 +775,7 @@
             var transaction_date = $('#transaction_date').val();
             var work_type = $('#select_work_type').val();
             var order_type = $('#select_order_type').val();
-            // var payment_status = $('#select_payment_status').val();
+            var payment_type = $('#select_payment_type').val();
             var note = $('#note').val();
             var customer_id = $("#select_customer_name").val();
             var address = $("#address").val();
@@ -860,7 +839,7 @@
                     transaction_date: transaction_date,
                     work_type: work_type,
                     order_type: order_type,
-                    // payment_status: payment_status,
+                    payment_type: payment_type,
                     note: note,
                     customer_id: customer_id,
                     address: address,

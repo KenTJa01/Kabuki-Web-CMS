@@ -38,22 +38,17 @@
                 </td>
 
                 {{-- STATUS --}}
-                <input type="hidden" id="payment_status_id" value="{{ $trs_header_data->flag }}">
-                <td class="label_form">Payment Status</td>
+                {{-- <input type="hidden" id="payment_type_id" value="{{ $trs_header_data->flag }}"> --}}
+                <td class="label_form">Payment Type</td>
                 <td class="container_input_form">
-                    <select name="select_payment_status" id="select_payment_status" class="input_form" style="width: 100%;" disabled>
-                        <option value="">Select payment status</option>
-                    </select>
+                      <input type="text" class="form-control input_form" id="transaction_date" value="{{ $trs_header_data->payment_type }}" readonly disabled>
                 </td>
             </tr>
             <tr>
                 {{-- WORK TYPE --}}
-                <input type="hidden" id="work_type_id" value="{{ $trs_header_data->work_type_id }}">
                 <td class="label_form">Work Type</td>
                 <td class="container_input_form">
-                    <select name="select_work_type" id="select_work_type" class="input_form" style="width: 100%;" disabled>
-                        <option value="">Select work type</option>
-                    </select>
+                    <input type="text" class="form-control input_form" id="transaction_date" value="{{ $trs_header_data->work_type_name }}" readonly disabled>
                 </td>
 
                 {{-- NOTE --}}
@@ -64,12 +59,9 @@
             </tr>
             <tr>
                 {{-- ORDER TYPE --}}
-                <input type="hidden" id="order_type_id" value="{{ $trs_header_data->order_type_id }}">
                 <td class="label_form">Order Type</td>
                 <td class="container_input_form">
-                    <select name="select_order_type" id="select_order_type" class="input_form" style="width: 100%;" disabled>
-                        <option value="">Select order type</option>
-                    </select>
+                    <input type="text" class="form-control input_form" id="transaction_date" value="{{ $trs_header_data->order_type_name }}" readonly disabled>
                 </td>
             </tr>
         </table>
@@ -152,6 +144,7 @@
                     <tr class="text-center" style="width: 100%;">
                         <th class="text-center">Items</th>
                         <th class="text-center" style="width:200px">Redeem Quantity</th>
+                        <th class="text-center" style="width:200px">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody style="background-color: white">
@@ -159,10 +152,16 @@
                         <tr>
                             <td class="text-center">{{ $tdd?->item_desc . ' - ' . $tdd?->item_code }}</td>
                             <td class="text-center" style="width: 400px">{{ $tdd?->quantity }}</td>
+                            <td class="text-center" style="width: 400px">{{ $tdd?->total_price_per_item }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <div class="input_total d-flex justify-content-end" style="width: 100%; margin-top: 10px;">
+                <font style="margin: 8px 10px 0 0; font-weight: 500">Total</font>
+                <input type="number" class="form-control" id="total_price" value="{{ $trs_header_data->total_price }}" readonly disabled style="text-align: right; width: 200px;">
+            </div>
+
         </div>
 
     </div>

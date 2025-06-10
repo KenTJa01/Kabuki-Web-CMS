@@ -319,6 +319,8 @@
         // ========================= GET ALL DATA PROFILE =========================
         function getAllDataIncomeType() {
 
+            $("#select_income_type").html('<option value="">Select income type</option>');
+
             $.ajax({
                 type: 'GET',
                 url: "{{ url('/get-all-data-income-type') }}",

@@ -306,7 +306,7 @@ class TransactionController extends Controller
         $validate = Validator::make($request->all(), [
             'transaction_date' => ['required'],
             'work_type' => ['required'],
-            // 'payment_status' => ['required'],
+            'payment_type' => ['required'],
             'customer_id' => ['required'],
             'address' => ['required', 'string'],
             'no_telp' => ['required', 'string'],
@@ -387,6 +387,7 @@ class TransactionController extends Controller
                 'trs_date' => $transactionDate,
                 'work_type_id' => $work_type->id,
                 'order_type_id' => $order_type,
+                'payment_type' => $validated['payment_type'],
                 'customer_fullname' => $customer_name,
                 'address' => $address,
                 'no_telp' => $no_telp,
@@ -518,14 +519,19 @@ class TransactionController extends Controller
         // $userSites = User_site::where('user_id', $user?->id)->get()->pluck('site_code')->toArray();
 
         /** Get transfer header data */
-        $sqlHeader = "SELECT th.trs_no, th.trs_date, th.customer_fullname, th.work_type_id, th.order_type_id, th.address, th.no_telp, th.vehicle_number, th.note, th.flag
-            FROM transaction_headers th
-            WHERE th.id = $id
-            LIMIT 1";
+        $sqlHeader = "SELECT th.trs_no, th.trs_date, th.customer_fullname, wt.work_type_name,
+                        ot.order_type_name, th.order_type_id, th.address, th.no_telp,
+                        th.vehicle_number, th.note, th.flag, th.payment_type, th.total_price
+                    FROM transaction_headers th
+                    JOIN work_types wt ON th.work_type_id = wt.id
+                    LEFT JOIN order_types ot ON th.order_type_id = ot.id
+                    WHERE th.id = $id
+                    LIMIT 1;
+";
 
         /** Get transaction detail data */
         $sqlDetail = "SELECT td.id AS detail_id, td.item_id, td.item_code, td.item_desc,
-                td.quantity
+                td.quantity, td.total_price_per_item
             FROM transaction_details td
             WHERE td.trs_id = $id
             ORDER BY td.item_desc";
@@ -560,7 +566,7 @@ class TransactionController extends Controller
 
         /** Get transaction detail data */
         $sqlDetail = "SELECT td.id AS detail_id, td.item_id, td.item_code, td.item_desc,
-                td.quantity
+                td.quantity, td.total_price_per_item
             FROM transaction_details td
             WHERE td.trs_id = $id
             ORDER BY td.item_desc";

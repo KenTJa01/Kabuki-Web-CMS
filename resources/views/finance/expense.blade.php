@@ -44,7 +44,7 @@
                     </button>
                 {{-- @endif --}}
 
-                <h4 class="title">LIST OF USERS</h4>
+                <h4 class="title">LIST OF EXPENSES</h4>
 
                 <div class="user_guide active text-center">
                     <font class="text_tooltip">i</font>
@@ -65,10 +65,11 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 120px">Username</th>
-                        <th>Name</th>
-                        <th>Profile</th>
-                        <th style="width: 120px">Status</th>
+                        <th style="width: 150px">Expense No.</th>
+                        <th>Date</th>
+                        <th>Expense Type</th>
+                        <th>Amount</th>
+                        <th>Description</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
                 </thead>
@@ -76,10 +77,11 @@
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 120px">Username</th>
-                        <th>Name</th>
-                        <th>Profile</th>
-                        <th style="width: 120px"></th>
+                        <th style="width: 150px">Expense No.</th>
+                        <th>Date</th>
+                        <th>Expense Type</th>
+                        <th>Amount</th>
+                        <th>Description</th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
@@ -94,47 +96,34 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW USER</h1>
+                    <h1 class="modal-title fs-5" id="newCreationModalLabel">CREATE NEW EXPENSE</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row input_modal">
-                        <label for="username" class="col-sm-3 col-form-label">Username</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        <label for="expense_date" class="col-sm-4 col-form-label">Expense Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="expense_date">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="name" class="col-sm-3 col-form-label">Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name" placeholder="Enter name">
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="password" class="col-sm-3 col-form-label">Password</label>
-                        <div class="col-sm-9">
-                            <input type="password" class="form-control" id="password" placeholder="Enter password">
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="select_profile" class="col-sm-3 col-form-label">Profile</label>
-                        <div class="col-sm-9">
-                            <select name="select_profile" id="select_profile" class="form-select" style="width: 100%;">
-                                <option value="" disabled>Select profile</option>
+                        <label for="select_expense_type" class="col-sm-4 col-form-label">Expense Type</label>
+                        <div class="col-sm-8">
+                            <select name="select_expense_type" id="select_expense_type" class="form-select" style="width: 100%;">
+                                <option value="" readonly>Select expense type</option>
                             </select>
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status" class="col-sm-3 col-form-label">Status</label>
-                        <div class="col-sm-9">
-                            <div style="width: 75px;">
-                                <div class="container_toggle">
-                                    <input type="checkbox" class="checkbox" id="status" value="1" checked>
-                                    <label class="switch" for="status">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </div>
+                        <label for="amount" class="col-sm-4 col-form-label">Amount</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="amount" placeholder="Enter amount">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="description" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description" cols="30" rows="5" style="resize: none;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -252,7 +241,7 @@
                 orderCellsTop: true,
                 ajax: {
                     type: 'GET',
-                    url: `{{ route("get-user-list-datatable") }}`,
+                    url: `{{ route("get-expense-list-datatable") }}`,
                     data: {
                     },
                 },
@@ -264,20 +253,24 @@
                         searchable:false
                     },
                     {
-                        data: 'username',
-                        name: 'username',
+                        data: 'income_no',
+                        name: 'income_no',
                     },
                     {
-                        data: 'name',
-                        name: 'name',
+                        data: 'income_date',
+                        name: 'income_date',
                     },
                     {
-                        data: 'profile',
-                        name: 'profile',
+                        data: 'income_name',
+                        name: 'income_name',
                     },
                     {
-                        data: 'status',
-                        name: 'status',
+                        data: 'amount',
+                        name: 'amount',
+                    },
+                    {
+                        data: 'description',
+                        name: 'description',
                     },
                     {
                         data: 'actions',
@@ -289,7 +282,7 @@
                 ],
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { className: "dt-center", targets: [0,1,5] }
+                    { className: "dt-center", targets: [0,1,6] }
                 ],
                 language: {
                     loadingRecords: '&nbsp;',
@@ -307,45 +300,45 @@
 
         }
 
-        // ========================= CLICK NEW =========================
+         // ========================= CLICK NEW =========================
         $(document).on('click', '#button_new', function(event) {
 
-            $("#username").val("");
-            $("#name").val("");
-            $("#password").val("");
-            $("#select_profile").val("");
-            $('#select_profile').trigger("change");
-            document.getElementById('status').checked = true;
+            $("#expense_date").val("");
+            $("#amount").val("");
+            $("#description").val("");
+            $("#select_expense_type").val("");
+            $('#select_expense_type').trigger("change");
 
-            getAllDataProfile();
+            getAllDataExpenseType();
 
         });
 
         // ========================= CLEAR INPUT MODAL =========================
         $(document).on('click', '#button_clear_modal', function(event) {
 
-            $("#username").val("");
-            $("#name").val("");
-            $("#password").val("");
-            $("#select_profile").val("");
-            $('#select_profile').trigger("change");
+            $("#expense_date").val("");
+            $("#amount").val("");
+            $("#description").val("");
+            $("#select_expense_type").val("");
+            $('#select_expense_type').trigger("change");
 
-            document.getElementById('status').checked = true;
 
         });
 
-        // ========================= GET ALL DATA PROFILE =========================
-        function getAllDataProfile() {
+        // ========================= GET ALL DATA EXPENSE TYPE =========================
+        function getAllDataExpenseType() {
+
+            $("#select_expense_type").html('<option value="">Select expense type</option>');
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-all-data-profile') }}",
+                url: "{{ url('/get-all-data-expense-type') }}",
                 dataType: 'json',
                 data: {},
                 success: function(response) {
                     $.each(response,function(key, value)
                     {
-                        $("#select_profile").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
+                        $("#select_expense_type").append('<option value="' + value.id + '">' + value.expense_name + '</option>');
                     });
                 },
                 error: function(error) {
@@ -353,7 +346,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of profile',
+                        text: error.responseJSON.message ?? 'Failed get list of expense type',
                     });
                 },
             });

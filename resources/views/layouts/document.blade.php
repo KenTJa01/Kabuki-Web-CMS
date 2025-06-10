@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>DGM Core</title>
+        <title>Kabuki Auto Shop</title>
         <link rel="icon" href="">
 
         <meta charset="UTF-8">

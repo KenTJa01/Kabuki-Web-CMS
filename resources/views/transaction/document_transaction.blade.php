@@ -26,7 +26,13 @@
         height: 100px;
     }
 </style>
+
 <div class="row">
+    <div class="col">
+        <img src="{{ asset('img/logo_kabuki_landscape_text_black.svg') }}" style="width: 150px">
+    </div>
+</div>
+<div class="row mt-4">
     <div class="col text-center" id="title">
         <h3 style="font-weight: 500; text-decoration: underline;">TRANSACTION INVOICE</h2>
     </div>
@@ -62,8 +68,9 @@
                 <table class="table-data">
                     <thead>
                         <tr class="text-center font-weight-bold">
-                            <td>Product Category</td>
+                            <td>Product</td>
                             <td>Qty</td>
+                            <td>Subtotal</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,35 +78,26 @@
                         <tr>
                             <td>{{ $d?->item_code.' - '.$d?->item_desc }}</td>
                             <td>{{ $d?->quantity }}</td>
+                            <td>{{ $d?->total_price_per_item }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="row pt-4" align="center">
+        <div class="row mt-4" align="right">
             <div class="col-sm">
-                <table class="table-sign">
-                    <tr>
-                        <td>ADMIN</td>
-                    </tr>
-                    <tr class="tr-h-100">
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-sm"></div>
-            <div class="col-sm">
-                <table class="table-sign">
-                    <tr>
-                        <td>CUSTOMER</td>
-                    </tr>
-                    <tr class="tr-h-100">
-                        <td></td>
-                    </tr>
+                <table class="table-data" style="width: 33%">
+                    <thead>
+                        <tr class="text-center font-weight-bold">
+                            <td><strong>Total Price</strong></td>
+                            <td>{{ $trs_header_data->total_price }}</td>
+                        </tr>
+                    </thead>
                 </table>
             </div>
         </div>
+
     </div>
 </div>
 <script>

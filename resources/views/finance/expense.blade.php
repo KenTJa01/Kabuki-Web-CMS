@@ -140,45 +140,37 @@
         <div class="modal-dialog">
             <div class="modal-content" style="border: 0px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT USER</h1>
+                    <h1 class="modal-title fs-5" id="editModalLabel">EDIT EXPENSE</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="user_id_edit">
+                    <input type="hidden" name="id" id="expense_id_edit">
                     <div class="row input_modal">
-                        <label for="username_edit" class="col-sm-3 col-form-label">Username</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="username_edit" placeholder="Enter username">
+                        <label for="expense_date_edit" class="col-sm-4 col-form-label">Expense Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="expense_date_edit">
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="name_edit" class="col-sm-3 col-form-label">Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name_edit" placeholder="Enter name">
-                        </div>
-                    </div>
-                    <div class="row input_modal">
-                        <label for="select_profile_edit" class="col-sm-3 col-form-label">Profile</label>
-                        <div class="col-sm-9">
-                            <select name="select_profile_edit" id="select_profile_edit" class="form-select" style="width: 100%;">
-                                <option value="" disabled>Select profile</option>
+                        <label for="select_expense_type_edit" class="col-sm-4 col-form-label">Expense Type</label>
+                        <div class="col-sm-8">
+                            <select name="select_expense_type_edit" id="select_expense_type_edit" class="form-select" style="width: 100%;">
+                                <option value="" readonly>Select expense type</option>
                             </select>
                         </div>
                     </div>
                     <div class="row input_modal">
-                        <label for="status_edit" class="col-sm-3 col-form-label">Status</label>
-                        <div class="col-sm-9">
-                            <div style="width: 75px;">
-                                <div class="container_toggle">
-                                    <input type="checkbox" class="checkbox" id="status_edit" value="1" checked>
-                                    <label class="switch" for="status_edit">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </div>
+                        <label for="amount_edit" class="col-sm-4 col-form-label">Amount</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="amount_edit" placeholder="Enter amount">
                         </div>
                     </div>
-
+                    <div class="row input_modal">
+                        <label for="description_edit" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description_edit" cols="30" rows="5" style="resize: none;"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="button_clear_modal" id="button_clear_modal_edit">Clear</button> --}}
@@ -199,11 +191,20 @@
 
         $(document).ready(function(){
 
-            $('#select_profile').select2({
+            $('#select_expense_type').select2({
                 dropdownParent: $("#newCreationModal"),
                 placeholder: {
                     id: '-1',
-                    text: 'Select an option'
+                    text: 'Select expense type'
+                },
+                multiple: false
+            });
+
+            $('#select_expense_type_edit').select2({
+                dropdownParent: $("#editModal"),
+                placeholder: {
+                    id: '-1',
+                    text: 'Select expense type'
                 },
                 multiple: false
             });
@@ -253,16 +254,16 @@
                         searchable:false
                     },
                     {
-                        data: 'income_no',
-                        name: 'income_no',
+                        data: 'expense_no',
+                        name: 'expense_no',
                     },
                     {
-                        data: 'income_date',
-                        name: 'income_date',
+                        data: 'expense_date',
+                        name: 'expense_date',
                     },
                     {
-                        data: 'income_name',
-                        name: 'income_name',
+                        data: 'expense_name',
+                        name: 'expense_name',
                     },
                     {
                         data: 'amount',
@@ -356,28 +357,20 @@
         // ========================= SUBMIT NEW DATA =========================
         $(document).on('click', '#button_submit_modal', function(event) {
 
-            var username = $("#username").val();
-            var name = $("#name").val();
-            var password = $("#password").val();
-            var profile = $("#select_profile").val();
-            var status = $("#status:checked").val();
-
-            if ( status == 1 ) {
-                var flag = 1;
-            } else {
-                var flag = 0;
-            }
+            var expense_date = $("#expense_date").val();
+            var amount = $("#amount").val();
+            var description = $("#description").val();
+            var expense_type = $("#select_expense_type").val();
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-new-user') }}",
+                url: "{{ url('/post-new-finance-expense') }}",
                 dataType: 'json',
                 data: {
-                    username: username,
-                    name: name,
-                    password: password,
-                    profile: profile,
-                    status: flag,
+                    expense_date: expense_date,
+                    expense_type: expense_type,
+                    amount: amount,
+                    description: description,
                 },
                 success: function(response) {
 
@@ -402,7 +395,6 @@
                 },
                 error: function(error) {
 
-                    console.log(error.responseJSON);
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
@@ -422,24 +414,19 @@
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-old-data-of-user') }}",
+                url: "{{ url('/get-old-data-of-expense') }}",
                 dataType: 'json',
                 data: {
-                    user_id: data_id,
+                    expense_id: data_id,
                 },
                 success: function(response) {
 
-                    $("#user_id_edit").val(response.id);
-                    $("#username_edit").val(response.username);
-                    $("#name_edit").val(response.name);
+                    $("#expense_id_edit").val(response.id);
+                    $("#expense_date_edit").val(response.expense_date);
+                    $("#amount_edit").val(response.amount);
+                    $("#description_edit").val(response.description);
 
-                    if ( response.flag == 1 ) {
-                        $("#status_edit").attr('checked', true);
-                    } else if ( response.flag == 0 ) {
-                        $("#status_edit").attr('checked', false);
-                    }
-
-                    getProfileById(response.profile_id);
+                    getExpenseTypeById(response.expense_type_id);
 
                 },
                 error: function(error) {
@@ -454,22 +441,22 @@
 
         });
 
-        function getProfileById(profile_id){
+        function getExpenseTypeById(expense_type_id){
 
-            $("#select_profile_edit").html('<option value="">Select profile</option>');
+            $("#select_expense_type_edit").html('<option value="">Select expense</option>');
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/get-all-data-profile') }}",
+                url: "{{ url('/get-all-data-expense-type') }}",
                 dataType: 'json',
                 data: {},
                 success: function(response) {
                     $.each(response,function(key, value)
                     {
-                        if ( value.id == profile_id ) {
-                            $("#select_profile_edit").append('<option value="' + value.id + '" selected>' + value.profile_name + '</option>');
+                        if ( value.id == expense_type_id ) {
+                            $("#select_expense_type_edit").append('<option value="' + value.id + '" selected>' + value.expense_name + '</option>');
                         } else {
-                            $("#select_profile_edit").append('<option value="' + value.id + '">' + value.profile_name + '</option>');
+                            $("#select_expense_type_edit").append('<option value="' + value.id + '">' + value.expense_name + '</option>');
                         }
                     });
                 },
@@ -478,7 +465,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of profile',
+                        text: error.responseJSON.message ?? 'Failed get list of expense',
                     });
                 },
             });
@@ -488,28 +475,22 @@
         // ========================= SUBMIT EDIT DATA =========================
         $(document).on('click', '#button_submit_modal_edit', function() {
 
-            var id = $("#user_id_edit").val();
-            var username = $("#username_edit").val();
-            var name = $("#name_edit").val();
-            var profile = $("#select_profile_edit").val();
-            var status = document.getElementById('status_edit').checked;
-
-            if ( status == 1 ) {
-                var flag = 1;
-            } else {
-                var flag = 0;
-            }
+            var id = $("#expense_id_edit").val();
+            var expense_date = $("#expense_date_edit").val();
+            var amount = $("#amount_edit").val();
+            var description = $("#description_edit").val();
+            var expense_type = $("#select_expense_type_edit").val();
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('/post-edit-user') }}",
+                url: "{{ url('/post-edit-finance-expense') }}",
                 dataType: 'json',
                 data: {
-                    id_user: id,
-                    username: username,
-                    name: name,
-                    profile: profile,
-                    status: flag,
+                    id_expense: id,
+                    expense_date: expense_date,
+                    amount: amount,
+                    description: description,
+                    expense_type: expense_type
                 },
                 success: function(response) {
 
@@ -537,68 +518,13 @@
                     Swal.fire({
                         icon: 'error',
                         title: "Error",
-                        text: error.responseJSON.message ?? 'Failed submit item request',
+                        text: error.responseJSON.message ?? 'Failed submit finance expense request',
                         target: document.getElementById('editModal'),
                     });
                     $("#button_submit_modal_edit").prop('disabled', false);
                 },
             });
 
-        });
-
-        $(document).on('click', '.button_change_pw', function(event) {
-            const data = $(this).data('id');
-
-            Swal.fire({
-                icon: "warning",
-                title: "Reset Password",
-                text: "Are you sure want to reset the password?",
-                showCancelButton: true,
-                confirmButtonText: "Reset",
-                confirmButtonColor: "#d33",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ url('/post-user-req-reset-pw') }}",
-                        dataType: 'json',
-                        data: {
-                            id_user: data,
-                        },
-                        success: function(response) {
-
-                            return Swal.fire({
-                                title: response.title,
-                                text: response.message,
-                                timer: 5000,
-                                icon: "success",
-                                timerProgressBar: true,
-                                showConfirmButton: true,
-                                willClose: () => {
-                                    if (typeof response.route !== "undefined") {
-                                        window.location.href = response.route;
-                                    }
-                                },
-                            });
-
-                        },
-                        error: function(error) {
-
-                            console.log(error.responseJSON);
-                            Swal.fire({
-                                icon: 'error',
-                                title: "Error",
-                                text: error.responseJSON.message ?? 'Failed submit change password request',
-                                // target: document.getElementById('dialog_add'),
-                            });
-                            // $(".submitAdd").prop('disabled', false);
-                        },
-                    });
-                }
-            });
-
-
-            event.preventDefault();
         });
 
     </script>

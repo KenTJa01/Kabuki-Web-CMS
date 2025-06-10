@@ -164,6 +164,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/post-new-finance-income', [FinanceController::class, 'postFinIncomeSubmit'])->name('post-new-finance-income');
         Route::get('/finance/expense', [FinanceController::class, 'financeExpensePage'])->name('/finance/expense');
         Route::get('/get-expense-list-datatable', [FinanceController::class, 'getExpenseListDatatable'])->name('get-expense-list-datatable');
+        Route::post('/post-new-finance-expense', [FinanceController::class, 'postFinExpenseSubmit'])->name('post-new-finance-expense');
+        Route::get('/get-old-data-of-expense', [FinanceController::class, 'getOldDataOfExpense'])->name('get-old-data-of-expense');
+        Route::post('/post-edit-finance-expense', [FinanceController::class, 'postFinExpenseEditSubmit'])->name('post-edit-finance-expense');
 
     });
 

@@ -54,5 +54,21 @@ class MenuSeeder extends Seeder
             'updated_by' => 1,
         ]);
 
+        Menu::create([
+            'menu_name' => 'Adjustment',
+            'menu_url' => '/adjustment',
+            'flag' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
+        Menu::create([
+            'menu_name' => 'Customer',
+            'menu_url' => '/customer',
+            'flag' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
     }
 }

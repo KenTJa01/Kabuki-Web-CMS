@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Wallet;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,11 @@ class WalletSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Wallet::create([
+            'wallet_no' => 'W00001',
+            'amount' => 0,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
     }
 }

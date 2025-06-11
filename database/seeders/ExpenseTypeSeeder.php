@@ -32,6 +32,14 @@ class ExpenseTypeSeeder extends Seeder
 
         expense_type::create([
             'expense_code' => 'EXP00003',
+            'expense_name' => 'Gaji Karyawan',
+            'flag' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
+        expense_type::create([
+            'expense_code' => 'EXP00003',
             'expense_name' => 'Tax',
             'flag' => 1,
             'created_by' => 1,

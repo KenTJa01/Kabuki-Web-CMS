@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ProfileMenuSeeder::class,
             UserSeeder::class,
             ItemSeeder::class,
+            WalletSeeder::class,
         ]);
     }
 }

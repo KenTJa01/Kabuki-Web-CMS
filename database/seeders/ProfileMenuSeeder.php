@@ -49,5 +49,19 @@ class ProfileMenuSeeder extends Seeder
             'updated_by' => 1,
         ]);
 
+        Profile_menu::create([
+            'profile_id' => 1,
+            'menu_id' => 6,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
+        Profile_menu::create([
+            'profile_id' => 1,
+            'menu_id' => 7,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
     }
 }

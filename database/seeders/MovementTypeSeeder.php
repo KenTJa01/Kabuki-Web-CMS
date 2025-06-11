@@ -28,5 +28,12 @@ class MovementTypeSeeder extends Seeder
             'updated_by' => 1,
         ]);
 
+        Movement_type::create([
+            'mov_code' => 'ADJ',
+            'mov_name' => 'Adjustment',
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
     }
 }

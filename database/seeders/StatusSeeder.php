@@ -46,5 +46,13 @@ class StatusSeeder extends Seeder
             'updated_by' => 1,
         ]);
 
+        Status::create([
+            'module' => 'adjustment',
+            'flag_desc' => 'Adjustment',
+            'flag_value' => 3,
+            'created_by' => 1,
+            'updated_by' => 1,
+        ]);
+
     }
 }

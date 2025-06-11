@@ -54,10 +54,10 @@
                     <thead class="thead">
                         <tr class="text-center" style="width: 100%;">
                             <th class="text-center">Products</th>
-                            <th class="text-center" style="width:200px">Reason</th>
-                            <th class="text-center" style="width:200px">Stock Quantity</th>
-                            <th class="text-center" style="width:200px">Adjustment Quantity</th>
-                            <th class="text-center" style="width:200px">Update Quantity</th>
+                            <th class="text-center" style="width:180px">Reason</th>
+                            <th class="text-center" style="width:100px">Stock Qty</th>
+                            <th class="text-center" style="width:150px">Adjustment Qty</th>
+                            <th class="text-center" style="width:100px">Update Qty</th>
                             <th class="text-center" style="width:100px">Action</th>
                         </tr>
                     </thead>

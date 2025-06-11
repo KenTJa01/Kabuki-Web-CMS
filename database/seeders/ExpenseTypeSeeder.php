@@ -39,7 +39,7 @@ class ExpenseTypeSeeder extends Seeder
         ]);
 
         expense_type::create([
-            'expense_code' => 'EXP00003',
+            'expense_code' => 'EXP00004',
             'expense_name' => 'Tax',
             'flag' => 1,
             'created_by' => 1,
@@ -47,7 +47,7 @@ class ExpenseTypeSeeder extends Seeder
         ]);
 
         expense_type::create([
-            'expense_code' => 'EXP00004',
+            'expense_code' => 'EXP00005',
             'expense_name' => 'Other Expenses',
             'flag' => 1,
             'created_by' => 1,

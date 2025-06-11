@@ -22,6 +22,11 @@
                     <a href="/home">Home</a>
                 </li>
 
+                {{-- MENU CUSTOMER --}}
+                <li id="customer" class="d-none {{ Request::routeIs('/master_data/customer') ? 'active' : '' }} ">
+                    <a href="/master_data/customer">Customer</a>
+                </li>
+
                 {{-- MENU DATA MASTER --}}
                 <li id="master" class="d-none dropend">
                     <a href="#masterSubmenu" id="masterLabel" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle dropdown-sidebar collapsed">Master Data</a>
@@ -48,14 +53,14 @@
                         </li>
 
                         {{-- CUSTOMER --}}
-                        <li class="{{ Request::routeIs('/master_data/customer') ? 'active' : '' }} d-none" id="master-customer">
+                        {{-- <li class="{{ Request::routeIs('/master_data/customer') ? 'active' : '' }} d-none" id="master-customer">
                             <a href="/master_data/customer">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
                                     <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
                                 </svg>
                                 Customers
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- ITEMS --}}
                         <li class="{{ Request::routeIs('/master_data/item') ? 'active' : '' }} d-none" id="master-item">
@@ -159,12 +164,12 @@
                     </ul>
                 </li>
 
-                <li id="adjustment" class=" dropend">
+                <li id="adjustment" class="d-none dropend">
                     <a href="#adjustmentSubmenu" id="adjustmentLabel" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle dropdown-sidebar collapsed">Adjustment</a>
                     <ul class="collapse list-unstyled" id="adjustmentSubmenu">
 
                         {{-- adjustment FORM --}}
-                        <li class="{{ Request::routeIs('/adjustment/form') ? 'active' : '' }} " id="form-adjustment">
+                        <li class="{{ Request::routeIs('/adjustment/form') ? 'active' : '' }} d-none" id="form-adjustment">
                             <a href="/adjustment/form">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ui-checks" viewBox="0 0 16 16">
                                     <path d="M7 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zM2 1a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 8a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2zm.854-3.646a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647 1.646-1.647a.5.5 0 1 1 .708.708zm0 8a.5.5 0 0 1-.708 0l-1-1a.5.5 0 0 1 .708-.708l.646.647 1.646-1.647a.5.5 0 0 1 .708.708zM7 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
@@ -174,7 +179,7 @@
                         </li>
 
                         {{-- adjustment LIST --}}
-                        <li class="{{ Request::routeIs('/adjustment/list') ? 'active' : '' }} " id="list-adjustment">
+                        <li class="{{ Request::routeIs('/adjustment/list') ? 'active' : '' }} d-none" id="list-adjustment">
                             <a href="/adjustment/list">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
                                     <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
@@ -283,6 +288,7 @@
 <script>
 
     const home = document.getElementById("home");
+    const customer = document.getElementById("customer");
     const master = document.getElementById("master");
     const transaction = document.getElementById("transaction");
     const receiving = document.getElementById("receiving");
@@ -293,7 +299,7 @@
     const masterLab = document.getElementById("masterLabel");
     const masterUser = document.getElementById("master-user");
     const masterProfile = document.getElementById("master-profile");
-    const masterCustomer = document.getElementById("master-customer");
+    // const masterCustomer = document.getElementById("master-customer");
     const masterItem = document.getElementById("master-item");
     const masterWorkType = document.getElementById("master-work-type");
     const masterOrderType = document.getElementById("master-order-type");
@@ -313,6 +319,11 @@
     const stkList = document.getElementById("list-stock");
     const stkMovement = document.getElementById("movement-stock");
 
+    const adjSub = document.getElementById("adjustmentSubmenu");
+    const adjLab = document.getElementById("adjustmentLabel");
+    const adjList = document.getElementById("list-adjustment");
+    const adjForm = document.getElementById("form-adjustment");
+
     const finSub = document.getElementById("financeSubmenu");
     const finLab = document.getElementById("financeLabel");
     const finList = document.getElementById("list-finance");
@@ -322,6 +333,7 @@
     var angkaMaster = 0;
     var angkaTransaction = 0;
     var angkaReceiving = 0;
+    var angkaAdjustment = 0;
     var angkaStock = 0;
     var angkaFinance = 0;
 
@@ -337,10 +349,14 @@
                 // master.classList.remove("dropend");
                 masterUser.classList.remove("d-none");
                 masterProfile.classList.remove("d-none");
-                masterCustomer.classList.remove("d-none");
+                // masterCustomer.classList.remove("d-none");
                 masterItem.classList.remove("d-none");
                 masterWorkType.classList.remove("d-none");
                 masterOrderType.classList.remove("d-none");
+
+            } else if ( element.menu_name == "Customer" ) {
+
+                customer.classList.remove("d-none");
 
             } else if ( element.menu_name == "Transaction" ) {
 
@@ -359,6 +375,12 @@
                 stock.classList.remove("d-none");
                 stkList.classList.remove("d-none");
                 stkMovement.classList.remove("d-none");
+
+            } else if ( element.menu_name == "Adjustment" ) {
+
+                adjustment.classList.remove("d-none");
+                adjList.classList.remove("d-none");
+                adjForm.classList.remove("d-none");
 
             } else if ( element.menu_name == "Finance" ) {
 
@@ -456,6 +478,34 @@
 
         });
 
+        $(document).on('click', '#adjustment', function() {
+
+            angkaAdjustment += 1;
+
+            if (adjustment.classList.contains('aktif')) {
+
+                if (angkaAdjustment % 2 === 0) {
+                    adjustment.classList.remove('dropend');
+                    adjustment.classList.add('dropdown');
+                } else {
+                    adjustment.classList.add('dropend');
+                    adjustment.classList.remove('dropdown');
+                }
+
+                } else {
+
+                if (angkaAdjustment % 2 === 0) {
+                    adjustment.classList.add('dropend');
+                    adjustment.classList.remove('dropdown');
+                } else {
+                    adjustment.classList.remove('dropend');
+                    adjustment.classList.add('dropdown');
+                }
+
+            }
+
+        });
+
         $(document).on('click', '#stock', function() {
 
             angkaStock += 1;
@@ -521,6 +571,11 @@
         $("#receivingLabel").attr("aria-expanded",false);
         recLab.classList.add('collapsed');
         recSub.classList.remove('show');
+
+        // ===== MENU ADJUSTMENT =====
+        $("#adjustmentLabel").attr("aria-expanded",false);
+        adjLab.classList.add('collapsed');
+        adjSub.classList.remove('show');
 
 
         // ===== MENU TRANSACTION =====

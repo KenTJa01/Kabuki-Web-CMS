@@ -15,6 +15,7 @@ use App\Models\Stock_movement;
 use App\Models\Transaction_detail;
 use App\Models\Transaction_header;
 use App\Models\Transaction_history;
+use App\Models\Wallet;
 use App\Models\Work_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -409,6 +410,13 @@ class TransactionController extends Controller
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
             ]);
+
+            $walletData = Wallet::where('wallet_no', 'W00001')->first();
+            $penambahan = $walletData->amount + $trsHeader->total_price;
+
+            $walletData->amount = $penambahan;
+            $walletData->updated_by = $user?->id;
+            $walletData->save();
 
             /** Insert transaction history */
             // $trsHistory = Transaction_history::create([

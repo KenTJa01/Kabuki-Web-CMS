@@ -271,7 +271,7 @@
                         className: 'text-center',
                     },
                 ],
-                order: [[0, 'asc']],
+                order: [[0, 'desc'], [1, 'desc']],
                 columnDefs: [
                     { className: "dt-center", targets: [0,1,6] }
                 ],

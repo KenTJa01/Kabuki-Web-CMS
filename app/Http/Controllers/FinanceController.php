@@ -8,6 +8,7 @@ use App\Models\Finance_expense;
 use App\Models\Finance_income;
 use App\Models\Income_type;
 use App\Models\Status;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -143,6 +144,13 @@ class FinanceController extends Controller
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
             ]);
+
+            $walletData = Wallet::where('wallet_no', 'W00001')->first();
+            $penambahan = $walletData->amount + $amount;
+
+            $walletData->amount = $penambahan;
+            $walletData->updated_by = $user?->id;
+            $walletData->save();
 
             (string) $title = 'Success';
             (string) $message = 'Income request successfully submitted with number: '.$incomeNumber;
@@ -290,6 +298,13 @@ class FinanceController extends Controller
                 'updated_by' => $user?->id,
             ]);
 
+            $walletData = Wallet::where('wallet_no', 'W00001')->first();
+            $pengurangan = $walletData->amount - $amount;
+
+            $walletData->amount = $pengurangan;
+            $walletData->updated_by = $user?->id;
+            $walletData->save();
+
             (string) $title = 'Success';
             (string) $message = 'Expense request successfully submitted with number: '.$expenseNumber;
             (array) $data = [
@@ -351,6 +366,13 @@ class FinanceController extends Controller
 
             $financeExpenseData = Finance_expense::where('id', $validated['id_expense'])->first();
 
+            $walletData = Wallet::where('wallet_no', 'W00001')->first();
+            $penambahan = $walletData->amount + $financeExpenseData->amount;
+
+            $walletData->amount = $penambahan;
+            $walletData->updated_by = $user?->id;
+            $walletData->save();
+
             $financeExpenseData->expense_date = $expense_date;
             $financeExpenseData->amount = $amount;
             $financeExpenseData->description = $description;
@@ -358,6 +380,12 @@ class FinanceController extends Controller
             $financeExpenseData->updated_by = $user?->id;
             $financeExpenseData->save();
 
+            $walletData = Wallet::where('wallet_no', 'W00001')->first();
+            $pengurangan = $walletData->amount - $amount;
+
+            $walletData->amount = $pengurangan;
+            $walletData->updated_by = $user?->id;
+            $walletData->save();
 
             (string) $title = 'Success';
             (string) $message = "Finance Expense request successfully submitted with Expense No.: ".$financeExpenseData->expense_no;
@@ -381,6 +409,49 @@ class FinanceController extends Controller
             DB::rollBack();
             throw new CommonCustomException('Failed to submit expense request', 422, $e);
         }
+
+    }
+
+    public function financeWalletPage()
+    {
+
+        $user = Auth::user();
+
+        // $sqlPermissionCreate = "SELECT pp.id, perm.key, s.submenu_name, u.username
+        //                 FROM profile_permissions pp, permissions perm, submenus s, profiles p, users u
+        //                 WHERE pp.profile_id = p.id
+        //                     AND pp.permission_id = perm.id
+        //                     AND u.profile_id = p.id
+        //                     AND perm.sub_menu_id = s.id
+        //                     AND perm.sub_menu_id = 3
+        //                     AND perm.key = 'master_item_create'
+        //                     AND u.id = $user->id";
+
+        // $sqlPermissionExport = "SELECT pp.id, perm.key, s.submenu_name, u.username
+        //                 FROM profile_permissions pp, permissions perm, submenus s, profiles p, users u
+        //                 WHERE pp.profile_id = p.id
+        //                     AND pp.permission_id = perm.id
+        //                     AND u.profile_id = p.id
+        //                     AND perm.sub_menu_id = s.id
+        //                     AND perm.sub_menu_id = 3
+        //                     AND perm.key = 'master_item_export'
+        //                     AND u.id = $user->id";
+
+        $walletData = Wallet::where('wallet_no', 'W00001')->first();
+        $totalIncome = "SELECT SUM(amount) AS total_income FROM finance_incomes";
+        $totalExpense = "SELECT SUM(amount) AS total_expense FROM finance_expenses";
+
+
+        (array) $data = [
+            // 'lastData' => $lastData,
+            // 'permission_create' => DB::select($sqlPermissionCreate),
+            // 'permission_export' => DB::select($sqlPermissionExport),
+            'walletData' => $walletData,
+            'totalIncome' => collect(DB::select($totalIncome))->first(),
+            'totalExpense' => collect(DB::select($totalExpense))->first(),
+        ];
+
+        return view('/finance/wallet', $data);
 
     }
 

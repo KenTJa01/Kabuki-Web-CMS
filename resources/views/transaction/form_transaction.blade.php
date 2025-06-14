@@ -29,7 +29,7 @@
                     {{-- TRANSACTION DATE --}}
                     <td class="label_form">Transaction Date</td>
                     <td class="container_input_form">
-                        <input type="text" class="form-control input_form" id="transaction_date" readonly disabled>
+                        <input type="date" class="form-control input_form" id="transaction_date">
                     </td>
 
                     {{-- VERTICAL LINE --}}
@@ -195,8 +195,6 @@
         });
 
         $(document).ready(function(){
-            const todayDate = new Date().toLocaleDateString('id-ID');
-            document.getElementById("transaction_date").value = todayDate;
 
             $("#select_work_type").select2();
             $("#select_order_type").select2();
@@ -353,7 +351,11 @@
                 success: function(response) {
                     $("#address").val(response.address);
                     $("#phone_number").val(response.no_telp);
-                    $("#vehicle_number").prop('disabled', false);
+                    $("#vehicle_number").val(response.vehicle_no);
+
+
+                    getListItem();
+                    resetTable();
                 },
                 error: function(error) {
                     console.log(error.responseJSON);
@@ -364,13 +366,6 @@
                     });
                 },
             });
-
-        });
-
-        $('#vehicle_number').on('change', function() {
-
-            getListItem();
-            resetTable();
 
         });
 
@@ -791,6 +786,9 @@
             } else {
                 order_type = $('#select_order_type').val();
             }
+
+            console.log(transaction_date);
+
 
             /** Prepare data for detail data */
             for (var i = 1, row ; row = table.rows[i] ; i++) {

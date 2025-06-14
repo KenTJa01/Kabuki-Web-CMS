@@ -18,6 +18,8 @@ class Customer extends Model
         'customer_name',
         'no_telp',
         'address',
+        'vehicle_type',
+        'vehicle_no',
         'flag',
         'created_by',
         'updated_by',

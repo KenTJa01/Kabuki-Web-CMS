@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('no_telp');
             $table->string('address');
+            $table->string('vehicle_type');
+            $table->string('vehicle_no');
             $table->integer("flag")->default(1);
             $table->timestamps();
             $table->bigInteger('created_by');

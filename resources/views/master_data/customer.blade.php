@@ -65,11 +65,11 @@
                 <thead>
                     <tr>
                         <th style="width: 50px" class="top_left_tableData">No.</th>
-                        <th style="width: 200px">Customer Code</th>
-                        <th>Customer Name</th>
+                        <th>Customer Code</th>
+                        <th style="width: 200px">Customer Name</th>
                         <th>Phone Number</th>
-                        <th>Address</th>
-                        <th style="width: 120px">Status</th>
+                        <th>Vehicle Type</th>
+                        <th>Vehicle No</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
                 </thead>
@@ -77,11 +77,11 @@
                 <tfoot>
                     <tr>
                         <th style="width: 50px" class="bottom_left_tableData"></th>
-                        <th style="width: 200px">Customer Code</th>
-                        <th>Customer Name</th>
+                        <th>Customer Code</th>
+                        <th style="width: 200px">Customer Name</th>
                         <th>Phone Number</th>
-                        <th>Address</th>
-                        <th style="width: 120px"></th>
+                        <th>Vehicle Type</th>
+                        <th>Vehicle No</th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
@@ -116,6 +116,18 @@
                         <label for="address" class="col-sm-4 col-form-label">Address</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="address" cols="30" rows="5" style="resize: none"></textarea>
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="vehicle_type" class="col-sm-4 col-form-label">Vehicle Type</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="vehicle_type" placeholder="Enter vehicle type">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="vehicle_no" class="col-sm-4 col-form-label">Vehicle Number</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="vehicle_no" placeholder="Enter vehicle number">
                         </div>
                     </div>
                     <div class="row input_modal">
@@ -166,6 +178,18 @@
                         <label for="address_edit" class="col-sm-4 col-form-label">Address</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="address_edit" cols="30" rows="5" style="resize: none"></textarea>
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="vehicle_type_edit" class="col-sm-4 col-form-label">Vehicle Type</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="vehicle_type_edit" placeholder="Enter vehicle type">
+                        </div>
+                    </div>
+                    <div class="row input_modal">
+                        <label for="vehicle_no_edit" class="col-sm-4 col-form-label">Vehicle Number</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="vehicle_no_edit" placeholder="Enter vehicle number">
                         </div>
                     </div>
                     <div class="row input_modal">
@@ -259,12 +283,12 @@
                         name: 'no_telp',
                     },
                     {
-                        data: 'address',
-                        name: 'address',
+                        data: 'vehicle_type',
+                        name: 'vehicle_type',
                     },
                     {
-                        data: 'status',
-                        name: 'status',
+                        data: 'vehicle_no',
+                        name: 'vehicle_no',
                     },
                     {
                         data: 'actions',
@@ -300,6 +324,8 @@
             $("#customer_name").val("");
             $("#no_telp").val("");
             $("#address").val("");
+            $("#vehicle_type").val("");
+            $("#vehicle_no").val("");
 
             document.getElementById('status').checked = true;
 
@@ -311,6 +337,8 @@
             $("#customer_name").val("");
             $("#no_telp").val("");
             $("#address").val("");
+            $("#vehicle_type").val("");
+            $("#vehicle_no").val("");
 
             document.getElementById('status').checked = true;
 
@@ -322,6 +350,8 @@
             var customerName = $("#customer_name").val();
             var noTelp = $("#no_telp").val();
             var address = $("#address").val();
+            var vehicleType = $("#vehicle_type").val();
+            var vehicleNo = $("#vehicle_no").val();
             var status = $("#status:checked").val();
 
             if ( status == 1 ) {
@@ -338,6 +368,8 @@
                     customerName: customerName,
                     noTelp: noTelp,
                     address: address,
+                    vehicleType: vehicleType,
+                    vehicleNo: vehicleNo,
                     status: flag,
                 },
                 success: function(response) {
@@ -394,6 +426,8 @@
                     $("#customer_name_edit").val(response.customer_name);
                     $("#no_telp_edit").val(response.no_telp);
                     $("#address_edit").val(response.address);
+                    $("#vehicle_type_edit").val(response.vehicle_type);
+                    $("#vehicle_no_edit").val(response.vehicle_no);
 
                     if ( response.flag == 1 ) {
                         $("#status_edit").attr('checked', true);
@@ -421,6 +455,8 @@
             var customerName = $("#customer_name_edit").val();
             var noTelp = $("#no_telp_edit").val();
             var address = $("#address_edit").val();
+            var vehicleType = $("#vehicle_type_edit").val();
+            var vehicleNo = $("#vehicle_no_edit").val();
             var status = document.getElementById('status_edit').checked;
 
             if ( status == 1 ) {
@@ -438,6 +474,8 @@
                     customer_name: customerName,
                     no_telp: noTelp,
                     address: address,
+                    vehicle_type: vehicleType,
+                    vehicle_no: vehicleNo,
                     status: flag,
                 },
                 success: function(response) {

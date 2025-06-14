@@ -324,7 +324,8 @@ class TransactionController extends Controller
         (array) $validated = $validate->validated();
 
         /** Prepare transaction number, Format: TRF/MM.YY/STORE_CODE/SEQ */
-        $transactionDate = Carbon::createFromFormat('d/m/Y', $validated['transaction_date'], 'Asia/Jakarta')->setTimezone('Asia/Jakarta');
+        $transactionDate = Carbon::createFromFormat('Y-m-d', $validated['transaction_date'], 'Asia/Jakarta')->setTimezone('Asia/Jakarta');
+
         $trsDateMonthYear = Carbon::parse($transactionDate)->setTimezone('Asia/Jakarta')->format('m.y');
         $prefixTrsNumber = 'TRS/'.$trsDateMonthYear.'/';
 

@@ -56,7 +56,7 @@ class CustomerController extends Controller
     {
 
         $user = Auth::user();
-        $sql = ("SELECT c.id, c.customer_code, c.customer_name, c.no_telp, c.address, (CASE WHEN c.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
+        $sql = ("SELECT c.id, c.customer_code, c.customer_name, c.no_telp, c.address, c.vehicle_type, c.vehicle_no, (CASE WHEN c.flag = 1 THEN 'Active' ELSE 'Non-active' END) AS status
                 FROM customers c
                 ORDER BY c.id ASC");
 
@@ -104,6 +104,8 @@ class CustomerController extends Controller
             'customerName' => ['required', 'string'],
             'noTelp' => ['required', 'string'],
             'address' => ['required', 'string'],
+            'vehicleType' => ['required', 'string'],
+            'vehicleNo' => ['required', 'string'],
             'status' => ['required'],
         ]);
 
@@ -128,6 +130,8 @@ class CustomerController extends Controller
         $customer_name = $validated['customerName'];
         $no_telp = $validated['noTelp'];
         $address = $validated['address'];
+        $vehicle_type = $validated['vehicleType'];
+        $vehicle_no = $validated['vehicleNo'];
         $status = $validated['status'];
 
         $customerCek = Customer::where('customer_name', $customer_name)->first();
@@ -144,6 +148,8 @@ class CustomerController extends Controller
                 'customer_name' => $customer_name,
                 'no_telp' => $no_telp,
                 'address' => $address,
+                'vehicle_type' => $vehicle_type,
+                'vehicle_no' => $vehicle_no,
                 'flag' => $status,
                 'created_by' => $user?->id,
                 'updated_by' => $user?->id,
@@ -191,6 +197,8 @@ class CustomerController extends Controller
             'customer_name' => ['required', 'string'],
             'no_telp' => ['required', 'string'],
             'address' => ['required', 'string'],
+            'vehicle_type' => ['required', 'string'],
+            'vehicle_no' => ['required', 'string'],
             'status' => ['required'],
         ]);
 
@@ -203,6 +211,8 @@ class CustomerController extends Controller
         $customer_name = $validated['customer_name'];
         $no_telp = $validated['no_telp'];
         $address = $validated['address'];
+        $vehicle_type = $validated['vehicle_type'];
+        $vehicle_no = $validated['vehicle_no'];
         $status = $validated['status'];
 
         DB::beginTransaction();
@@ -213,6 +223,8 @@ class CustomerController extends Controller
             $customerData->customer_name = $customer_name;
             $customerData->no_telp = $no_telp;
             $customerData->address = $address;
+            $customerData->vehicle_type = $vehicle_type;
+            $customerData->vehicle_no = $vehicle_no;
             $customerData->flag = $status;
             $customerData->updated_by = $user?->id;
             $customerData->save();

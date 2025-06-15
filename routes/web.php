@@ -10,6 +10,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTypeController;
 use App\Http\Controllers\WorkTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\TransactionController;
@@ -82,6 +83,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/post-new-item', [ItemController::class, 'postNewItem'])->name('post-new-item');
         Route::get('/get-old-data-of-item', [ItemController::class, 'getOldDataOfItem'])->name('get-old-data-of-item');
         Route::post('/post-edit-item', [ItemController::class, 'postEditItem'])->name('post-edit-item');
+
+        // ========================= MASTER PROMO =========================
+        Route::get('/master_data/promo', [PromoController::class, 'masterPromoPage'])->name('/master_data/promo');
+        Route::get('/get-promo-list-datatable', [PromoController::class, 'getPromoListDatatable'])->name('get-promo-list-datatable');
+        Route::get('/get-all-data-item-in-promo', [PromoController::class, 'getAllDataItemInPromo'])->name('get-all-data-item-in-promo');
+        Route::post('/post-new-promo', [PromoController::class, 'postNewPromo'])->name('post-new-promo');
+        Route::get('/get-old-data-of-promo', [PromoController::class, 'getOldDataOfPromo'])->name('get-old-data-of-promo');
+        Route::post('/post-edit-promo', [PromoController::class, 'postEditPromo'])->name('post-edit-promo');
+
 
         // ========================= MASTER ORDER TYPE =========================
         Route::get('/master_data/order_type', [OrderTypeController::class, 'masterOrderTypePage'])->name('/master_data/order_type');

@@ -33,6 +33,8 @@ return new class extends Migration
 
             $table->integer('flag');
             $table->timestamps();
+            $table->bigInteger('created_by');
+            $table->bigInteger('updated_by');
 
         });
     }

@@ -28,6 +28,9 @@ return new class extends Migration
             $table->string("no_telp");
             $table->string('vehicle_number');
 
+            $table->bigInteger("promo_id")->nullable();
+            $table->foreign("promo_id")->references("id")->on("promos");
+
             $table->integer('total_price');
             $table->string('note');
 

@@ -9,6 +9,7 @@ use App\Models\Income_type;
 use App\Models\Item;
 use App\Models\Movement_type;
 use App\Models\Order_type;
+use App\Models\Promo_item;
 use App\Models\Status;
 use App\Models\Stock;
 use App\Models\Stock_movement;
@@ -251,6 +252,21 @@ class TransactionController extends Controller
             ORDER BY i.item_name");
 
 		$data = DB::select($sql);
+
+        return response()->json($data);
+
+    }
+
+    public function getPromoItemById(Request $request)
+    {
+
+        $sql = ("SELECT pi.promo_id, pi.item_id, i.item_code, i.item_name, s.quantity
+            from promo_items pi
+            JOIN items i ON pi.item_id = i.id
+            LEFT JOIN stocks s ON s.item_id = i.id
+            WHERE pi.promo_id = $request->promo_id");
+
+        $data = DB::select($sql);
 
         return response()->json($data);
 

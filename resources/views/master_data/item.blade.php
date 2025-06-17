@@ -70,7 +70,6 @@
                         <th>Item Description</th>
                         <th>Unit Type</th>
                         <th>Price</th>
-                        <th style="width: 120px">Status</th>
                         <th style="width: 120px" class="top_right_tableData">Action</th>
                     </tr>
                 </thead>
@@ -83,7 +82,6 @@
                         <th>Item Description</th>
                         <th>Unit Type</th>
                         <th>Price</th>
-                        <th style="width: 120px"></th>
                         <th style="width: 120px" class="bottom_right_tableData"></th>
                     </tr>
                 </tfoot>
@@ -293,10 +291,6 @@
                     {
                         data: 'price',
                         name: 'price',
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
                     },
                     {
                         data: 'actions',

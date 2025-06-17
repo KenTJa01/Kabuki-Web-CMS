@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-all-data-movement-type', [MasterDataController::class, 'getAllDataMovementType'])->name('get-all-data-movement-type');
     Route::get('/get-all-data-income-type', [MasterDataController::class, 'getAllDataIncomeType'])->name('get-all-data-income-type');
     Route::get('/get-all-data-expense-type', [MasterDataController::class, 'getAllDataExpenseType'])->name('get-all-data-expense-type');
+    Route::get('/get-all-data-promo', [MasterDataController::class, 'getAllDataPromo'])->name('get-all-data-promo');
 
     Route::group(['middleware' => 'master_data'], function () {
 
@@ -126,6 +127,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/get-order-type-by-id', [TransactionController::class, 'getOrderTypeById'])->name('get-order-type-by-id');
         Route::get('/get-data-customer-by-id', [TransactionController::class, 'getDataCustomerById'])->name('get-data-customer-by-id');
         Route::get('/get-trs-item', [TransactionController::class, 'getTrsItem'])->name('get-trs-item');
+        Route::get('/get-promo-item-by-id', [TransactionController::class, 'getPromoItemById'])->name('get-promo-item-by-id');
         Route::get('/get-trs-stock-qty', [TransactionController::class, 'getTrsStockQty'])->name('get-trs-stock-qty');
         Route::get('/get-trs-subtotal', [TransactionController::class, 'getTrsSubtotal'])->name('get-trs-subtotal');
         Route::post('/post-trs-submit', [TransactionController::class, 'postTrsSubmit'])->name('post-trs-submit');

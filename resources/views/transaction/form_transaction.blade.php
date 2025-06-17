@@ -107,14 +107,14 @@
                 </td>
 
                 {{-- VERTICAL LINE --}}
-                <td style="width: 4%" rowspan="2">
-                    <hr class="vertical_line_two_row">
+                <td style="width: 4%" rowspan="3">
+                    <hr class="vertical_line_three_row">
                 </td>
 
-                {{-- PHONE NUMBER --}}
-                <td class="label_form phone_number" id="label_phone_number">Phone Number</td>
-                <td class="container_input_form phone_number" id="input_phone_number" style="margin: 0; padding: 0;">
-                    <input type="text" class="form-control input_form" id="phone_number" readonly disabled>
+                {{-- VEHICLE TYPE --}}
+                <td class="label_form vehicle_type" id="label_vehicle_type">Vehicle Type</td>
+                <td class="container_input_form vehicle_type" id="input_vehicle_type" style="margin: 0; padding: 0;">
+                    <input type="text" class="form-control input_form" id="vehicle_type" readonly disabled>
                 </td>
 
             </tr>
@@ -122,14 +122,58 @@
 
                 <td></td>
 
-                {{-- NO MEMBER --}}
+                {{-- VEHICLE NUMBER --}}
                 <td class="label_form label_vehicle_number" id="label_vehicle_number">Vehicle Number</td>
                 <td class="container_input_form label_vehicle_number" id="input_vehicle_number" style="margin: 0; padding: 0;">
                     <input type="text" class="form-control input_form" id="vehicle_number" disabled>
                 </td>
 
             </tr>
+            <tr>
+                {{-- PHONE NUMBER --}}
+                <td class="label_form phone_number" id="label_phone_number">Phone Number</td>
+                <td class="container_input_form phone_number" id="input_phone_number" style="margin: 0; padding: 0;">
+                    <input type="text" class="form-control input_form" id="phone_number" readonly disabled>
+                </td>
+            </tr>
         </table>
+
+    </div>
+
+    {{-- PAKET PROMO --}}
+    <div class="content mt-2" id="content_no_faktur">
+
+        {{-- TITLE --}}
+        <div class="title_n_button d-flex justify-content-between">
+            <h4 class="title" style="margin-left: 0px">PAKET PROMO</h4>
+        </div>
+
+        <hr>
+
+        <table style="width: 100%;">
+            <tr>
+                <td id="label_promo" style="width: 13.5%">Paket Promo</td>
+                <td class="" style="width: 87%; margin: 0; padding: 0;">
+                    <select name="select_promo" id="select_promo" class="input_form" disabled>
+                        <option value="">Select promo</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        {{-- TABLE PROMO ITEM --}}
+        <div class="table_scroll mt-3 d-none" id="table_scroll_promo">
+            <table class="table table-bordered align-middle table_form" id="table_promo" style="width:100%;">
+                <thead class="thead">
+                    <tr class="text-center" style="width: 100%;">
+                        <th class="text-center">Items</th>
+                        <th class="text-center" style="width:200px">Stock Quantity</th>
+                        <th class="text-center" style="width:200px">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color: white"></tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -200,6 +244,7 @@
             $("#select_order_type").select2();
             $("#select_payment_type").select2();
             $("#select_customer_name").select2();
+            $("#select_promo").select2();
 
             //getListSite();
             tableItems();
@@ -352,7 +397,10 @@
                     $("#address").val(response.address);
                     $("#phone_number").val(response.no_telp);
                     $("#vehicle_number").val(response.vehicle_no);
+                    $("#vehicle_type").val(response.vehicle_type);
 
+                    $("#select_promo").prop('disabled', false);
+                    getAllDataPromo();
 
                     getListItem();
                     resetTable();
@@ -366,6 +414,94 @@
                     });
                 },
             });
+
+        });
+
+        function getAllDataPromo() {
+
+            $("#select_promo").html('<option value="">Select promo</option>');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-all-data-promo') }}",
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    $.each(response,function(key, value)
+                    {
+                        $("#select_promo").append('<option value="' + value.id + '">' + value.promo_name + '</option>');
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of promo',
+                    });
+                },
+            });
+
+        }
+
+        $('#select_promo').on('change', function() {
+
+            var promo_id = $(this).val();
+            const tablePromo = document.getElementById("table_scroll_promo");
+            tablePromo.classList.remove("d-none");
+            var index_promo = 0;
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ url('/get-promo-item-by-id') }}",
+                dataType: 'json',
+                data: {
+                    promo_id: promo_id,
+                },
+                success: function(response) {
+                    console.log(response);
+
+                    $.each(response,function(key, value)
+                    {
+
+                        $('#table_promo tbody').append(`
+                            <tr id="row_`+index_promo+`">
+                                <td class="text-center">`+value.item_code+` - `+value.item_name+`</td>
+                                <td class="text-center">
+                                    <p name="stock_qty_promo_`+index_promo+`" id="stock_qty_promo_`+index_promo+`" style="font-size: 16px; font-weight: 400;" />
+                                    <input type="hidden" name="stock_qty_promo_` + index_promo + `_hidden" id="stock_qty_promo_` + index_promo + `_hidden" value="`+value.quantity+`">
+                                </td>
+                                <td>
+                                    <input type="number" min="1" class="form-control qty_promo" name="qty_promo_`+index_promo+`" id="qty_promo_`+index_promo+`" style="width: 98%; text-align: right">
+                                    <div name="err_qty_promo_`+index_promo+`" id="err_qty_promo_`+index_promo+`" style="text-align: left; display: none;">
+                                        <p name="err_qty_promo_msg_`+index_promo+`" id="err_qty_promo_msg_`+index_promo+`" style="margin-bottom: 0; color: red; font-size: 12px;"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+
+                        document.getElementById("stock_qty_promo_"+index_promo).innerHTML = value.quantity;
+                        index_promo++;
+
+                    });
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Error",
+                        text: error.responseJSON.message ?? 'Failed get list of promo',
+                    });
+                },
+            });
+
+        });
+
+        $(document).on('change', '.qty_promo', function() {
+
+            var qtyId = $(this).attr("id");
+            var tempArr = qtyId.split("_");
+            validateQtyPromo(tempArr[2]);
 
         });
 
@@ -554,6 +690,16 @@
             document.getElementById("err_qty_"+index).style.display = 'none';
         }
 
+        function showQtyPromoErrorMessage(index, message) {
+            document.getElementById("err_qty_promo_msg_"+index).innerHTML = message;
+            document.getElementById("err_qty_promo_"+index).style.display = 'block';
+        }
+
+        function hideQtyPromoErrorMessage(index) {
+            document.getElementById("err_qty_promo_msg_"+index).innerHTML = '';
+            document.getElementById("err_qty_promo_"+index).style.display = 'none';
+        }
+
         // ========================= ADD ROW =========================
         $('#add').click(function() {
             addTableRow(indexTable);
@@ -714,6 +860,18 @@
 
                 $item_id = $('#item_'+index+'_id').val();
                 cekSubtotal($item_id, qty, index);
+            }
+        }
+        function validateQtyPromo(index) {
+            var qty = $('#qty_promo_'+index).val();
+            var stockQty = document.getElementById("stock_qty_promo_"+index).innerHTML;
+
+            if (parseInt(qty) > parseInt(stockQty)) {
+                showQtyPromoErrorMessage(index, 'Stock not available');
+                // disableTableRow(index);
+            } else {
+                hideQtyPromoErrorMessage(index);
+                // enableTableRow(index);
             }
         }
 

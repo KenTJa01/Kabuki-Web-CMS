@@ -11,6 +11,7 @@ use App\Models\Menu;
 use App\Models\Movement_type;
 use App\Models\Order_type;
 use App\Models\Profile;
+use App\Models\Promo;
 use App\Models\Status;
 use App\Models\Work_type;
 
@@ -74,6 +75,12 @@ class MasterDataController extends Controller
     public function getAllDataExpenseType()
     {
         $data = expense_type::where('flag', 1)->get();
+        return response()->json($data);
+    }
+
+    public function getAllDataPromo()
+    {
+        $data = Promo::where('flag', 1)->get();
         return response()->json($data);
     }
 

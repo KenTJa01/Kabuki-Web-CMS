@@ -178,7 +178,7 @@
     </div>
 
     {{-- TABLE LIST ITEMS --}}
-    <div class="content  mt-2" id="content_table_form">
+    <div class="content mt-2" id="content_table_form">
 
         <div style="height: 290px;" id="container_table_form">
 
@@ -447,53 +447,72 @@
         $('#select_promo').on('change', function() {
 
             var promo_id = $(this).val();
-            const tablePromo = document.getElementById("table_scroll_promo");
-            tablePromo.classList.remove("d-none");
             var index_promo = 0;
+            var tablePromo = document.getElementById("table_scroll_promo");
+            var tableItem = document.getElementById("content_table_form");
 
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('/get-promo-item-by-id') }}",
-                dataType: 'json',
-                data: {
-                    promo_id: promo_id,
-                },
-                success: function(response) {
-                    console.log(response);
+            if ( promo_id == "" ) {
+                tableItem.classList.remove("d-none");
+                $('#table_promo tbody').html("");
+                tablePromo.classList.add("d-none");
 
-                    $.each(response,function(key, value)
-                    {
+            } else {
 
-                        $('#table_promo tbody').append(`
-                            <tr id="row_`+index_promo+`">
-                                <td class="text-center">`+value.item_code+` - `+value.item_name+`</td>
-                                <td class="text-center">
-                                    <p name="stock_qty_promo_`+index_promo+`" id="stock_qty_promo_`+index_promo+`" style="font-size: 16px; font-weight: 400;" />
-                                    <input type="hidden" name="stock_qty_promo_` + index_promo + `_hidden" id="stock_qty_promo_` + index_promo + `_hidden" value="`+value.quantity+`">
-                                </td>
-                                <td>
-                                    <input type="number" min="1" class="form-control qty_promo" name="qty_promo_`+index_promo+`" id="qty_promo_`+index_promo+`" style="width: 98%; text-align: right">
-                                    <div name="err_qty_promo_`+index_promo+`" id="err_qty_promo_`+index_promo+`" style="text-align: left; display: none;">
-                                        <p name="err_qty_promo_msg_`+index_promo+`" id="err_qty_promo_msg_`+index_promo+`" style="margin-bottom: 0; color: red; font-size: 12px;"></p>
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
+                $('#table_promo tbody').html("");
+                tablePromo.classList.remove("d-none");
 
-                        document.getElementById("stock_qty_promo_"+index_promo).innerHTML = value.quantity;
-                        index_promo++;
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ url('/get-promo-item-by-id') }}",
+                    dataType: 'json',
+                    data: {
+                        promo_id: promo_id,
+                    },
+                    success: function(response) {
 
-                    });
-                },
-                error: function(error) {
-                    console.log(error.responseJSON);
-                    Swal.fire({
-                        icon: 'error',
-                        title: "Error",
-                        text: error.responseJSON.message ?? 'Failed get list of promo',
-                    });
-                },
-            });
+                        $.each(response,function(key, value)
+                        {
+
+                            $('#table_promo tbody').append(`
+                                <tr id="row_`+index_promo+`">
+                                    <td class="text-center">
+                                        `+value.item_code+` - `+value.item_name+`
+                                        <input type="hidden" name="item_promo_`+index_promo+`_id" id="item_promo_`+index_promo+`_id" value=`+value.item_id+`>
+                                    </td>
+                                    <td class="text-center">
+                                        <p name="stock_qty_promo_`+index_promo+`" id="stock_qty_promo_`+index_promo+`" style="font-size: 16px; font-weight: 400;" />
+                                        <input type="hidden" name="stock_qty_promo_` + index_promo + `_hidden" id="stock_qty_promo_` + index_promo + `_hidden" value="`+value.quantity+`">
+                                    </td>
+                                    <td>
+                                        <input type="number" min="1" class="form-control qty_promo" name="qty_promo_`+index_promo+`" id="qty_promo_`+index_promo+`" style="width: 98%; text-align: right">
+                                        <div name="err_qty_promo_`+index_promo+`" id="err_qty_promo_`+index_promo+`" style="text-align: left; display: none;">
+                                            <p name="err_qty_promo_msg_`+index_promo+`" id="err_qty_promo_msg_`+index_promo+`" style="margin-bottom: 0; color: red; font-size: 12px;"></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+
+                            document.getElementById("stock_qty_promo_"+index_promo).innerHTML = value.quantity;
+                            index_promo++;
+
+                        });
+
+                        resetTable();
+                        tableItem.classList.add("d-none");
+
+                    },
+                    error: function(error) {
+                        console.log(error.responseJSON);
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Error",
+                            text: error.responseJSON.message ?? 'Failed get list of promo',
+                        });
+                    },
+                });
+
+            }
+
 
         });
 
@@ -601,8 +620,11 @@
             document.getElementById("item_"+index+"_id").value = '';
             document.getElementById("stock_qty_"+index).innerHTML = '';
             document.getElementById("qty_"+index).value = '';
+            document.getElementById("price_"+index).value = '';
 
             $('#qty_'+index).prop('disabled', true);
+            $('#total_price').val("");
+            tampungTotalPrice = 0;
 
             hideQtyErrorMessage(index);
         }
@@ -698,6 +720,8 @@
         function hideQtyPromoErrorMessage(index) {
             document.getElementById("err_qty_promo_msg_"+index).innerHTML = '';
             document.getElementById("err_qty_promo_"+index).style.display = 'none';
+
+            $("#button_submit").prop('disabled', false);
         }
 
         // ========================= ADD ROW =========================
@@ -936,6 +960,9 @@
             var vehicle_number = $("#vehicle_number").val();
             var table = document.getElementById("table_form");
             var detailData = [];
+            var promo_id = $('#select_promo').val();
+            var tablePromo = document.getElementById("table_promo");
+            var detailDataPromo = [];
 
             var total_price = tampungTotalPrice;
 
@@ -944,9 +971,6 @@
             } else {
                 order_type = $('#select_order_type').val();
             }
-
-            console.log(transaction_date);
-
 
             /** Prepare data for detail data */
             for (var i = 1, row ; row = table.rows[i] ; i++) {
@@ -987,6 +1011,36 @@
                 }
             }
 
+            /** Prepare data for detail data */
+            for (var i = 1, row ; row = tablePromo.rows[i] ; i++) {
+                var tempArr = row.id.split("_");
+                var itemId = $('#item_promo_'+tempArr[1]+'_id').val();
+                var qty = $('#qty_promo_'+tempArr[1]).val();
+
+                /** Get data detail that contain item id */
+                if (itemId != '') {
+
+                    /** Check item duplicate or not */
+                    var checkDuplicate = detailDataPromo.find(function (element) {
+                        return element.item_id == itemId;
+                    });
+
+                    /** Validate qty input */
+                    if (qty == '') {
+                        showQtyPromoErrorMessage(tempArr[1], 'Required');
+                        return;
+                    }
+
+                    /** Append to array detail */
+                    detailDataPromo.push(
+                        {
+                            item_id: itemId,
+                            qty: qty,
+                        }
+                    );
+                }
+            }
+
             $.ajax({
                 type: 'POST',
                 url: "{{ url('/post-trs-submit') }}",
@@ -1002,6 +1056,8 @@
                     no_telp: no_telp,
                     vehicle_number: vehicle_number,
                     detail: detailData,
+                    detail_promo: detailDataPromo,
+                    promo_id: promo_id,
                     total_price: total_price,
                 },
                 success: function(response) {

@@ -9,6 +9,7 @@ use App\Models\Income_type;
 use App\Models\Item;
 use App\Models\Movement_type;
 use App\Models\Order_type;
+use App\Models\Promo;
 use App\Models\Promo_item;
 use App\Models\Status;
 use App\Models\Stock;
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 use Illuminate\View\View;
+
+use function PHPUnit\Framework\isNull;
 
 class TransactionController extends Controller
 {
@@ -328,10 +331,14 @@ class TransactionController extends Controller
             'address' => ['required', 'string'],
             'no_telp' => ['required', 'string'],
             'vehicle_number' => ['required', 'string'],
-            'detail' => ['required', 'array'],
-            'detail.*.item_id' => ['required', 'integer'],
-            'detail.*.qty' => ['required', 'integer', 'min:1'],
-            'detail.*.subtotal' => ['required', 'integer', 'min:1'],
+            'detail' => ['array'],
+            'detail.*.item_id' => ['nullable'],
+            'detail.*.qty' => ['nullable', 'min:1'],
+            'detail.*.subtotal' => ['nullable', 'min:1'],
+            'detail_promo' => ['array'],
+            'detail_promo.*.item_id' => ['nullable'],
+            'detail_promo.*.qty' => ['nullable', 'min:1'],
+            'promo_id' => ['nullable'],
             'total_price' => ['required'],
         ]);
         if ($validate->fails()) {
@@ -397,6 +404,17 @@ class TransactionController extends Controller
         $income_type = Income_type::where('income_name', 'Transaction')->first();
         $income_desc = "Transaksi atas nama " . $customer_name . ". Nomor Transaksi : " . $trsNumber . ".";
 
+        $promoData = Promo::where('id', $validated['promo_id'])->first();
+
+        if (is_null($promoData)) {
+            $total_price = $validated['total_price'];
+            $promo_id = null;
+        } else {
+            $total_price = $promoData->price;
+            $promo_id = $promoData->id;
+
+        }
+
         DB::beginTransaction();
         try {
             /** Insert transaction header */
@@ -410,6 +428,7 @@ class TransactionController extends Controller
                 'address' => $address,
                 'no_telp' => $no_telp,
                 'vehicle_number' => $vehicle_number,
+                'promo_id' => $promo_id,
                 'total_price' => $total_price,
                 'note' => $note,
                 'flag' => $status->id,
@@ -452,60 +471,123 @@ class TransactionController extends Controller
             //     'updated_by' => $user?->id,
             // ]);
 
-            /** Looping details */
-            foreach ($validated['detail'] as $detail) {
 
-                $item = Item::where('id', $detail['item_id'])->first();
+            if (is_null($promoData)) {
 
-                /** Get stock data */
-                $stock = Stock::where('item_id', $item->id)->first();
-                $mov_code = Movement_type::where('mov_code', 'TRS')->first();
+                foreach ($validated['detail'] as $detail) {
 
-                /** Check stock is freeze or not */
-                if ($stock->so_flag == 1) {
-                    throw ValidationException::withMessages(['detail' => 'Failed to submit transaction, stock product '.$item->item_name.' is freeze.']);
+                    $item = Item::where('id', $detail['item_id'])->first();
+
+                    /** Get stock data */
+                    $stock = Stock::where('item_id', $item->id)->first();
+                    $mov_code = Movement_type::where('mov_code', 'TRS')->first();
+
+                    /** Check stock is freeze or not */
+                    if ($stock->so_flag == 1) {
+                        throw ValidationException::withMessages(['detail' => 'Failed to submit transaction, stock product '.$item->item_name.' is freeze.']);
+                    }
+
+                    /** Check product is active or not */
+                    if ($item->flag != 1) {
+                        throw ValidationException::withMessages(['detail' => 'Failed to submit transaction, product '.$item->item_name.' is not active.']);
+                    }
+
+                    /** Validate input qty with stock */
+                    if (($stock->quantity) < $detail['qty']) {
+                        Log::warning('Stock '.$item->item_name.' is not available. Total Transaction Qty: '.$detail['qty'].', Stock Qty: '.$stock->quantity, ['userId' => $user->id, 'trsId' => $trsHeader->id]);
+                        throw ValidationException::withMessages(['detail' => 'Stock '.$item->item_name.' is not available. Total Transaction Qty: '.$detail['qty'].', Stock Qty: '.$stock->quantity]);
+                    }
+
+                    /** Insert transfer detail */
+                    Transaction_detail::create([
+                        'trs_id' => $trsHeader->id,
+                        'item_id' => $item->id,
+                        'item_code' => $item->item_code,
+                        'item_desc' => $item->item_desc,
+                        'quantity' => $detail['qty'],
+                        'total_price_per_item' => $detail['subtotal'],
+                        'created_by' => $user?->id,
+                        'updated_by' => $user?->id,
+                    ]);
+
+                    $stock->quantity -= $detail['qty'];
+                    $stock->save();
+
+                    Stock_movement::create([
+                        'mov_date' => $transactionDate,
+                        'item_id' => $item->id,
+                        'item_code' => $item->item_code,
+                        'quantity' => $detail['qty'] * -1,
+                        'mov_code' => $mov_code->mov_code,
+                        'ref_no' => $trsNumber,
+                        'purch_price' => 0,
+                        'sales_price' => 0,
+                        'created_by' => $user?->id,
+                        'updated_by' => $user?->id,
+                    ]);
+
                 }
 
-                /** Check product is active or not */
-                if ($item->flag != 1) {
-                    throw ValidationException::withMessages(['detail' => 'Failed to submit transaction, product '.$item->item_name.' is not active.']);
+            } else {
+                // return response()->json($validated['detail_promo']);
+                foreach ($validated['detail_promo'] as $detail) {
+
+                    $item = Item::where('id', $detail['item_id'])->first();
+
+                    /** Get stock data */
+                    $stock = Stock::where('item_id', $item->id)->first();
+                    $mov_code = Movement_type::where('mov_code', 'TRS')->first();
+
+                    /** Check stock is freeze or not */
+                    if ($stock->so_flag == 1) {
+                        throw ValidationException::withMessages(['detail' => 'Failed to submit transaction, stock product '.$item->item_name.' is freeze.']);
+                    }
+
+                    /** Check product is active or not */
+                    if ($item->flag != 1) {
+                        throw ValidationException::withMessages(['detail' => 'Failed to submit transaction, product '.$item->item_name.' is not active.']);
+                    }
+
+                    /** Validate input qty with stock */
+                    if (($stock->quantity) < $detail['qty']) {
+                        Log::warning('Stock '.$item->item_name.' is not available. Total Transaction Qty: '.$detail['qty'].', Stock Qty: '.$stock->quantity, ['userId' => $user->id, 'trsId' => $trsHeader->id]);
+                        throw ValidationException::withMessages(['detail' => 'Stock '.$item->item_name.' is not available. Total Transaction Qty: '.$detail['qty'].', Stock Qty: '.$stock->quantity]);
+                    }
+
+                    /** Insert transfer detail */
+                    Transaction_detail::create([
+                        'trs_id' => $trsHeader->id,
+                        'item_id' => $item->id,
+                        'item_code' => $item->item_code,
+                        'item_desc' => $item->item_desc,
+                        'quantity' => $detail['qty'],
+                        'total_price_per_item' => $total_price,
+                        'created_by' => $user?->id,
+                        'updated_by' => $user?->id,
+                    ]);
+
+                    $stock->quantity -= $detail['qty'];
+                    $stock->save();
+
+                    Stock_movement::create([
+                        'mov_date' => $transactionDate,
+                        'item_id' => $item->id,
+                        'item_code' => $item->item_code,
+                        'quantity' => $detail['qty'] * -1,
+                        'mov_code' => $mov_code->mov_code,
+                        'ref_no' => $trsNumber,
+                        'purch_price' => 0,
+                        'sales_price' => 0,
+                        'created_by' => $user?->id,
+                        'updated_by' => $user?->id,
+                    ]);
+
                 }
-
-                /** Validate input qty with stock */
-                if (($stock->quantity) < $detail['qty']) {
-                    Log::warning('Stock '.$item->item_name.' is not available. Total Transaction Qty: '.$detail['qty'].', Stock Qty: '.$stock->quantity, ['userId' => $user->id, 'trsId' => $trsHeader->id]);
-                    throw ValidationException::withMessages(['detail' => 'Stock '.$item->item_name.' is not available. Total Transaction Qty: '.$detail['qty'].', Stock Qty: '.$stock->quantity]);
-                }
-
-                /** Insert transfer detail */
-                Transaction_detail::create([
-                    'trs_id' => $trsHeader->id,
-                    'item_id' => $item->id,
-                    'item_code' => $item->item_code,
-                    'item_desc' => $item->item_desc,
-                    'quantity' => $detail['qty'],
-                    'total_price_per_item' => $detail['subtotal'],
-                    'created_by' => $user?->id,
-                    'updated_by' => $user?->id,
-                ]);
-
-                $stock->quantity -= $detail['qty'];
-                $stock->save();
-
-                Stock_movement::create([
-                    'mov_date' => $transactionDate,
-                    'item_id' => $item->id,
-                    'item_code' => $item->item_code,
-                    'quantity' => $detail['qty'] * -1,
-                    'mov_code' => $mov_code->mov_code,
-                    'ref_no' => $trsNumber,
-                    'purch_price' => 0,
-                    'sales_price' => 0,
-                    'created_by' => $user?->id,
-                    'updated_by' => $user?->id,
-                ]);
 
             }
+
+
+
 
             (string) $title = 'Success';
             (string) $message = 'Transaction request successfully submitted with number: '.$trsNumber;

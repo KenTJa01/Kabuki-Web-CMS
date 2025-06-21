@@ -104,9 +104,9 @@
             </td>
 
             {{-- PHONE NUMBER --}}
-            <td class="label_form phone_number" id="label_phone_number">Phone Number</td>
-            <td class="container_input_form phone_number" id="input_phone_number" style="margin: 0; padding: 0;">
-                <input type="text" class="form-control input_form" id="phone_number" value="{{ $trs_header_data->no_telp }}" readonly disabled>
+            <td class="label_form vehicle_type" id="label_vehicle_type">Vehicle Type</td>
+            <td class="container_input_form vehicle_type" id="input_vehicle_type" style="margin: 0; padding: 0;">
+                <input type="text" class="form-control input_form" id="vehicle_type" value="{{ $trs_header_data->vehicle_type }}" readonly disabled>
             </td>
 
         </tr>
@@ -121,9 +121,43 @@
             </td>
 
         </tr>
+        <tr>
+
+            {{-- PHONE NUMBER --}}
+            <td class="label_form phone_number" id="label_phone_number">Phone Number</td>
+            <td class="container_input_form phone_number" id="input_phone_number" style="margin: 0; padding: 0;">
+                <input type="text" class="form-control input_form" id="phone_number" value="{{ $trs_header_data->no_telp }}" readonly disabled>
+            </td>
+
+        </tr>
     </table>
 
 </div>
+
+@if ( $trs_header_data->promo_name != null && $trs_header_data->promo_name != '' )
+
+    {{-- PAKET PROMO --}}
+    <div class="content mt-2" id="content_no_faktur">
+
+        {{-- TITLE --}}
+        <div class="title_n_button d-flex justify-content-between">
+            <h4 class="title" style="margin-left: 0px">PAKET PROMO</h4>
+        </div>
+
+        <hr>
+
+        <table style="width: 100%;">
+            <tr>
+                <td id="label_promo" style="width: 13.5%">Paket Promo</td>
+                <td class="" style="width: 87%; margin: 0; padding: 0;">
+                    <input type="text" class="form-control input_form" id="promo" value="{{ $trs_header_data->promo_name }}" disabled>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+@endif
 
 {{-- TABLE LIST ITEMS --}}
 <div class="content  mt-2" id="content_table_form">

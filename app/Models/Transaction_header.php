@@ -24,6 +24,7 @@ class Transaction_header extends Model
         'no_telp',
         'vehicle_number',
         'total_price',
+        'promo_id',
         'note',
         'flag',
         'created_by',

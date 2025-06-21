@@ -628,10 +628,12 @@ class TransactionController extends Controller
         /** Get transfer header data */
         $sqlHeader = "SELECT th.trs_no, th.trs_date, th.customer_fullname, wt.work_type_name,
                         ot.order_type_name, th.order_type_id, th.address, th.no_telp,
-                        th.vehicle_number, th.note, th.flag, th.payment_type, th.total_price
+                        th.vehicle_number, th.note, th.flag, th.payment_type, th.total_price, p.promo_name, p.price AS promo_price, c.vehicle_type
                     FROM transaction_headers th
                     JOIN work_types wt ON th.work_type_id = wt.id
                     LEFT JOIN order_types ot ON th.order_type_id = ot.id
+                    LEFT JOIN promos p ON th.promo_id = p.id
+                    LEFT JOIN customers c ON th.customer_fullname = c.customer_name
                     WHERE th.id = $id
                     LIMIT 1;
 ";
@@ -666,10 +668,15 @@ class TransactionController extends Controller
         Log::debug('User is request transaction request page', ['userId' => $user?->id, 'userName' => $user?->name, 'trfId' => $id]);
 
         /** Get transaction header data */
-        $sqlHeader = "SELECT *
-            FROM transaction_headers th
-                WHERE th.id = $id
-            LIMIT 1";
+        $sqlHeader = "SELECT th.trs_no, th.trs_date, th.customer_fullname, wt.work_type_name,
+                        ot.order_type_name, th.order_type_id, th.address, th.no_telp,
+                        th.vehicle_number, th.note, th.flag, th.payment_type, th.total_price, p.promo_name, p.price AS promo_price,
+                    FROM transaction_headers th
+                    JOIN work_types wt ON th.work_type_id = wt.id
+                    LEFT JOIN order_types ot ON th.order_type_id = ot.id
+                    LEFT JOIN promos p ON th.promo_id = p.id
+                    WHERE th.id = $id
+                    LIMIT 1";
 
         /** Get transaction detail data */
         $sqlDetail = "SELECT td.id AS detail_id, td.item_id, td.item_code, td.item_desc,

@@ -63,31 +63,65 @@
                 </table>
             </div>
         </div>
-        <div class="row" align="center">
-            <div class="col-sm">
-                <table class="table-data">
-                    <thead>
-                        <tr class="text-center font-weight-bold">
-                            <td>Product</td>
-                            <td>Qty</td>
-                            <td>Subtotal</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($trs_detail_data as $d)
-                        <tr>
-                            <td>{{ $d?->item_code.' - '.$d?->item_desc }}</td>
-                            <td>{{ $d?->quantity }}</td>
-                            <td>{{ $d?->total_price_per_item }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+
+        @if ($trs_header_data?->promo_name)
+
+            <div class="row mt-4" align="center">
+                <div class="col-sm">
+                    <table class="table-data">
+                        <thead>
+                            <tr class="text-center font-weight-bold">
+                                <td>Promo</td>
+                                <td>Price</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ $trs_header_data->promo_name }}</td>
+                                <td>{{ $trs_header_data->promo_price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="row mt-4" align="right">
-            <div class="col-sm">
-                <table class="table-data" style="width: 33%">
+
+        @else
+
+            <div class="row mt-4" align="center">
+                <div class="col-sm">
+                    <table class="table-data">
+                        <thead>
+                            <tr class="text-center font-weight-bold">
+                                <td><strong>Product</strong></td>
+                                <td><strong>Subtotal</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($trs_detail_data as $d)
+                            <tr>
+                                <td>{{ $d?->item_code.' - '.$d?->item_desc }}</td>
+                                <td>{{ $d?->total_price_per_item }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        @endif
+
+        <div class="mt-4 d-flex justify-content-between" style="width: 100%">
+            @if($trs_header_data?->payment_type != null && $trs_header_data?->payment_type != '')
+                    <table class="table-data" style="width: 90%; margin-right: 20px">
+                        <thead>
+                            <tr class="text-center font-weight-bold">
+                                <td><strong>Payment Method</strong></td>
+                                <td>{{ $trs_header_data->payment_type }}</td>
+                            </tr>
+                        </thead>
+                    </table>
+            @endif
+                <table class="table-data" style="width: 90%">
                     <thead>
                         <tr class="text-center font-weight-bold">
                             <td><strong>Total Price</strong></td>
@@ -95,7 +129,6 @@
                         </tr>
                     </thead>
                 </table>
-            </div>
         </div>
 
     </div>

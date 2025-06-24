@@ -670,7 +670,7 @@ class TransactionController extends Controller
         /** Get transaction header data */
         $sqlHeader = "SELECT th.trs_no, th.trs_date, th.customer_fullname, wt.work_type_name,
                         ot.order_type_name, th.order_type_id, th.address, th.no_telp,
-                        th.vehicle_number, th.note, th.flag, th.payment_type, th.total_price, p.promo_name, p.price AS promo_price,
+                        th.vehicle_number, th.note, th.flag, th.payment_type, th.total_price, p.promo_name, p.price AS promo_price
                     FROM transaction_headers th
                     JOIN work_types wt ON th.work_type_id = wt.id
                     LEFT JOIN order_types ot ON th.order_type_id = ot.id

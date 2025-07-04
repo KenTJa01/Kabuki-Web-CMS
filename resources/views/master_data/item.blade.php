@@ -121,6 +121,7 @@
                                 <option value="sentimeter">Sentimeter</option>
                                 <option value="liter">Liter</option>
                                 <option value="mililiter">Mililiter</option>
+                                <option value="satuan">Satuan</option>
                             </select>
                         </div>
                     </div>
@@ -442,6 +443,7 @@
                         $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
                         $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
                         $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+                        $("#select_unit_type_edit").append('<option value="satuan">Satuan</option>');
 
                     } else if ( response.unit_type == "sentimeter" ) {
 
@@ -449,6 +451,7 @@
                         $("#select_unit_type_edit").append('<option value="sentimeter" selected>Sentimeter</option>');
                         $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
                         $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+                        $("#select_unit_type_edit").append('<option value="satuan">Satuan</option>');
 
                     } else if ( response.unit_type == "liter" ) {
 
@@ -456,6 +459,7 @@
                         $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
                         $("#select_unit_type_edit").append('<option value="liter" selected>Liter</option>');
                         $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+                        $("#select_unit_type_edit").append('<option value="satuan">Satuan</option>');
 
                     } else if ( response.unit_type == "mililiter" ) {
 
@@ -463,6 +467,15 @@
                         $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
                         $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
                         $("#select_unit_type_edit").append('<option value="mililiter" selected>Mililiter</option>');
+                        $("#select_unit_type_edit").append('<option value="satuan">Satuan</option>');
+
+                    } else if ( response.unit_type == "satuan" ) {
+
+                        $("#select_unit_type_edit").append('<option value="meter">Meter</option>');
+                        $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
+                        $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
+                        $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+                        $("#select_unit_type_edit").append('<option value="satuan" selected>Satuan</option>');
 
                     } else {
 
@@ -470,6 +483,7 @@
                         $("#select_unit_type_edit").append('<option value="sentimeter">Sentimeter</option>');
                         $("#select_unit_type_edit").append('<option value="liter">Liter</option>');
                         $("#select_unit_type_edit").append('<option value="mililiter">Mililiter</option>');
+                        $("#select_unit_type_edit").append('<option value="satuan">Satuan</option>');
 
                     }
 

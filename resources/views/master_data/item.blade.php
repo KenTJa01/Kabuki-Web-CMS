@@ -231,6 +231,25 @@
 
             dataTable();
 
+            $('#select_unit_type').select2({
+                dropdownParent: $("#newCreationModal"),
+                placeholder: {
+                    id: '-1',
+                    text: 'Select unit type'
+                },
+                multiple: false
+            });
+
+            $('#select_unit_type_edit').select2({
+                dropdownParent: $("#editModal"),
+                placeholder: {
+                    id: '-1',
+                    text: 'Select unit type'
+                },
+                multiple: false
+            });
+
+
         });
 
         // ========================= DATATABLE =========================
